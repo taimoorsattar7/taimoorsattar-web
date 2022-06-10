@@ -1,0 +1,25 @@
+@mixin atMinSmall() {
+    @media (min-width: 530px) {
+        @content;
+    }
+  }
+  
+  @mixin atMinMedium() {
+    @media (min-width: 960px) {
+        @content;
+    }
+  }
+  
+  @mixin atMinLarge() {
+    @media (min-width: 1010px) {
+        @content;
+    }
+  }
+
+  @mixin clearfix {
+    &::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  }

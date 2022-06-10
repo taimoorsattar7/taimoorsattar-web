@@ -1,0 +1,104 @@
+@import "../styles/mixin";
+
+.primary-nav {
+  @include clearfix;
+  z-index: 10;
+  margin-top: 10px;
+
+  &--vanish {
+    position: absolute;
+
+    @include atMinMedium {
+      position: relative;
+    }
+  }
+
+  &--pull-right {
+    @include atMinMedium {
+      float: right;
+    }
+  }
+  .social {
+    margin: a auto;
+  }
+
+  ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  li {
+    list-style: none;
+    display: block;
+    transition: all 0.2s ease;
+
+    background-color: #d1dce1;
+
+    padding: 10px 15px;
+
+    margin: 0;
+
+    border-top: 1px solid #b1c3cd;
+    border-bottom: 1px solid #b1c3cd;
+
+    &:last-of-type {
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    img {
+      display: inline-block;
+      margin-right: 20px;
+
+      height: 20px;
+      width: auto;
+      position: relative;
+      top: 4px;
+      @include atMinMedium {
+        display: none;
+      }
+    }
+
+    @include atMinMedium {
+      width: auto;
+
+      position: relative;
+      left: 0;
+      right: 0;
+      margin-left: 0;
+
+      background-color: transparent;
+      padding: 0;
+
+      border: none;
+
+      display: inline-block;
+
+      margin-right: 30px;
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+    }
+  }
+
+  a {
+    color: black;
+    display: inline-block;
+    text-decoration: none;
+    font-weight: 400;
+    text-shadow: 0.3px 0.3px 1px rgba(0, 0, 0, 0.1);
+    &:hover {
+      transition: all 0.25s;
+      cursor: pointer;
+      color: #0077b2;
+    }
+  }
+
+  .social a {
+    img {
+      width: 30px;
+      height: auto;
+    }
+  }
+}

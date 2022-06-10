@@ -1,0 +1,48 @@
+@import '../styles/mixin';
+
+.img{
+    display: block;
+    
+    &__round{
+        border-radius: 50%;
+    }
+
+    &__cropper {
+        width: 100px;
+        height: 100px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 50%;
+        img{
+            display: inline;
+            margin: 0 auto;
+            margin-left: -25%; //centers the image
+            height: 100%;
+            width: auto;
+        }
+    }
+
+    &__300w{
+        max-width: 300px;
+        height: auto;
+    }
+
+    &__avatar-sml{
+        max-width: 20px;
+        height: auto;
+    }
+
+    &__margin-r{
+        margin-right: 20px;
+    }
+
+    &__float-r{
+
+        @include atMinMedium{
+            float: right;
+        }
+        margin: auto;
+        float: none;
+    }
+
+}

@@ -1,0 +1,40 @@
+@import "../styles/mixin";
+
+.wrapper {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding-top: 10px;
+  padding-bottom: 10px;
+
+  padding-left: 15px;
+  padding-right: 15px;
+
+  transform-origin: center bottom 0px;
+
+  position: relative;
+
+  transition: all 0.5s ease 0s;
+
+  @include atMinMedium {
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  @include atMinSmall {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  @include atMinLarge {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+
+  &--narrow {
+    max-width: 960px;
+  }
+
+  &--small {
+    max-width: 530px;
+  }
+}

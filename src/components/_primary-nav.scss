@@ -1,0 +1,152 @@
+@import '../styles/mixin';
+
+.primary-nav {
+
+    @include clearfix;
+
+    margin-top: 10px;
+
+    &--vanish{
+      
+      position: absolute;
+
+      @include atMinMedium{
+        position: relative;
+      }
+      
+    }
+
+    &--pull-right {
+      @include atMinMedium{
+        float: right;
+      }
+      
+    }
+    .social{
+      margin: a auto;
+    }
+
+    .nav{
+      display: block;
+    }
+  
+    ul {
+      margin: 0;
+      padding: 0;
+    }
+  
+    li {
+      list-style: none;
+      display: inline-block;
+      transition: all 0.20s ease;
+
+      margin-right: 30px;
+
+      &:last-of-type{
+        margin-right: 0;
+      }
+    }
+
+    .nav li {
+      list-style: none;
+      display: block;
+      transition: all 0.20s ease;
+
+      background-color: #D1DCE1;
+
+      padding: 15px 25px;
+
+      width: 100vw;
+
+      margin-bottom: 0;
+      margin-right: 0;
+
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+
+      border-top: 1px solid #B1C3CD;
+      border-bottom: 1px solid #B1C3CD;
+
+      &:last-of-type{
+        margin-bottom: 0;
+        border-bottom: none;
+      }
+
+      img{
+        display: inline-block;
+        margin-right: 20px;
+        
+        height: 20px;
+        width: auto;
+        position: relative;
+        top: 4px;
+        @include atMinMedium{
+          display: none;
+        }
+      }
+
+      @include atMinMedium{
+
+        width: auto;
+
+
+        position: relative;
+        left: 0;
+        right: 0;
+        margin-left: 0;
+
+        background-color: transparent;
+        padding: 0;
+
+        border: none;
+
+        display: inline-block;
+
+        margin-right: 30px;
+
+        &:last-of-type{
+          margin-right: 0;
+        }
+      }
+    }
+
+    
+    a {
+      color: black;
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 400;
+      text-shadow: 0.3px 0.3px 1px rgba(0, 0, 0, 0.1);
+      &:hover{
+        transition: all 0.25s;
+        cursor: pointer;
+        color: #0077B2;
+      }
+    }
+
+    .social a{
+      
+      img{
+        width: 30px;
+        height: auto;
+      }
+    }
+  
+    .footer-links a{
+      color: #848484;
+      display: block;
+      img{
+        width: 30px;
+        height: auto;
+      }
+      &:hover{
+        cursor: pointer;
+        font-weight: 500;
+        color: black;
+      }
+    }
+    
+  }

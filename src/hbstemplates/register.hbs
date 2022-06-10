@@ -1,0 +1,48 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>keynotes.dev | Forget Password</title>
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+
+  <body>
+
+    <div class="wrapper headline headline__text">
+
+      <h1 class="headline">Keynotes.DEV | Welcome {{name}}</h1>
+
+      <p>Thanks for enrolling in the course. We’re very excited to have you on
+        board.</p>
+
+      <p><b>username: </b> {{username}}</p>
+      <p><b>email: </b> {{email}}</p>
+
+      <p>To get started, please confirm your account below:</p>
+
+      <button class="btn">
+        <a class="headline headline__text headline--white" href={{authlink}}>
+
+          Verify here
+        </a>
+      </button>
+
+      <p>
+        PS. The verify link will be valid for 30 days.
+      </p>
+
+      <p>Best Regards,</p>
+      <p>Taimoor Sattar</p>
+
+      <hr />
+
+      <p>If you’re having trouble clicking the confirm account button, copy and
+        paste the URL below into your web browser.
+      </p>
+
+      <a class="headline headline__text" href={{authlink}}>{{authlink}}</a>
+
+    </div>
+  </body>
+
+</html>

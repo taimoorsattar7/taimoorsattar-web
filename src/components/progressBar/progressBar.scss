@@ -1,0 +1,102 @@
+$lt-green: #8dc63f;
+$xlt-grey: #f8f8f8;
+$lt-grey: #e5e5e5;
+$dk-grey: #838687;
+$base: 24px;
+
+.form-steps {
+  position: relative;
+  max-width: 800px;
+  width: 80%;
+  height: 2px;
+  margin-top: 30px;
+  margin-bottom: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.form-step {
+  transform: translateX(-50%);
+  position: absolute;
+  top: -7px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 4px $xlt-grey;
+}
+
+.form-step__complete {
+  background: $lt-green;
+}
+
+.form-step__complete:after {
+  transform: rotate(-45deg);
+  content: "";
+  position: absolute;
+  top: 4px;
+  left: 3px;
+  width: 7px;
+  height: 3px;
+  border-bottom: 3px solid #fff;
+  border-left: 3px solid #fff;
+}
+
+.form-step__active {
+  background: #fff;
+  border: 1px solid $dk-grey;
+}
+
+.form-step__inactive {
+  background: $lt-grey;
+}
+
+.form-step--label {
+  transform: translateX(-50%);
+  position: absolute;
+  left: 50%;
+  bottom: -30px;
+  display: block;
+  width: 140px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.form-step--label__complete {
+  color: $lt-green;
+}
+
+.form-step--label__inactive {
+  color: $lt-grey;
+}
+
+.form-steps--bar {
+  float: left;
+  background: $lt-grey;
+  height: 2px;
+}
+
+.form-steps--bar__complete {
+  background: $lt-green;
+}
+
+.form-steps--four .form-step--one {
+  left: 0;
+}
+
+.form-steps--four .form-step--two {
+  left: 33.33%;
+}
+
+.form-steps--four .form-step--three {
+  left: 66.66%;
+}
+
+.form-steps--four .form-step--four {
+  left: 100%;
+}
+
+.form-steps--four .form-steps--bar {
+  width: 33.333%;
+}
