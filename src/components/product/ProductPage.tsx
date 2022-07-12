@@ -25,6 +25,7 @@ function ProductPage({
   location,
   avatar,
   author,
+  techs,
   _rawBody,
   _rawShort,
   bgimage,
@@ -150,35 +151,61 @@ function ProductPage({
             </div>
           </div>
         </div>
+
         <div className="wrapper wrapper--narrow">
-          {/* <section>
+          <section>
             <h2 className="headline gradient m-b-30 m-t-20">
               <b>Tech Covered</b>
             </h2>
 
-            <div className="flex flex--wrap flex--items-center m-b-45">
-              {techs.map(
-                (
-                  tech: { logo: { asset: ImageDataLike } },
-                  index: React.Key | null | undefined
-                ) => {
-                  return (
-                    <div key={index}>
-                      <GatsbyImage
-                        width="fit-content"
-                        height="fit-content"
-                        image={getImage(tech.logo.asset)}
-                        alt={"heading"}
-                      />
-                    </div>
-                  )
-                }
-              )}
+            <div className="max-w-full mx-auto mb-28" data-path="0.0.1">
+              <div
+                className="flex flex-wrap justify-center xl:justify-between items-center gap-10 sm:gap-5 md:gap-3"
+                data-path="0.0.1.0"
+              >
+                {techs.map(
+                  (
+                    tech: { logo: { asset: ImageDataLike } },
+                    index: React.Key | null | undefined
+                  ) => {
+                    return (
+                      <div
+                        className="w-1/2 sm:w-1/4 md:w-1/6 px-4"
+                        data-path="0.0.1.0.0"
+                        key={index}
+                      >
+                        <GatsbyImage
+                          className="block mx-auto grayscale"
+                          width="fit-content"
+                          height="fit-content"
+                          image={getImage(tech.logo.asset)}
+                          alt={"heading"}
+                          data-config-id="auto-img-1-10"
+                          data-path="0.0.1.0.0.0"
+                        />
+                      </div>
+                    )
+                  }
+                )}
+              </div>
             </div>
-          </section> */}
+          </section>
 
           <div className="w-full prose prose-xl">
             {_rawBody && <PortableText blocks={_rawBody} />}
+          </div>
+
+          <div className="mb-36">
+            <button
+              type="submit"
+              className="px-6 py-3 m-auto text-xl font-medium text-white bg-indigo-600 border border-transparent rounded-md cursor-pointer group max-w-fit hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none disabled:pointer-events-none"
+              onClick={() => {
+                setModalState("form")
+                setShowModal(true)
+              }}
+            >
+              Enroll in the course
+            </button>
           </div>
 
           <section className="m-b-135">
@@ -258,39 +285,6 @@ function ProductPage({
               </div>
             </div>
           </section>
-        </div>
-
-        <div
-          className="w-full mb-16 bg-gray-500 bg-no-repeat"
-          style={{
-            backgroundBlendMode: "multiply",
-            backgroundPosition: "center center",
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1572297870735-065d402f7b29?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80')",
-          }}
-        >
-          <div className="flex flex-wrap content-center justify-center p-10 py-20">
-            <div className="wrapper wrapper--narrow">
-              <div className="p-0 m-0 mb-1 text-5xl text-center text-white ">
-                Interested in the course?
-              </div>
-              <div className="p-0 m-0 mb-10 text-base text-center text-white">
-                Click the below button to Get Started
-              </div>
-              <div className="mb-3">
-                <button
-                  type="submit"
-                  className="relative flex justify-center px-6 py-3 m-auto text-xl font-medium text-white bg-indigo-600 border border-transparent rounded-md cursor-pointer group max-w-fit hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none disabled:pointer-events-none"
-                  onClick={() => {
-                    setModalState("form")
-                    setShowModal(true)
-                  }}
-                >
-                  Enroll in the course
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
         <div className="wrapper wrapper--narrow">

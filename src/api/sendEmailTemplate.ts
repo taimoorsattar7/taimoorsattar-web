@@ -1,5 +1,6 @@
-import sgMail from "@sendgrid/mail"
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+
+import { sendEmailTemplate } from "../lib/sendEmailTemplate.ts"
 
 export default async function handler(
   req: GatsbyFunctionRequest,
@@ -11,21 +12,16 @@ export default async function handler(
   const templateId = req?.body?.templateId || req?.query?.templateId
 
   try {
-    sgMail.setApiKey(String(process.env.SENDGRID_API_KEY))
-    const msg = {
-      to: email,
+    let sgemail = await sendEmailTemplate({
+      email: email,
       from: String(process.env.EMAIL_FROM),
+      subject: subject,
+      metadata: metadata,
       templateId: templateId,
-      dynamicTemplateData: {
-        subject: subject,
-        // name: "Some One",
-        // city: "Denver",
-      },
-    }
-    sgMail.send(msg)
+    })
 
     res.status(200).json({
-      emailSend: msg ? true : false,
+      emailSend: sgemail.is == true ? true : false,
     })
   } catch (error: any) {
     const status = error.response?.status || error.statusCode || 500

@@ -1,4 +1,3 @@
-import axios from "axios"
 import validator from "validator"
 import jwt from "jsonwebtoken"
 
@@ -69,39 +68,28 @@ export default async function handler(
 
       let subscription = await stripe.subscriptions.update(subID, action)
 
-      // let results = await mutateSanity(mutation)
-
-      let { data } = await axios.post(
-        `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/mutate/${process.env.GATSBY_SANITY_DATASET}`,
+      let results = await mutateSanity([
         {
-          mutations: [
-            {
-              patch: {
-                id: subID,
-                set: {
-                  status: subscription.status,
-                  cancel_at_period_end: subscription.cancel_at_period_end,
-                  canceled_at: formatDate(
-                    unix_timestamp_data(subscription.canceled_at)
-                  ),
-                  cancel_at: formatDate(
-                    unix_timestamp_data(subscription.cancel_at)
-                  ),
-                  livemode: subscription.livemode,
-                },
-              },
+          patch: {
+            id: subID,
+            set: {
+              status: subscription.status,
+              cancel_at_period_end: subscription.cancel_at_period_end,
+              canceled_at: formatDate(
+                unix_timestamp_data(subscription.canceled_at)
+              ),
+              cancel_at: formatDate(
+                unix_timestamp_data(subscription.cancel_at)
+              ),
+              livemode: subscription.livemode,
             },
-          ],
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${process.env.GATSBY_SANITY_BEARER_TOKEN}`,
           },
-        }
-      )
+        },
+      ])
+
       res.status(200).json({
         message: "success",
-        data: data,
+        data: results,
       })
     } else {
       throw {

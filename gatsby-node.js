@@ -39,7 +39,6 @@ async function createProjectPages(graphql, actions, reporter) {
       path,
       component: require.resolve(`./src/templates/product-post.tsx`),
       context: { id },
-      defer: true,
     })
   })
 }
@@ -100,7 +99,6 @@ async function createBlogPostPages(graphql, actions, reporter) {
             previousPostId,
             nextPostId,
           },
-          // defer: true,
         })
       }
     })

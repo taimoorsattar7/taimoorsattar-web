@@ -3,6 +3,10 @@ import Code from "./Code"
 import Table from "./Table"
 import Localfile from "./localfile"
 import { CloudinaryImage } from "./CloudinaryImage"
+import { CodepenEmbed } from "./codepenembed"
+import { CodesandboxEmbed } from "./codesandboxembed"
+import { YoutubeEmbed } from "./youtubeembed"
+import { InternalLink } from "./internallink"
 
 const serializers = {
   types: {
@@ -11,6 +15,10 @@ const serializers = {
     table: Table,
     file: Localfile,
     cloudinaryImage: CloudinaryImage,
+    codepenembed: CodepenEmbed,
+    codesandboxembed: CodesandboxEmbed,
+    youtubeembed: YoutubeEmbed,
+    internallink: InternalLink,
   },
 }
 

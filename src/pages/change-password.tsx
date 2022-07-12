@@ -1,74 +1,79 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
+import { PageProps } from "gatsby"
 import toast, { Toaster } from "react-hot-toast"
 
-import { navigate, Link } from "gatsby"
+// import { navigate } from "gatsby"
+import validator from "validator"
 import { useForm } from "react-hook-form"
+import axios from "axios"
 
-import { handleLogin, isLoggedIn } from "@utils/auth.ts"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
 
-const AuthPage = ({ location }: any) => {
+const ChangePasswordPage: React.FC<PageProps<any>> = ({ location }) => {
   const {
     register,
     handleSubmit,
     // formState: { errors },
+    reset,
   } = useForm()
 
   const [disable, setDisable] = useState<Boolean>(false)
 
-  async function onSubmit(data: { email: string; password: string }) {
+  async function onSubmit(data: {
+    email: string
+    prvPassword: string
+    newPassword: string
+  }) {
     setDisable(true)
     try {
-      let auth = await handleLogin({
-        email: data.email,
-        password: data.password,
-      })
+      if (validator.isEmail(data.email)) {
+        let changePasswordRequest: any = await axios.post(
+          `/api/changePassword`,
+          {
+            email: data.email,
+            prvPassword: data.prvPassword,
+            newPassword: data.newPassword,
+          }
+        )
 
-      if (auth) {
-        toast.success("Welcome 🎉")
-        navigate("/modules/")
+        if (changePasswordRequest.data.is == true) {
+          await axios.post(`/api/sendEmailTemplate`, {
+            templateId: "d-e7116f065c074f1fa8f082ba66980a56",
+            subject: "Password Changed - Taimoor Sattar",
+            email: data.email,
+          })
+
+          reset({
+            prvPassword: "",
+            newPassword: "",
+          })
+          toast.success("Your Password has been changed.")
+        }
       } else {
-        toast.success("Wrong entry.", {
-          icon: "⚠️",
-        })
+        toast.error("Email is not valid.")
       }
 
       setDisable(false)
     } catch (e) {
-      console.log(e)
       setDisable(false)
       toast.error("Something went wrong.")
     }
   }
 
-  useEffect(() => {
-    if (isLoggedIn()) {
-      // logout()
-      navigate("/modules")
-    }
-  }, [])
-
   return (
     <Layout location={location}>
-      <SEO title="Login" location={location} />
+      <SEO title="Reset Password Page" location={location} />
 
       <Toaster position="top-center" />
 
       <div className="wrapper wrapper--small m-b-25">
         <div className="m-t-10 m-b-10">
-          {/* <img
-            loading="lazy"
-            className="block m-auto text-center m-t-10 m-b-10"
-            width={60}
-            src={"/img/locked_secure_icon.png"}
-            alt="Logo"
-          /> */}
           <h1 className="mb-8 text-5xl text-center">
-            <b>Login</b>
+            <b>Change Password</b>
           </h1>
           <p className="text-lg text-center">
-            Enter your email and password to continue to dashboad.
+            Please fill the below form to change your password.
           </p>
         </div>
 
@@ -96,11 +101,11 @@ const AuthPage = ({ location }: any) => {
               className="headline headline__sml headline--white field__label"
               htmlFor="email"
             >
-              Password
+              Previous Password
             </label>
 
             <input
-              {...register("password", { required: true })}
+              {...register("prvPassword", { required: true })}
               className="headline headline__text field__input"
               type="password"
               placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
@@ -109,26 +114,28 @@ const AuthPage = ({ location }: any) => {
             />
           </div>
 
-          <div className="inline-flex gap-14 flex-wrap">
-            <Link
-              className="block text-lg text-blue-700 mb-8 hover:text-blue-800"
-              to="/change-password/"
+          <div className="field--gap">
+            <label
+              className="headline headline__sml headline--white field__label"
+              htmlFor="email"
             >
-              Change Password
-            </Link>
+              New Password
+            </label>
 
-            <Link
-              className="block text-lg text-blue-700 mb-8 hover:text-blue-800"
-              to="/forgot-password/"
-            >
-              Forgot Password
-            </Link>
+            <input
+              {...register("newPassword", { required: true })}
+              className="headline headline__text field__input"
+              type="password"
+              placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
+              autoComplete="on"
+              required
+            />
           </div>
 
           <button className={"btn btn__curv"} disabled={disable ? true : false}>
             <span className="headline headline__text headline--white headline--uppercase">
               <b>
-                <i>Login →</i>
+                <i>Change Password</i>
               </b>
             </span>
           </button>
@@ -138,4 +145,4 @@ const AuthPage = ({ location }: any) => {
   )
 }
 
-export default AuthPage
+export default ChangePasswordPage

@@ -85,12 +85,24 @@ const Form = ({ productPrice, location, onModalState }: any) => {
 
     try {
       if (!data.price) {
-        let response: AxiosResponse<any>
+        try {
+          await axios.post(`/api/newsletter`, {
+            name: String(data.name),
+            email: String(data.email),
+          })
+        } catch (error) {}
 
-        response = await axios.post(`/api/newsletter`, {
-          name: String(data.name),
-          email: String(data.email),
-        })
+        try {
+          await axios.post(`/api/sendEmailTemplate`, {
+            templateId: "d-c46966ad6ce5402aa1489198b511ddd1",
+            subject:
+              "Build Website With Gatsby, Sanity, And Stripe course - Taimoor Sattar",
+            email: String(data.email),
+            metadata: {
+              name: String(data.name),
+            },
+          })
+        } catch (error) {}
 
         onModalState("success")
 
@@ -255,7 +267,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
             <span className="headline headline__text headline--white headline--uppercase">
               <b>
                 {!watch("price") ? (
-                  <i>Get it for free →</i>
+                  <i>Open House Content →</i>
                 ) : (
                   <i>Proceed to checkout 💳 →</i>
                 )}

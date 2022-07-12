@@ -1,21 +1,25 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
-
-// @ts-ignore
-import { sendEmailSGtemplate } from "../lib/sendEmailSGtemplate"
+import jwt from "jsonwebtoken"
 
 export default async function handler(
   req: GatsbyFunctionRequest,
   res: GatsbyFunctionResponse
 ) {
   try {
-    let ee = await sendEmailSGtemplate({
-      email: "example@taimoorsattar.dev",
-      subject: "test",
-      template: "forgetPassword",
-    })
+    const metadata = req.body?.metadata
+    const expiresIn = req.body?.expiresIn
+
+    var token = jwt.sign(
+      {
+        ...metadata,
+      },
+      String(process.env.jwt),
+      { expiresIn: expiresIn ? expiresIn : "7d" }
+    )
 
     res.status(200).json({
-      message: ee,
+      message: "success",
+      token: token,
     })
   } catch (error: any) {
     const status = error.response?.status || error.statusCode || 500

@@ -18,6 +18,9 @@ import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
 // @ts-ignore
 import { unix_timestamp_data } from "../lib/unix_timestamp_data.ts"
 
+// @ts-ignore
+import { sendEmailTemplate } from "../lib/sendEmailTemplate.ts"
+
 export default async function handler(
   req: GatsbyFunctionRequest,
   res: GatsbyFunctionResponse
@@ -38,7 +41,7 @@ export default async function handler(
       let cusRef = await getSanityRef("customer", "email", email)
 
       let priceKeywords = await querySanity(`
-          *[_id=='${priceRef}']{plans[]}
+          *[_id=='${priceRef}']{title, plans[]}
         `)
 
       if (priceKeywords[0]?.plans?.length == 0) {
@@ -128,19 +131,34 @@ export default async function handler(
           )
 
           try {
-            sendEmailSG({
+            sendEmailTemplate({
               email: email,
-              subject: "You are subscribe to the course 🎉 - Taimoor Sattar",
-              html: `
-              <section>
-                <h2>Your credential!!!</h2>
-                <p>Email: ${email}</p>
-                <p>Password: ${password}</p>
-              </section>
-              <section>
-                Thanks for checking out the course. If you have any questions, You can reply to this email.
-              </section>
-              `,
+              from: String(process.env.EMAIL_FROM),
+              subject: "Successfully subscribe to the course - Taimoor Sattar",
+              metadata: {
+                courseName: priceKeywords[0]?.title,
+                email: email,
+                startDate: String(
+                  formatDate(unix_timestamp_data(isSubscribe.start_date))
+                ),
+                subscription: "Monthly",
+              },
+              templateId: "d-ea42915a02c9448eb2676be919f127a9",
+            })
+          } catch (error) {}
+
+          try {
+            sendEmailTemplate({
+              email: email,
+              from: String(process.env.EMAIL_FROM),
+              subject: "Registered - Taimoor Sattar",
+              metadata: {
+                email: email,
+                password: cusRef[0]?.password
+                  ? String(cusRef[0]?.password)
+                  : String(password),
+              },
+              templateId: "d-e0c79d4f1e924172a352d5b0421e2ffd",
             })
           } catch (error) {}
 
@@ -155,6 +173,7 @@ export default async function handler(
         } else {
           if (redirectOrigin) {
             res.redirect(`${redirectOrigin}?state=fail`)
+            return
           } else {
             res.status(400).json({
               message: null,

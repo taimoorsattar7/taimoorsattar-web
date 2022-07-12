@@ -12,22 +12,32 @@ const IndexPage = ({ location }: any) => (
       description="My name is Taimoor Sattar and I'm a full-stack developer and educator. I've been building user interfaces for half a decade. I've always been intrigued by languages used elegantly and efficiently, regardless of whether they are interpreted by humans or computers."
       location={location}
     />
-    <section className="m-t-25 m-b-35">
-      <div className="wrapper wrapper--narrow">
-        <div className="m-b-20">
-          <h2 className="headline m-b-20">About Me</h2>
+    <section className="m-b-35">
+      <div
+        className="w-full mb-16 pt-28 pb-32 bg-gray-500 bg-no-repeat"
+        style={{
+          backgroundSize: "cover",
+          backgroundBlendMode: "multiply",
+          backgroundPosition: "center center",
+          backgroundAttachment: "fixed",
+          backgroundImage:
+            "url('https://res.cloudinary.com/taimoorsattar/image/upload/v1648794558/taimoorsattar_dev/profile/profile-banner.jpg')",
+        }}
+      >
+        <div className="wrapper wrapper--narrow">
+          <div className="m-b-20">
+            <h2 className="headline text-white m-b-20">
+              <b>About Me</b>
+            </h2>
+          </div>
         </div>
+      </div>
+
+      <div className="wrapper wrapper--narrow">
         <p className="w-full max-w-full mb-6 prose prose-xl">
           My name is Taimoor Sattar and I'm a full-stack developer and educator.
           I've been building user interfaces for half a decade.
         </p>
-
-        <img
-          className="block max-w-xl m-auto mb-8"
-          src="https://res.cloudinary.com/taimoorsattar/image/upload/v1648794558/taimoorsattar_dev/profile/profile-banner.jpg"
-          alt="Profile"
-          loading="lazy"
-        />
 
         <p className="w-full max-w-full mb-6 prose prose-xl">
           I work with techology like Gatsby, Tailwind CSS, React Query,

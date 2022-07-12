@@ -18,7 +18,7 @@ const BlogPostTemplate = ({ data, location }: any) => {
         location={location}
         image={
           featureImg?.publicURL
-            ? `https://taimoorsattar.dev${featureImg?.publicURL}`
+            ? `https://taimoorsattar.com${featureImg?.publicURL}`
             : ""
         }
         schemaType={"blog"}

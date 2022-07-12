@@ -46,16 +46,18 @@ export default function Contact() {
   return (
     <section className="m-t-25 m-b-35">
       <div className="wrapper wrapper--narrow">
-        <h1 className="my-3 text-3xl text-gray-700 font-semibod">
-          Contact Form
-        </h1>
-        <p className="text-gray-400">
-          Fill in this form to send me a message or send email at
-          <a href="mailto:taimoor@taimoorsattar.dev">
-            taimoor@taimoorsattar.dev
-          </a>
-          .
-        </p>
+        <header>
+          <h1 className="my-3 text-3xl text-gray-700 font-semibod">
+            Contact Form
+          </h1>
+          <p className="text-gray-400">
+            Fill in this form to send me a message or send email at
+            <a href="mailto:taimoor@taimoorsattar.dev">
+              taimoor@taimoorsattar.dev
+            </a>
+            .
+          </p>
+        </header>
         <Toaster position="top-center" />
         <form
           className="pt-8 mb-8 space-y-4 text-base leading-6 text-gray-700 sm:text-lg sm:leading-7"

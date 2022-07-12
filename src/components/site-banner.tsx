@@ -55,8 +55,13 @@ const SiteBanner = () => {
               websites that connect with Stripe payment and Sanity Server.
             </p>
 
-            <Newsletter />
+            <p className="headline headline__text m-b-10">
+              Subscribe to my <b>newsletter</b>. I'll send my thoughts about web
+              technologies in your inbox.
+            </p>
           </div>
+
+          <Newsletter />
         </div>
       </section>
     </div>

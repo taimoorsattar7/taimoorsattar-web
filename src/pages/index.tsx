@@ -6,14 +6,13 @@ import SEO from "@components/seo"
 import SiteBanner from "@components/site-banner"
 
 const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
-  const siteTitle = data.site.siteMetadata?.title || `Title`
   const posts = data.allMarkdownRemark.nodes
 
   const avatar = data.avatar?.childImageSharp?.fixed
 
   if (posts.length === 0) {
     return (
-      <AnimateLayout location={location} title={siteTitle}>
+      <AnimateLayout location={location}>
         <SEO
           location={location}
           title="Taimoor Sattar"
@@ -34,7 +33,7 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
   }
 
   return (
-    <AnimateLayout location={location} title={siteTitle}>
+    <AnimateLayout location={location}>
       <SEO
         title="Taimoor Sattar - Full-stack developer"
         description="My name is Taimoor Sattar, a full-stack developer. I have a bachelor's degree in engineering, but love to code."

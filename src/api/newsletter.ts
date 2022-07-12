@@ -21,7 +21,7 @@ export default function handler(
 
     if (!validator.isEmail(email)) {
       res.json({
-        message: "fail",
+        message: "email not valid",
       })
     } else {
       table.create(
