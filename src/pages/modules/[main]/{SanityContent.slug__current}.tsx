@@ -204,7 +204,7 @@ const Content = ({
                 />
               )}
 
-              {sanityContent.plan == "Basic" ? (
+              {sanityContent.plan == "Basic" || data?.is == true ? (
                 <div className="w-full prose prose-xl">
                   {sanityContent._rawBody && (
                     <PortableText blocks={sanityContent._rawBody} />
@@ -374,13 +374,13 @@ export const query = graphql`
   }
 `
 
-export async function config() {
-  // Optionally use GraphQL here
-  return ({ params }) => {
-    return {
-      defer: true,
-    }
-  }
-}
+// export async function config() {
+//   // Optionally use GraphQL here
+//   return ({ params }) => {
+//     return {
+//       defer: true,
+//     }
+//   }
+// }
 
 export default Content
