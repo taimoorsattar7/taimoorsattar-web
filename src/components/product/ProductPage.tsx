@@ -213,7 +213,7 @@ function ProductPage({
               <b>The Curriculum</b>
             </h2>
 
-            <div className="flex flex--wrap flex--align-stretch flex--justify-center">
+            <div className="flex gap-4 flex--wrap flex--align-stretch flex--justify-center">
               {curriculum.map(
                 (
                   chapter: {
@@ -255,7 +255,7 @@ function ProductPage({
               <b>The Author</b>
             </h2>
 
-            <div className="flex flex--items-start">
+            <div className="flex gap-5 items-start">
               {author?.image?.asset?.gatsbyImageData && (
                 <GatsbyImage
                   className="mw100 radius50prs"

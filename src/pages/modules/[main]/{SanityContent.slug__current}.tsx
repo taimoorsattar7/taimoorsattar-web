@@ -116,6 +116,29 @@ const Content = ({
     }
   )
 
+  if (error) {
+    return (
+      <div className="flex items-center">
+        <div className="container flex flex-col items-center justify-center px-5 text-gray-700 md:flex-row">
+          <div className="max-w-md">
+            <div className="text-5xl font-bold font-dark">404</div>
+            <p className="text-2xl font-light leading-normal md:text-3xl">
+              Sorry we couldn't find this page.{" "}
+            </p>
+            <p className="mb-8">
+              But dont worry, you can find plenty of other things on our
+              homepage.
+            </p>
+
+            <button className="inline px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg shadow focus:outline-none focus:shadow-outline-blue active:bg-blue-600 hover:bg-blue-700">
+              back to homepage
+            </button>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <>
       <SEO
@@ -168,167 +191,136 @@ const Content = ({
           <div
             className={`m-auto  mw800 ${togglenav == true ? "ml-14" : "ml-0"}`}
           >
-            {isLoading && (
-              <div className="m-t-25">
-                <div className="flex items-center justify-center w-full h-full">
-                  <div className="flex justify-center space-x-1 text-sm text-gray-700 flex--items-center">
-                    <svg
-                      fill="none"
-                      className="w-6 h-6 animate-spin"
-                      viewBox="0 0 32 32"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
+            <div className="m-t-25">
+              <h1 className="headline m-b-30">
+                <b>{sanityContent?.title}</b>
+              </h1>
 
-                    <div>Loading ...</div>
-                  </div>
-                </div>
-              </div>
-            )}
+              {featureImg && (
+                <GatsbyImage
+                  className="w-full h-auto mb-5"
+                  image={getImage(featureImg)}
+                  alt={"heading"}
+                />
+              )}
 
-            {error && (
-              <div className="flex items-center">
-                <div className="container flex flex-col items-center justify-center px-5 text-gray-700 md:flex-row">
-                  <div className="max-w-md">
-                    <div className="text-5xl font-bold font-dark">404</div>
-                    <p className="text-2xl font-light leading-normal md:text-3xl">
-                      Sorry we couldn't find this page.{" "}
-                    </p>
-                    <p className="mb-8">
-                      But dont worry, you can find plenty of other things on our
-                      homepage.
-                    </p>
-
-                    <button className="inline px-4 py-2 text-sm font-medium leading-5 text-white transition-colors duration-150 bg-blue-600 border border-transparent rounded-lg shadow focus:outline-none focus:shadow-outline-blue active:bg-blue-600 hover:bg-blue-700">
-                      back to homepage
-                    </button>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {!isLoading && !data?.is && (
-              <div className="m-t-25">
-                <h1 className="headline m-b-30">
-                  <b>{sanityContent?.title}</b>
-                </h1>
-
-                <div className="relative overflow-y-hidden h-[32rem]">
-                  <button className="absolute z-20 right-2/4 top-2/4">
-                    <a
-                      href={"/p/build-standout-website/"}
-                      id="button"
-                      className="inline-flex items-center justify-between overflow-hidden text-white no-underline transition-all bg-blue-500 rounded-md shadow cursor-pointer group hover:glow"
-                    >
-                      <div className="w-12 px-3 mt-2 mb-2">
-                        <LockClosedIcon />
-                      </div>
-
-                      <p className="px-4 mt-2 mb-2">Enroll in the course</p>
-                    </a>
-                  </button>
-
-                  <div className="w-full m-5 prose prose-xl blur-sm">
-                    {sanityContent._rawBody && (
-                      <PortableText blocks={sanityContent._rawBody} />
-                    )}
-                  </div>
-                </div>
-                <div className="w-full mt-10 text-base text-center text-gray-500">
-                  <b>To view the full content, enroll in the course.</b>
-                </div>
-              </div>
-            )}
-
-            {data?.is == true && (
-              <div className="m-t-25">
-                <h1 className="headline m-b-30">
-                  <b>{sanityContent?.title}</b>
-                </h1>
-
-                {featureImg && (
-                  <GatsbyImage
-                    className="w-full h-auto mb-5"
-                    image={getImage(featureImg)}
-                    alt={"heading"}
-                  />
-                )}
-
-                {/* {JSON.stringify(sanityContent._rawBody)} */}
-
+              {sanityContent.plan == "Basic" ? (
                 <div className="w-full prose prose-xl">
                   {sanityContent._rawBody && (
                     <PortableText blocks={sanityContent._rawBody} />
                   )}
                 </div>
+              ) : isLoading ? (
+                <div className="m-t-25">
+                  <div className="flex items-center justify-center w-full h-full">
+                    <div className="flex justify-center space-x-1 text-sm text-gray-700 flex--items-center">
+                      <svg
+                        fill="none"
+                        className="w-6 h-6 animate-spin"
+                        viewBox="0 0 32 32"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
+                          fill="currentColor"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
 
-                <hr className="mb-8 border-b-2 border-grey-light" />
-
-                <div className="flex content-center justify-between pb-12 font-sans">
-                  <div className="text-left">
-                    {previous && (
-                      <>
-                        <span className="text-xs font-normal md:text-sm text-grey-dark">
-                          {previous.slug && (
-                            <Link
-                              to={`/modules/${params.main}/${previous.slug}`}
-                              rel="prev"
-                            >
-                              &laquo; Previous Post
-                            </Link>
-                          )}
-                        </span>
-                        <br />
-                        <p>
-                          <Link
-                            to={`/modules/${params.main}/${previous.slug}`}
-                            className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
-                          >
-                            {previous.title}
-                          </Link>
-                        </p>
-                      </>
-                    )}
-                  </div>
-
-                  <div className="text-right">
-                    {next && (
-                      <>
-                        {next.slug && (
-                          <>
-                            <span className="text-xs font-normal md:text-sm text-grey-dark">
-                              <Link
-                                to={`/modules/${params.main}/${next.slug}`}
-                                rel="next"
-                              >
-                                Next Post &raquo;
-                              </Link>
-                            </span>
-
-                            <br />
-
-                            <p>
-                              <Link
-                                to={`/modules/${params.main}/${next.slug}`}
-                                className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
-                              >
-                                {next.title}
-                              </Link>
-                            </p>
-                          </>
-                        )}
-                      </>
-                    )}
+                      <div>Loading ...</div>
+                    </div>
                   </div>
                 </div>
+              ) : (
+                <div className="m-t-25">
+                  <div className="relative overflow-y-hidden h-[32rem]">
+                    <button className="absolute z-20 right-2/4 top-2/4">
+                      <a
+                        href={"/p/build-standout-website/"}
+                        id="button"
+                        className="inline-flex items-center justify-between overflow-hidden text-white no-underline transition-all bg-blue-500 rounded-md shadow cursor-pointer group hover:glow"
+                      >
+                        <div className="w-12 px-3 mt-2 mb-2">
+                          <LockClosedIcon />
+                        </div>
+
+                        <p className="px-4 mt-2 mb-2">Enroll in the course</p>
+                      </a>
+                    </button>
+
+                    <div className="w-full m-5 prose prose-xl blur-sm">
+                      {sanityContent._rawBody && (
+                        <PortableText blocks={sanityContent._rawBody} />
+                      )}
+                    </div>
+                  </div>
+                  <div className="w-full mt-10 text-base text-center text-gray-500">
+                    <b>To view the full content, enroll in the course.</b>
+                  </div>
+                </div>
+              )}
+
+              <hr className="mb-8 border-b-2 border-grey-light" />
+
+              <div className="flex content-center justify-between pb-12 font-sans">
+                <div className="text-left">
+                  {previous && (
+                    <>
+                      <span className="text-xs font-normal md:text-sm text-grey-dark">
+                        {previous.slug && (
+                          <Link
+                            to={`/modules/${params.main}/${previous.slug}`}
+                            rel="prev"
+                          >
+                            &laquo; Previous Post
+                          </Link>
+                        )}
+                      </span>
+                      <br />
+                      <p>
+                        <Link
+                          to={`/modules/${params.main}/${previous.slug}`}
+                          className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
+                        >
+                          {previous.title}
+                        </Link>
+                      </p>
+                    </>
+                  )}
+                </div>
+
+                <div className="text-right">
+                  {next && (
+                    <>
+                      {next.slug && (
+                        <>
+                          <span className="text-xs font-normal md:text-sm text-grey-dark">
+                            <Link
+                              to={`/modules/${params.main}/${next.slug}`}
+                              rel="next"
+                            >
+                              Next Post &raquo;
+                            </Link>
+                          </span>
+
+                          <br />
+
+                          <p>
+                            <Link
+                              to={`/modules/${params.main}/${next.slug}`}
+                              className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
+                            >
+                              {next.title}
+                            </Link>
+                          </p>
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>
@@ -381,5 +373,14 @@ export const query = graphql`
     }
   }
 `
+
+export async function config() {
+  // Optionally use GraphQL here
+  return ({ params }) => {
+    return {
+      defer: true,
+    }
+  }
+}
 
 export default Content

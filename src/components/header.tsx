@@ -49,7 +49,7 @@ const Header = ({ location }: any) => {
     <>
       <header className="site-header">
         <div className="wrapper wrapper--narrow">
-          <div className="flex flex--wrap flex--items-center">
+          <div className="flex flex--wrap justify-between gap-5 flex--items-center">
             <span className="headline headline--logo">
               <Link to="/?from=header">
                 <img
