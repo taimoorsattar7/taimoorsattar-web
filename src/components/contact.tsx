@@ -47,11 +47,11 @@ export default function Contact() {
     <section className="m-t-25 m-b-35">
       <div className="wrapper wrapper--narrow">
         <header>
-          <h1 className="my-3 text-3xl text-gray-700 font-semibod">
-            Contact Form
+          <h1 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
+            <b>Contact Form</b>
           </h1>
-          <p className="text-gray-400">
-            Fill in this form to send me a message or send email at
+          <p className="text-lg text-gray-500">
+            Fill in this form to send me a message or send email at{" "}
             <a href="mailto:taimoor@taimoorsattar.dev">
               taimoor@taimoorsattar.dev
             </a>

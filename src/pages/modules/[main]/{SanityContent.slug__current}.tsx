@@ -231,6 +231,12 @@ const Content = ({
                       <div>Loading ...</div>
                     </div>
                   </div>
+
+                  <div className="w-full m-5 prose prose-xl blur-sm hidden">
+                    {sanityContent._rawBody && (
+                      <PortableText blocks={sanityContent._rawBody} />
+                    )}
+                  </div>
                 </div>
               ) : (
                 <div className="m-t-25">

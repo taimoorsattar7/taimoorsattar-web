@@ -12,29 +12,38 @@ const Blogs = ({ data, location }: any) => {
     <Layout location={location}>
       <SEO
         location={location}
-        title={"Blogs - Taimoor Sattar"}
-        description={"Blogs - Taimoor Sattar"}
+        title={"Blogs about web programming - Taimoor Sattar"}
+        description={
+          "You can find blogs related to web programming such as HTML, CSS, Javascript, React Gatsbyjs, etc"
+        }
       />
 
       <section className="m-t-25 m-b-35">
         <div className="wrapper wrapper--narrow">
-          <h2 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
-            <b>From our blog</b>
-          </h2>
+          <header>
+            <h2 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
+              <b>From our blogs</b>
+            </h2>
+
+            <p className="text-lg text-gray-500">
+              You can find blogs related to web programming such as HTML, CSS,
+              Javascript, React Gatsbyjs, etc
+            </p>
+          </header>
 
           <div className="flex flex-wrap">
             {posts.map((post: any) => {
               const title = post.frontmatter.title || post.fields.slug
-              const featureImg =
-                post.frontmatter?.featuredimage?.childImageSharp
-                  ?.gatsbyImageData
+              // const featureImg =
+              //   post.frontmatter?.featuredimage?.childImageSharp
+              //     ?.gatsbyImageData
               return (
                 <div
                   key={post.fields.slug}
-                  className="w-full md:w-1/2 pt-11 pb-11"
+                  className="w-full md:w-1/2 pt-11 pb-11 md:gap-4"
                 >
                   <Link to={post.fields.slug} itemProp="url" className="group">
-                    <div className="flex flex-wrap items-center -m-4">
+                    <div className="flex flex-wrap items-center">
                       {/* <div className="w-auto p-4">
                             <div className="overflow-hidden rounded-xl">
                               {featureImg && (

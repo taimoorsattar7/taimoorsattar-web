@@ -13,16 +13,27 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
   return (
     <>
       <Layout location={location}>
-        <SEO location={location} title={"Course - Taimoor Sattar"} />
+        <SEO
+          location={location}
+          title={"web development Course - Taimoor Sattar"}
+          description={
+            "You can find courses related to web programming such as HTML, CSS, Javascript, React Gatsbyjs, etc"
+          }
+        />
 
         <section className="m-t-25 m-b-35">
           <div className="wrapper wrapper--narrow">
             <div className="m-b-20">
-              <h1 className="headline">Course 🔥</h1>
+              <header>
+                <h2 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
+                  <b>From our Courses</b>
+                </h2>
 
-              <p className="headline headline__text">
-                You an view the list of couses down below ↓
-              </p>
+                <p className="text-lg text-gray-500">
+                  You can find blogs related to website development such as
+                  HTML, CSS, Javascript, React Gatsbyjs, etc
+                </p>
+              </header>
             </div>
 
             {result.map((p: any, index: React.Key | null | undefined) => {

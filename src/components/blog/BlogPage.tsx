@@ -92,6 +92,7 @@ const BlogPage = ({ data }: any) => {
             <ol>
               <a
                 href={`https://www.facebook.com/sharer.php?u=${url}`}
+                target="_blank"
                 className="inline-flex items-center m-2 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-600"
                 title="Share this post to facebook"
               >
@@ -109,7 +110,8 @@ const BlogPage = ({ data }: any) => {
             </ol>
             <ol>
               <a
-                href={`https://twitter.com/intent/tweet?original_referer=${url}`}
+                href={`http://twitter.com/share?text=${`${post.frontmatter.title} by @taimoorsattar7`}&url=${url}&hashtags=`}
+                target="_blank"
                 className="inline-flex items-center m-2 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-600"
                 title="Share this post to twitter"
               >
@@ -129,6 +131,7 @@ const BlogPage = ({ data }: any) => {
             <ol>
               <a
                 href={`https://www.linkedin.com/cws/share?url=${url}`}
+                target="_blank"
                 className="inline-flex items-center m-2 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-600"
                 title="Share this post to linkedin"
               >
@@ -147,6 +150,7 @@ const BlogPage = ({ data }: any) => {
             <ol>
               <a
                 href={`whatsapp://send?text=${url}`}
+                target="_blank"
                 className="inline-flex items-center m-2 px-3 py-1 rounded-full bg-gray-100 hover:bg-gray-200 text-sm text-gray-600"
                 title="Share this post to whatsapp"
               >
