@@ -3,8 +3,8 @@ title: How to format input text while typing using Javascript?
 description: We can reduce errors and improve the user experience by formating the input text in real-time (while typing).
 date: 2022-07-26T19:00:44.601Z
 tags:
-  - input
   - text
+  - input
   - format
   - javascript
 featuredpost: false
