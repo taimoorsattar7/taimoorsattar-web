@@ -2,9 +2,53 @@ const Axios = require(`axios`)
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
+exports.createPages = ({ graphql, actions }) => {
+  // Create pages here
+}
+
 exports.createPages = async ({ graphql, actions, reporter }) => {
+  const { createRedirect } = actions
+
   await createBlogPostPages(graphql, actions, reporter)
   await createProjectPages(graphql, actions, reporter)
+
+  createRedirect({
+    fromPath: "/books/workflow-to-build-static-website",
+    toPath: "/p/build-standout-website",
+    statusCode: 200,
+    isPermanent: true,
+  })
+  createRedirect({
+    fromPath: "/books/how-to-build-JAMstack-site",
+    toPath: "/p/build-standout-website",
+    statusCode: 200,
+    isPermanent: true,
+  })
+  createRedirect({
+    fromPath:
+      "/blogs/monolithic-and-microservice-architecture-for-website-development",
+    toPath: "/blogs/what-is-jamstack",
+    statusCode: 200,
+    isPermanent: true,
+  })
+  createRedirect({
+    fromPath: "/modules/[main]/*",
+    toPath: "/modules/build-a-standout-website/*",
+    statusCode: 301,
+    isPermanent: true,
+  })
+  createRedirect({
+    fromPath: "/modules/%5Bmain%5D/*",
+    toPath: "/modules/build-a-standout-website/*",
+    statusCode: 301,
+    isPermanent: true,
+  })
+  createRedirect({
+    fromPath: "/modules/undefined/*",
+    toPath: "/modules/build-a-standout-website/*",
+    statusCode: 301,
+    isPermanent: true,
+  })
 }
 
 async function createProjectPages(graphql, actions, reporter) {

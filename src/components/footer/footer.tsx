@@ -11,7 +11,7 @@ import "@components/_primary-nav.scss"
 
 const Footer = () => (
   <footer className="footer m-t-35 m-b-25">
-    <div className="flex flex--wrap flex--justify-center">
+    <div className="flex flex-wrap justify-center items-center">
       <div className="logo">
         <Link to="/?from=header">
           <img className="site-header__logo" src={logo} alt="Taimoor Sattar" />

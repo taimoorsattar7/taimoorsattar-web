@@ -5,6 +5,8 @@ import { Link } from "gatsby"
 
 import Layout from "@components/layout"
 
+import Newsletter from "@components/newsletter"
+
 const IndexPage = ({ location }: any) => (
   <Layout location={location}>
     <SEO
@@ -26,9 +28,19 @@ const IndexPage = ({ location }: any) => (
       >
         <div className="wrapper wrapper--narrow">
           <div className="m-b-20">
-            <h2 className="headline text-white m-b-20">
-              <b>About Me</b>
-            </h2>
+            <header>
+              <h2 className="mb-4 text-white font-heading font-semibold text-6xl sm:text-7xl">
+                <b>About Me</b>
+              </h2>
+
+              <p className="text-lg text-slate-200">
+                My name is Taimoor Sattar and I'm a full-stack developer and
+                educator. I've been building user interfaces for half a decade.
+                I've always been intrigued by languages used elegantly and
+                efficiently, regardless of whether they are interpreted by
+                humans or computers.
+              </p>
+            </header>
           </div>
         </div>
       </div>
@@ -56,6 +68,10 @@ const IndexPage = ({ location }: any) => (
           Furthermore, If you have any question about me, you can contact me on{" "}
           <Link to="/contact?from=about-page">this page</Link>.
         </p>
+
+        <div className="max-w-xl">
+          <Newsletter />
+        </div>
       </div>
     </section>
   </Layout>

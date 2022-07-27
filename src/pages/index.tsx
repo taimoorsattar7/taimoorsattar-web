@@ -43,6 +43,8 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
 
       <div className="wrapper wrapper--narrow p-b-50">
         <SiteBanner />
+
+
         <ol
           style={{
             listStyle: `none`,
