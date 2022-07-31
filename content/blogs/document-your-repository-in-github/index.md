@@ -15,7 +15,7 @@ Documentation of your repo will help you in many aspects. When you link your rep
 
 `README.md` reads as a markdown file. I have also written details articles about [Markdown Get Started Guide](https://taimoorsattar.dev/blogs/markdown-guide-getting-started-20200304). **Markdown does not give you whole lot control over the styling of the page**. For example, center the image, adjust the width and height, etc. Additionally, you can also write HTML (inline-CSS) in the `README.md` file as shown below:
 
-```
+```html
 <div align="center">
   <br>
   <img alt="logo" src="/image.png" width="200px">
@@ -49,7 +49,7 @@ If your `README.md` file has a long length, then it's better to add table of con
 ```
 Clicking the `TOC` link will scroll to the desire section.
 
-```
+```md
 ## How it Works
 your explanation...
 
@@ -76,9 +76,35 @@ Batches/shields look nicer as it adds information on your repo. Batches/Shields 
 ### How you can add these badges
 
 If you use Netlify to deploy your code; you get a badge on their dashboard which shows deploys status. [shields.io](https://shields.io) and [codetriage](https://www.codetriage.com) are also good resources to add badges for your repo. you can add in README.md as shown below:
-```
+
+```html
 <img src="https://img.shields.io/github/languages/code-size/taimoorsattar7/underlinejobs" alt="GitHub Code Size in Bytes">
 ```
+
+## Funding
+
+You can configure a sponsor button for your repository so that the user can support your work. To configure a sponsor button, you can create `/.github/FUNDING.yml` file at the root of the repository as shown in the below example repository.
+
+![Sponsor Github](./sponsor-github.jpg)
+
+In the `FUNDING.yml`, you can mention you funding platform accounts where the sponsor can send the payment as below.
+
+```
+# These are supported funding model platforms
+
+github: [taimoorsattar7]
+patreon: taimoorsattar7
+open_collective: # Replace with a single Open Collective username
+ko_fi: # Replace with a single Ko-fi username
+tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
+community_bridge: # Replace with a single Community Bridge project-name e.g., cloud-foundry
+liberapay: # Replace with a single Liberapay username
+issuehunt: # Replace with a single IssueHunt username
+otechie: # Replace with a single Otechie username
+custom: ["https://www.paypal.me/taimoorsattar7"]
+```
+
+To learn more about Github sponsor button, you can visit [this page](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/displaying-a-sponsor-button-in-your-repository).
 
 ## further structure your documentation
 
