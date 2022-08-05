@@ -1,6 +1,6 @@
 ---
 title: Explain regex in JavaScript with examples
-description: Regex.
+description: Regular expressions (Regex) are patterns used to match set of strings.
 date: 2021-01-29T06:03:37.094Z
 tags:
   - regular expressions

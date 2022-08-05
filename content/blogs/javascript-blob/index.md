@@ -8,6 +8,7 @@ tags:
   - blob
 featuredpost: false
 ---
+
 The blob object in javascript used to represent the raw data with different media types (MIME Type). We can use blob as a file system and can be store on the memory or browser depending on blob size.
 
 The blob object is useful in different scenarios as below:
@@ -47,3 +48,5 @@ URL.createObjectURL(blob)
 ```
 
 As the web page URL starts with `https://` and the file URL starts with `file://`, the blob URL starts with `blob://`.
+
+[Image Preview](https://taimoorsattar.com/blogs/preview-an-image-using-javascript)
