@@ -17,8 +17,7 @@ CSS is used to style the HTML elements, but CSS stylesheet applies when the page
 In Javascript, we can listen to the event e.g. clicking the button. When the event has listened, it executes the function that we can define.
  We can also define our custom styles to HTML elements using JavaScript as below.
 
-```
-javascript
+```js
 // sample
 document.getElementById(id).style.property = new style
 ```

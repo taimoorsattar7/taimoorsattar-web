@@ -36,7 +36,7 @@ Using the above CSS code, we can force the browser to show the scrollbar but the
 
 Using the scrollbar pseudo-elements, we can customize the browser scrollbar using CSS as below:
 
-```
+```css
 /* width */
 ::-webkit-scrollbar {
   width: 12px;
