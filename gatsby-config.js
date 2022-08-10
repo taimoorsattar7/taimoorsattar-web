@@ -22,7 +22,7 @@ module.exports = {
     title: `Taimoor Sattar`,
     author: {
       name: `Taimoor Sattar`,
-      summary: `I'm Taimoor Sattar, a full-stack developer, experience to develop websites in React/JavaScript, Node, and HTML/CSS.`,
+      summary: `I'm a full-stack developer and educator. I've always been intrigued by languages used elegantly and efficiently, regardless of whether they are interpreted by humans or computers.`,
     },
     description: `I'm Taimoor Sattar, a full-stack developer, experience to develop websites in React/JavaScript, Node, and HTML/CSS.`,
     siteUrl: `https://taimoorsattar.com`,

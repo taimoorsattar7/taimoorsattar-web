@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Bio from "@components/bio"
+const SponsorBlock = React.lazy(() => import("@components/block/sponsor"))
+
 // import SubscribeForm from "@components/blog/SubscribeForm"
 // import Modal from "@components/modal/Modal"
 import { GatsbyImage } from "gatsby-plugin-image"
@@ -32,15 +34,14 @@ const format_date = (date: string | number | Date) => {
 
 const BlogPage = ({ data }: any) => {
   const url = typeof window !== "undefined" ? window.location.href : ""
+  const isSSR = typeof window === "undefined"
+
   const post = data.markdownRemark
-  const { previous, next }: any = data
 
   const [showModal, setShowModal] = useState(false)
 
   let featureImg =
     post.frontmatter?.featuredimage?.childImageSharp?.gatsbyImageData
-
-  let avatar = data.avatar.childImageSharp.gatsbyImageData
 
   useEffect(() => {
     const subscribe = localStorage.getItem("subscribe")
@@ -52,7 +53,7 @@ const BlogPage = ({ data }: any) => {
     <div className="p-b-30">
       <div className="wrapper wrapper--narrow">
         <div className="m-t-25 m-b-25">
-          <h1 className="headline m-b-20">
+          <h1 className="font-heading font-semibold text-gray-900 text-3xl sm:text-4xl mb-2">
             <b>{post.frontmatter.title}</b>
           </h1>
 
@@ -86,6 +87,11 @@ const BlogPage = ({ data }: any) => {
             dangerouslySetInnerHTML={{ __html: post.html }}
           ></div>
         </div>
+        {!isSSR && (
+          <React.Suspense fallback={<div />}>
+            <SponsorBlock data={data.allSanityProduct.edges} />
+          </React.Suspense>
+        )}
 
         <div className="w-full mx-auto">
           <ul className="flex flex-wrap">
@@ -170,7 +176,9 @@ const BlogPage = ({ data }: any) => {
         </div>
 
         <section>
-          <h2 className="mt-10 mb-10 text-2xl">About the Author</h2>
+          <h2 className="mt-10 mb-10 font-heading font-semibold text-gray-900 text-2xl">
+            About the Author
+          </h2>
           <Bio />
         </section>
 

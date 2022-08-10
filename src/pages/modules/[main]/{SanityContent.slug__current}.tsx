@@ -192,7 +192,7 @@ const Content = ({
             className={`m-auto  mw800 ${togglenav == true ? "ml-14" : "ml-0"}`}
           >
             <div className="m-t-25">
-              <h1 className="headline m-b-30">
+              <h1 className="font-heading font-semibold text-gray-900 text-3xl sm:text-4xl mb-10">
                 <b>{sanityContent?.title}</b>
               </h1>
 

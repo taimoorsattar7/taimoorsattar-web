@@ -42,6 +42,24 @@ export const pageQuery = graphql`
         gatsbyImageData
       }
     }
+    allSanityProduct(filter: { slug: { current: { ne: null } } }) {
+      edges {
+        node {
+          id
+          slug {
+            current
+          }
+          title
+          seo {
+            image {
+              asset {
+                gatsbyImageData
+              }
+            }
+          }
+        }
+      }
+    }
     site {
       siteMetadata {
         title
