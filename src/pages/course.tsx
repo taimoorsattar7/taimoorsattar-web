@@ -37,7 +37,7 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
             </div>
 
             {result.map((p: any, index: React.Key | null | undefined) => {
-              const featureImg = p?.node?.seo.image?.asset?.gatsbyImageData
+              const featureImg = p?.node?.seo?.image?.asset?.gatsbyImageData
               return (
                 <div
                   key={index}
@@ -84,7 +84,9 @@ export default Books
 
 export const query = graphql`
   query MyQuery {
-    allSanityProduct(filter: { slug: { current: { ne: null } } }) {
+    allSanityProduct(
+      filter: { slug: { current: { ne: "responsive-website" } } }
+    ) {
       edges {
         node {
           id

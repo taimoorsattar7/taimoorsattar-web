@@ -43,17 +43,23 @@ function ProductPage({
   let [showModal, setShowModal] = useState(false)
   let [modalState, setModalState] = useState("") //form, success, fail, pending
 
-  const { data } = useQuery(["issub", productPrice.content._id], () => {
-    let moduleRef = productPrice.content._id
-    let { token } = getCurrentUser()
-    if (token) {
-      return fetch(
-        `/api/isSubscribe?token=${token}&moduleRef=${moduleRef}`
-      ).then(res => res.json())
-    } else {
-      return null
+  const { data } = useQuery(
+    [
+      "issub",
+      productPrice?.content?._id ? productPrice?.content?._id : "nothing",
+    ],
+    () => {
+      let moduleRef = productPrice.content._id
+      let { token } = getCurrentUser()
+      if (token) {
+        return fetch(
+          `/api/isSubscribe?token=${token}&moduleRef=${moduleRef}`
+        ).then(res => res.json())
+      } else {
+        return null
+      }
     }
-  })
+  )
 
   useEffect(() => {
     const queriedTheme = queryString.parse(location.search)
@@ -76,7 +82,9 @@ function ProductPage({
         <div
           className="m-3 bg-light-grey p-t-10 p-b-10 radius10"
           style={{
-            backgroundImage: `url(${bgimage.asset.gatsbyImageData.images.fallback.src})`,
+            backgroundImage: `url(${
+              bgimage?.asset?.gatsbyImageData?.images?.fallback?.src || ""
+            })`,
             backgroundRepeat: "round",
           }}
         >
@@ -113,16 +121,18 @@ function ProductPage({
                 </div>
               </section>
 
-              <section className="mw300 md_max_width_full md_margin_lr">
-                <video
-                  className="rounded-sm drop-shadow-lg"
-                  src={mainvideo.asset?.url}
-                  poster={mainvideo.image?.asset?.url}
-                  controls="controls"
-                ></video>
+              {mainvideo?.asset?.url && (
+                <section className="mw300 md_max_width_full md_margin_lr">
+                  <video
+                    className="rounded-sm drop-shadow-lg"
+                    src={mainvideo?.asset?.url}
+                    poster={mainvideo.image?.asset?.url}
+                    controls="controls"
+                  ></video>
 
-                {/* <GatsbyImage image={imagePlaceholder} alt={"heading"} /> */}
-              </section>
+                  {/* <GatsbyImage image={imagePlaceholder} alt={"heading"} /> */}
+                </section>
+              )}
             </div>
             {/* </div> */}
 

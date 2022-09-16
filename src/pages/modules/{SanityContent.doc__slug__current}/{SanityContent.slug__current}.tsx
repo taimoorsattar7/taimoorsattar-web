@@ -21,13 +21,23 @@ import ConHierarchy from "@components/conhierarchy/conhierarchy"
 
 import { MenuAlt1Icon, LockClosedIcon } from "@heroicons/react/solid"
 
+// data
+// location
+// navigate
+// pageContext
+// pageResources
+// params
+// path
+// serverData
+// uri
 const Content = ({
   //   serverData,
   location,
-  //   pageContext,
+  pageContext,
   data: { sanityContent, sanityModules },
   params,
 }: any) => {
+  console.log("pageContext", pageContext)
   const isBrowser = typeof window !== `undefined`
   let [next, setNext] = useState<any>(null)
   let [previous, setPrevious] = useState<any>(null)
@@ -180,7 +190,7 @@ const Content = ({
             <ConHierarchy
               nav={sanityModules.docs}
               slug={params.slug__current}
-              main={"build-a-standout-website"}
+              main={params.doc__slug__current}
             />
           ) : (
             <div>No Data</div>
@@ -276,7 +286,7 @@ const Content = ({
                       <span className="text-xs font-normal md:text-sm text-grey-dark">
                         {previous.slug && (
                           <Link
-                            to={`/modules/${params.main}/${previous.slug}`}
+                            to={`/modules/${params.doc__slug__current}/${previous.slug}`}
                             rel="prev"
                           >
                             &laquo; Previous Post
@@ -286,7 +296,7 @@ const Content = ({
                       <br />
                       <p>
                         <Link
-                          to={`/modules/${params.main}/${previous.slug}`}
+                          to={`/modules/${params.doc__slug__current}/${previous.slug}`}
                           className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
                         >
                           {previous.title}
@@ -303,7 +313,7 @@ const Content = ({
                         <>
                           <span className="text-xs font-normal md:text-sm text-grey-dark">
                             <Link
-                              to={`/modules/${params.main}/${next.slug}`}
+                              to={`/modules/${params.doc__slug__current}/${next.slug}`}
                               rel="next"
                             >
                               Next Post &raquo;
@@ -314,7 +324,7 @@ const Content = ({
 
                           <p>
                             <Link
-                              to={`/modules/${params.main}/${next.slug}`}
+                              to={`/modules/${params.doc__slug__current}/${next.slug}`}
                               className="text-base font-bold no-underline break-normal md:text-sm text-teal hover:underline"
                             >
                               {next.title}
@@ -335,7 +345,7 @@ const Content = ({
 }
 
 export const query = graphql`
-  query ($id: String) {
+  query ($id: String, $doc__slug__current: String) {
     sanityContent(id: { eq: $id }) {
       _id
       title
@@ -364,7 +374,7 @@ export const query = graphql`
       _rawBody(resolveReferences: { maxDepth: 5 })
     }
 
-    sanityModules {
+    sanityModules(slug: { current: { eq: $doc__slug__current } }) {
       _id
       docs {
         doc {

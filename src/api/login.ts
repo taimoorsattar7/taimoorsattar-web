@@ -17,6 +17,9 @@ export default async function handler(
     } else {
       let cusRef = await getSanityRef("customer", "email", email)
 
+      res.status(200).json(cusRef)
+      return
+
       if (cusRef?.length !== 0 && cusRef[0]?.password == password) {
         var token = jwt.sign(
           {

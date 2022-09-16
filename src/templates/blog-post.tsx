@@ -6,6 +6,16 @@ import BlogPage from "@components/blog/BlogPage"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
 
+// data
+// location
+// navigate
+// pageContext
+// pageResources
+// params
+// path
+// serverData
+// uri
+
 const BlogPostTemplate = ({ data, location }: any) => {
   const post = data.markdownRemark
   let featureImg = post.frontmatter?.featuredimage
