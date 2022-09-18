@@ -33,12 +33,11 @@ import { MenuAlt1Icon, LockClosedIcon } from "@heroicons/react/solid"
 const Content = ({
   //   serverData,
   location,
-  pageContext,
+  // pageContext,
   data: { sanityContent, sanityModules },
   params,
 }: any) => {
-  console.log("pageContext", pageContext)
-  const isBrowser = typeof window !== `undefined`
+  // const isBrowser = typeof window !== `undefined`
   let [next, setNext] = useState<any>(null)
   let [previous, setPrevious] = useState<any>(null)
 
@@ -52,7 +51,6 @@ const Content = ({
     for (let i = 0; i < moduleDoc.length; i++) {
       for (let j = 0; j < moduleDoc[i].doc?.length; j++) {
         if (moduleDoc[i].doc[j]?.slug?.current === slug) {
-          console.log(moduleDoc.length)
           if (j < moduleDoc[i].doc?.length - 1) {
             if (i !== moduleDoc.length) {
               setNext({

@@ -9,7 +9,7 @@ import { graphql } from "gatsby"
 import "@styles/_img.scss"
 import "@styles/_btn.scss"
 
-const ProductPost = ({ data, location }: any) => {
+const ProductPost = ({ data, location, pageContext }: any) => {
   // const url = typeof window !== "undefined" ? window.location.href : ""
   const product = data.sanityProduct
 
@@ -33,7 +33,7 @@ const ProductPost = ({ data, location }: any) => {
 export default ProductPost
 
 export const query = graphql`
-  query SanityQery {
+  query SanityQery($id: String) {
     avatar: file(absolutePath: { regex: "/profile-pic.jpg/" }) {
       childImageSharp {
         gatsbyImageData(
@@ -46,7 +46,7 @@ export const query = graphql`
         )
       }
     }
-    sanityProduct {
+    sanityProduct(id: { eq: $id }) {
       id
       tags
       title
