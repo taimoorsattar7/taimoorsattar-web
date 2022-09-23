@@ -6,19 +6,20 @@ const SponsorBlock = ({ data }: any) => {
     <div className="flex flex-col space-y-96 mt-16 mb-16">
       {data.map(({ node }: any) => (
         <div className="flex border-solid">
-
-          <a
-            href={`/p/${node?.slug?.current}`}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mb-0.5 hover:underline"
-          >
-            <GatsbyImage
-              className="w-20 h-20 flex-shrink-0 mr-4 object-cover border-2"
-              image={node?.seo.image.asset.gatsbyImageData}
-              alt={"img"}
-            />
-          </a>
+          {node?.seo?.image?.asset?.gatsbyImageData && (
+            <a
+              href={`/p/${node?.slug?.current}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mb-0.5 hover:underline"
+            >
+              <GatsbyImage
+                className="w-20 h-20 flex-shrink-0 mr-4 object-cover border-2"
+                image={node?.seo?.image?.asset?.gatsbyImageData}
+                alt={"img"}
+              />
+            </a>
+          )}
 
           <div className="flex-grow flex flex-col">
             <div>

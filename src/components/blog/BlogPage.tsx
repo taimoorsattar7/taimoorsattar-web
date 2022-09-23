@@ -87,11 +87,11 @@ const BlogPage = ({ data }: any) => {
             dangerouslySetInnerHTML={{ __html: post.html }}
           ></div>
         </div>
-        {!isSSR && (
+        {/* {!isSSR && (
           <React.Suspense fallback={<div />}>
             <SponsorBlock data={data.allSanityProduct.edges} />
           </React.Suspense>
-        )}
+        )} */}
 
         <div className="w-full mx-auto">
           <ul className="flex flex-wrap">
