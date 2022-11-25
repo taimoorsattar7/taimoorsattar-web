@@ -1,3 +1,7 @@
+/**
+ * @type {import('gatsby').GatsbyConfig}
+ */
+
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 })
@@ -17,6 +21,7 @@ module.exports = {
     LMDB_STORE: true,
     PARALLEL_SOURCING: true,
     FUNCTIONS: true,
+    GRAPHQL_NESTED_SORT_AND_AGGREGATE: true,
   },
   siteMetadata: {
     title: `Taimoor Sattar`,
@@ -72,8 +77,8 @@ module.exports = {
     // {
     //   resolve: "gatsby-source-graphql",
     //   options: {
-    //     typeName: "SWAPI",
-    //     fieldName: "swapi",
+    //     typeName: "ALL",
+    //     fieldName: "all",
     //     url: "https://7p4bxs1b.api.sanity.io/v1/graphql/production/default",
     //     batch: true,
     //   },
@@ -83,12 +88,10 @@ module.exports = {
       resolve: "gatsby-plugin-google-tagmanager",
       options: {
         id: "GTM-N8NNRHB",
-
         // Include GTM in development.
         //
         // Defaults to false meaning GTM will only be loaded in production.
         includeInDevelopment: false,
-
         // datalayer to be set before GTM is loaded
         // should be an object or a function that is executed in the browser
         //
@@ -99,12 +102,11 @@ module.exports = {
     {
       resolve: `gatsby-source-sanity`,
       options: {
-        projectId: `7p4bxs1b`,
-        dataset: `production`,
+        projectId: process.env.GATSBY_SANITY_PROJECT_ID,
+        dataset: process.env.GATSBY_SANITY_DATASET,
         // a token with read permissions is required
         // if you have a private dataset
-        // token: process.env.SANITY_TOKEN,
-
+        // token: process.env.GATSBY_SANITY_BEARER_TOKEN,
         // If the Sanity GraphQL API was deployed using `--tag <name>`,
         // use `graphqlTag` to specify the tag name. Defaults to `default`.
         graphqlTag: "default",

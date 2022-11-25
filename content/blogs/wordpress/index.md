@@ -1,7 +1,9 @@
 ---
 title: Things you should know about WordPress?
-date: "2019-07-03"
-keywords: "wordpress, cms"
+date: 2019-03-07T19:21:48.644Z
+tags:
+  - wordpress
+  - cms
 author: taimoorsattar
 published: true
 description: WordPress is a free CMS(Content Management System), power up most of the website and is used by many web community.
