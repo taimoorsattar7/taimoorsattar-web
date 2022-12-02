@@ -1,5 +1,4 @@
 import React from "react"
-import Header from "@components/header"
 
 import { Slice } from "gatsby"
 
@@ -11,7 +10,6 @@ const Layout = ({ children, location = {} }: any) => {
 
         <main className="no-p">{children}</main>
         <Slice alias="footer" />
-        {/* <Footer /> */}
       </div>
     </>
   )

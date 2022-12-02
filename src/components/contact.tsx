@@ -50,13 +50,13 @@ export default function Contact() {
           <h1 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
             <b>Contact Form</b>
           </h1>
-          <p className="text-lg text-gray-500">
-            Fill in this form to send me a message or send email at{" "}
+          <div className="text-lg text-gray-500">
+            <p>Fill in this form to send me a message or send email at</p>
             <a href="mailto:taimoor@taimoorsattar.dev">
               taimoor@taimoorsattar.dev
             </a>
             .
-          </p>
+          </div>
         </header>
         <Toaster position="top-center" />
         <form
