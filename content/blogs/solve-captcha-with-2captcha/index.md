@@ -44,3 +44,5 @@ From there, You can scroll down to the list of Captchas you have submitted.
 ![list of Captchas](./list-of-captchas.jpg)
 
 As above, We've used the 2Captcha service to solve the simple Captcha image. Not only that, but 2Captcha also provide variety of captcha-solving service e.g. Normal Captcha, Text Captcha, reCAPTCHA, Capy Puzzle, etc.
+
+I have written a detailed blog about how to use [2Captcha to submit the form](/blogs/form-submission-puppeteer-2captcha) in the code.

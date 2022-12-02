@@ -1,15 +1,17 @@
 import React from "react"
 import Header from "@components/header"
-import Footer from "@components/footer/footer"
+
+import { Slice } from "gatsby"
 
 const Layout = ({ children, location = {} }: any) => {
   return (
     <>
       <div className="main">
-        <Header location={location} />
-        <main className="no-p">{children}</main>
+        <Slice alias="header" location={location} />
 
-        <Footer />
+        <main className="no-p">{children}</main>
+        <Slice alias="footer" />
+        {/* <Footer /> */}
       </div>
     </>
   )

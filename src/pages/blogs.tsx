@@ -84,7 +84,7 @@ export const query = graphql`
   {
     allMarkdownRemark(
       filter: { fields: { slug: { regex: "/blogs/" } } }
-      sort: { fields: frontmatter___date, order: DESC }
+      sort: { frontmatter: { date: DESC } }
     ) {
       nodes {
         frontmatter {

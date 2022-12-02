@@ -2,12 +2,21 @@ const Axios = require(`axios`)
 const path = require(`path`)
 const { createFilePath } = require(`gatsby-source-filesystem`)
 
-exports.createPages = ({ graphql, actions }) => {
-  // Create pages here
-}
+// exports.createPages = ({ graphql, actions }) => {
+// Create pages here
+// }
 
 exports.createPages = async ({ graphql, actions, reporter }) => {
-  const { createRedirect } = actions
+  const { createRedirect, createSlice } = actions
+
+  createSlice({
+    id: `footer`,
+    component: require.resolve(`./src/components/footer/footer.tsx`),
+  })
+  createSlice({
+    id: `header`,
+    component: require.resolve(`./src/components/header.tsx`),
+  })
 
   await createBlogPostPages(graphql, actions, reporter)
   await createProjectPages(graphql, actions, reporter)

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@emotion/react": "^11.10.5",
-    "@heroicons/react": "^2.0.13",
+    "@heroicons/react": "^1.0.6",
     "@netlify/functions": "^1.3.0",
     "@sanity/block-content-to-react": "^3.0.0",
     "@sanity/image-url": "^1.0.1",
@@ -51,7 +51,7 @@
     "gatsby-source-custom-api": "^2.3.6",
     "gatsby-source-filesystem": "^5.1.0",
     "gatsby-source-graphql": "^5.1.0",
-    "gatsby-source-sanity": "^6.0.0",
+    "gatsby-source-sanity": "^7.5.1",
     "gatsby-transformer-remark": "^6.1.0",
     "gatsby-transformer-sharp": "^5.1.0",
     "generate-password": "^1.7.0",
