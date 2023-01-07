@@ -305,17 +305,20 @@ function ProductPage({
             <FAQ FAQ={faqs} />
           </section>
 
-          <section>
-            <h2 className="headline gradient m-b-40">
-              <b>What people says?</b>
-            </h2>
+          {testimonials.length !== 0 && (
+            <section>
+              <h2 className="headline gradient m-b-40">
+                <b>What people says?</b>
+              </h2>
 
-            {!isSSR && (
-              <React.Suspense fallback={<div />}>
-                <Testimonial testimonial={testimonials} />
-              </React.Suspense>
-            )}
-          </section>
+              {!isSSR && (
+                <React.Suspense fallback={<div />}>
+                  <Testimonial testimonial={testimonials} />
+                </React.Suspense>
+              )}
+            </section>
+          )}
+
           {!isSSR && (
             <React.Suspense fallback={<div />}>
               <Modal
