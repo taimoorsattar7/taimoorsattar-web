@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react"
 import Bio from "@components/bio"
+import Concent from "@components/concent"
+
 const SponsorBlock = React.lazy(() => import("@components/block/sponsor"))
 
 // import SubscribeForm from "@components/blog/SubscribeForm"
@@ -52,6 +54,7 @@ const BlogPage = ({ data }: any) => {
   return (
     <div className="p-b-30">
       <div className="wrapper wrapper--narrow">
+        <Concent timer={5000} />
         <div className="m-t-25 m-b-25">
           <h1 className="font-heading font-semibold text-gray-900 text-3xl sm:text-4xl mb-2">
             <b>{post.frontmatter.title}</b>

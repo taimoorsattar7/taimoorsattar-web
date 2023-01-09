@@ -25,6 +25,11 @@ const AuthPage = ({ location }: any) => {
         password: data.password,
       })
 
+      console.log({
+        email: data.email,
+        password: data.password,
+      })
+
       if (auth) {
         toast.success("Welcome 🎉")
         navigate("/modules/")

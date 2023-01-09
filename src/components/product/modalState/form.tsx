@@ -226,11 +226,12 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                               : "text-gray-800"
                           }`}
                         >
-                          {prc.keyword} {" - "}
+                          {prc.keyword}
+                          {/* {" - "}
                           {prc.price ? prc.price : "Free"}
                           {prc.currency == "euro" ? "€" : ""}
                           {" / "}
-                          {"month"}
+                          {"month"} */}
                         </span>
                         <span
                           className={`block text-sm ${

@@ -90,12 +90,12 @@ function ProductPage({
         >
           <div className="wrapper wrapper--narrow p-t-20 p-b-40">
             <div className="block m-b-20">
-              <div className="flex m-auto flex--items-center">
-                {avatarImg && (
+              <div className="flex m-auto flex--items-center gap-3">
+                {author?.image?.asset?.gatsbyImageData && (
                   <GatsbyImage
-                    className="mwfitcontents radius50prs border-blue-2"
-                    image={avatarImg}
-                    alt={"author"}
+                    className="w-12 shadow-sm radius50prs"
+                    image={author?.image?.asset?.gatsbyImageData}
+                    alt={"heading"}
                   />
                 )}
 
@@ -275,7 +275,7 @@ function ProductPage({
               )}
 
               <div>
-                <div>
+                {/* <div>
                   <span className="headline">
                     <b>{author.name}</b>
                   </span>
@@ -285,7 +285,7 @@ function ProductPage({
                       Instructor for <b>{title}</b>
                     </i>
                   </p>
-                </div>
+                </div> */}
 
                 {author._rawDescription && (
                   <p className="prose prose-xl">
