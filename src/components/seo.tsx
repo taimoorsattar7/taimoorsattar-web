@@ -1,6 +1,8 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { Helmet } from "react-helmet"
+import removeParams from "@lib/removeParams"
+import removeTrailing from "@lib/removeTrailing"
 
 // @ts-ignore
 import { useSiteMetadata } from "../hooks/use-site-metadata.tsx"
@@ -17,7 +19,9 @@ const SEO = ({
 }: any) => {
   let buildMeta = useSiteMetadata()
 
-  const metaCanonical = location?.href || buildMeta?.siteUrl
+  const metaCanonical = removeTrailing(
+    removeParams(location?.href || buildMeta?.siteUrl)
+  )
 
   const metaOrigin = location?.origin || buildMeta?.siteUrl
   const defaultTitle = title || buildMeta?.title

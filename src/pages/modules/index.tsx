@@ -42,9 +42,9 @@ const Modules = ({ location }: any) => {
               <button
                 className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
                   location.pathname == "/modules"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base"
+                    ? "text-indigo-600 dark:border-indigo-400 cursor-base border-indigo-500"
                     : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
+                }  bg-transparent border-b-2  sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
               >
                 <Link className="no-underline" to="/modules">
                   <span className="mx-1 text-sm sm:text-base"> Modules </span>
@@ -54,9 +54,9 @@ const Modules = ({ location }: any) => {
               <button
                 className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
                   location.pathname == "/settings"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base"
+                    ? "text-indigo-600 dark:border-indigo-400 cursor-base border-indigo-500"
                     : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
+                }  bg-transparent border-b-2  sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
               >
                 <Link className="no-underline" to="/settings">
                   <span className="mx-1 text-sm sm:text-base"> Settings </span>
