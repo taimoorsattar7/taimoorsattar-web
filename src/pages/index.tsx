@@ -44,7 +44,6 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
       <div className="wrapper wrapper--narrow p-b-50">
         <SiteBanner />
 
-
         <ol
           style={{
             listStyle: `none`,
@@ -106,8 +105,8 @@ export const pageQuery = graphql`
         title
       }
     }
-    
-    allMarkdownRemark(sort: {frontmatter: {date: ASC}}, limit: 6) {
+
+    allMarkdownRemark(sort: { frontmatter: { date: DESC } }, limit: 6) {
       nodes {
         excerpt
         fields {
