@@ -15,7 +15,7 @@ const IndexPage = ({ location }: any) => (
       location={location}
     />
     <section className="m-b-35">
-      <div
+      {/* <div
         className="w-full mb-16 pt-28 pb-32 bg-gray-500 bg-no-repeat"
         style={{
           backgroundSize: "cover",
@@ -43,29 +43,40 @@ const IndexPage = ({ location }: any) => (
             </header>
           </div>
         </div>
+      </div> */}
+
+      <div className="wrapper wrapper--narrow">
+        <div className="m-b-20">
+          <header>
+            <h2 className="mb-4 font-heading font-semibold text-6xl sm:text-7xl">
+              <b>About Me</b>
+            </h2>
+          </header>
+        </div>
       </div>
 
       <div className="wrapper wrapper--narrow">
         <p className="w-full max-w-full mb-6 prose prose-xl">
-          My name is Taimoor Sattar and I'm a full-stack developer and educator.
-          I've been building user interfaces for half a decade.
+          I'm Taimoor Sattar, a full-stack developer and educator. I've always
+          been intrigued by languages used elegantly and efficiently, regardless
+          of whether they are interpreted by humans or computers.
         </p>
 
         <p className="w-full max-w-full mb-6 prose prose-xl">
-          I work with techology like Gatsby, Tailwind CSS, React Query,
-          Sendgrid, Sanity, Stripe payments, etc to build the website. I've
-          always been intrigued by languages used elegantly and efficiently,
-          regardless of whether they are interpreted by humans or computers.
+          I have experience with technology such as React (Typescript), Gatsby,
+          Tailwind CSS, Sanity, Stripe payments, etc. I love to code and accept
+          challenges in any field of life and programming.
         </p>
 
         <p className="w-full max-w-full mb-6 prose prose-xl">
-          I wrote a course, Build A Standout Website With Gatsby, Sanity, and
-          Stripe. In this course, we use the Gatsby (React) framework to build
-          websites that connect with Stripe payment and Sanity Server.
+          Also, I've publish a Developer course, "Build A Standout Website".
+          This course is complete and you can enroll in it to learn the skillset
+          and framework needed to build a dynamic website using Gatsby, Sanity
+          and Stripe.
         </p>
 
         <p className="w-full max-w-full mb-6 prose prose-xl">
-          Furthermore, If you have any question about me, you can contact me on{" "}
+          If you have any question about me, you can send me a message on{" "}
           <Link to="/contact?from=about-page">this page</Link>.
         </p>
 

@@ -1,7 +1,7 @@
 import React from "react"
 import { useStaticQuery } from "gatsby"
-import { GatsbyImage } from "gatsby-plugin-image"
-import { graphql } from "gatsby"
+// import { GatsbyImage } from "gatsby-plugin-image"
+import { graphql, Link } from "gatsby"
 
 import Newsletter from "@components/newsletter"
 
@@ -33,39 +33,32 @@ const SiteBanner = () => {
             </h1>
           </div>
         </div>
-        <div className="column-xs-12 column-md-4 img__not_med_size">
+        {/* <div className="column-xs-12 column-md-4 img__not_med_size">
           <GatsbyImage
             alt="image"
             image={data.avatar?.childImageSharp.gatsbyImageData}
           />
-        </div>
+        </div> */}
 
         <div className="column-xs-12 column-md-7">
           <div>
             <p className="headline headline__text m-b-10">
-              My name is Taimoor Sattar and I'm a full-stack developer and
-              educator. I've been building websites for quite a long time. I
-              have experience building modern websites with Gatsby/Next.js,
-              Node.js, and MongoDB/Sanity/harperdb.
+              I'm Taimoor Sattar, a full-stack developer, and educator. I've
+              been building websites for about half a decade. I have experience
+              building modern websites using Gatsby/Next.js, Node.js, and
+              MongoDB/Sanity/HarperDB.
             </p>
             <p className="headline headline__text m-b-10">
-              I published a course,{" "}
-              <b> Build A Standout Website With Gatsby, Sanity, and Stripe</b>.
-              In this course, we use the Gatsby (React) framework to build
-              websites that connect with Stripe payment and Sanity Server.
-            </p>
-
-            <p className="headline headline__text m-b-10">
-              Subscribe to my <b>newsletter</b>. I'll send my thoughts about web
-              technologies in your inbox.
+              Also, I've published a developer course, Build A Standout Website
+              With Gatsby, Sanity, and Stripe. In this course, we use the Gatsby
+              (React) framework to build dynamic websites integrated with Stripe
+              payment and Sanity.
             </p>
           </div>
 
           <Newsletter />
         </div>
       </section>
-
-      
     </div>
   )
 }
