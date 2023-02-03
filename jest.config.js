@@ -15,6 +15,8 @@ module.exports = {
   globals: {
     __PATH_PREFIX__: ``,
   },
-  testURL: `http://localhost`,
+  testEnvironmentOptions: {
+    url: `http://localhost`,
+  },
   setupFiles: [`<rootDir>/loadershim.js`],
 }

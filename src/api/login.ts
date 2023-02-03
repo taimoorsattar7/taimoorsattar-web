@@ -44,7 +44,7 @@ export default async function handler(
     const message = error.response?.data?.message || error.message
 
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${message}`,
     })
   }
 }

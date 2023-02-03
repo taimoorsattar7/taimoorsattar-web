@@ -15,19 +15,18 @@ describe("API", () => {
     })
 
     it("Check the website status", async () => {
-      // expect(2 + 2).toBe(4)
-
-      const req = {
+      const req: any = {
         body: mockJson,
       }
 
-      const res = {
+      const res: any = {
         send: mockSend,
+        // body: mockJson,
+        status: mockStatus,
       }
 
       handler(req, res)
-
-      expect(mockSend).toBe(200)
+      expect(mockStatus.mock.calls[0][0]).toBe(200)
     })
   })
 })

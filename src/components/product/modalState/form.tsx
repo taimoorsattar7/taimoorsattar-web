@@ -268,9 +268,9 @@ const Form = ({ productPrice, location, onModalState }: any) => {
             <span className="headline headline__text headline--white headline--uppercase">
               <b>
                 {!watch("price") ? (
-                  <i>Open House Content →</i>
+                  <i id="free-course-check">Open House Content →</i>
                 ) : (
-                  <i>Proceed to checkout 💳 →</i>
+                  <i id="proceed-checkout">Proceed to checkout 💳 →</i>
                 )}
               </b>
             </span>

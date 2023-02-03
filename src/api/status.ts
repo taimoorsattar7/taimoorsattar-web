@@ -4,6 +4,7 @@ export default function handler(
   req: GatsbyFunctionRequest,
   res: GatsbyFunctionResponse
 ) {
+  console.log(req)
   // https://docs.netlify.com/configure-builds/environment-variables/
   res.status(200).send({
     NETLIFY: process.env.NETLIFY,
