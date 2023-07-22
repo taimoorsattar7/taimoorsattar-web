@@ -1,7 +1,7 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 
-// @ts-ignore
-import { getSanityRef } from "../lib/getSanityRef.ts"
+import { sanityRequest } from "../lib/sanity/sanityActions"
+
 import normalizeEmail from "validator/lib/normalizeEmail"
 import jwt from "jsonwebtoken"
 
@@ -11,7 +11,9 @@ export default async function handler(
 ) {
   try {
     let email = normalizeEmail(req.body.email)
-    let cusRef = await getSanityRef("customer", "email", email)
+    let cusRef = await sanityRequest(
+      `*[_type =='customer' && email=='${email}']`
+    )
 
     if (cusRef.length !== 0 && cusRef[0].password == req.body.password) {
       var token = jwt.sign(

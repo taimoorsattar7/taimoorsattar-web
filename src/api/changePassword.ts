@@ -2,8 +2,8 @@ import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 import normalizeEmail from "validator/lib/normalizeEmail"
 import validator from "validator"
 
-import { querySanity } from "../lib/querySanity.ts"
-import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
+import { sanityRequest, sanityUpdate } from "../lib/sanity/sanityActions"
+// import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
 
 export default async function handler(
   req: GatsbyFunctionRequest,
@@ -32,7 +32,7 @@ export default async function handler(
       }
     }
 
-    let dataQuery = await querySanity(
+    let dataQuery = await sanityRequest(
       `*[_type=='customer' && email=='${email}']{
         _id,
         email,
@@ -49,16 +49,10 @@ export default async function handler(
       }
     }
 
-    let cusMutation = await mutateSanity([
-      {
-        patch: {
-          id: dataQuery[0]?._id,
-          set: {
-            password: newPassword,
-          },
-        },
-      },
-    ])
+    let cusMutation = await sanityUpdate(dataQuery[0]?._id, {
+      password: newPassword,
+    })
+
 
     if (cusMutation?.results[0]?.operation == "update") {
       res.status(200).json({

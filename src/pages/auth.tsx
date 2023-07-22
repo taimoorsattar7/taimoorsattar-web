@@ -7,25 +7,24 @@ import { useForm } from "react-hook-form"
 import { handleLogin, isLoggedIn } from "@utils/auth.ts"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
+import Button from "@atom/button/index"
+
+import InputField from "@molecule/input-field/index"
 
 const AuthPage = ({ location }: any) => {
   const {
     register,
     handleSubmit,
-    // formState: { errors },
+    formState: { errors },
   } = useForm()
 
   const [disable, setDisable] = useState<Boolean>(false)
 
-  async function onSubmit(data: { email: string; password: string }) {
+  // : { email: string; password: string }
+  async function onSubmit(data: any) {
     setDisable(true)
     try {
       let auth = await handleLogin({
-        email: data.email,
-        password: data.password,
-      })
-
-      console.log({
         email: data.email,
         password: data.password,
       })
@@ -69,74 +68,66 @@ const AuthPage = ({ location }: any) => {
             src={"/img/locked_secure_icon.png"}
             alt="Logo"
           /> */}
-          <h1 className="mb-8 text-5xl text-center">
-            <b>Login</b>
+          <h1 className="text-3xl mb-4">
+            <b>LOGIN</b>
           </h1>
-          <p className="text-lg text-center">
+          <p className="text-base">
             Enter your email and password to continue to dashboad.
           </p>
         </div>
 
         <form className="field" onSubmit={handleSubmit(onSubmit)}>
-          <div className="field--gap">
-            <label
-              className="headline headline__sml headline--white field__label"
-              htmlFor="email"
-            >
-              Email
-            </label>
+          <InputField
+            register={register}
+            aria-invalid={errors.email ? "true" : "false"}
+            id="email"
+            labelText="Type your Email"
+            message={
+              errors?.email?.message ? String(errors?.email?.message) : ""
+            }
+            status="normal"
+            // className=""
+            type="email"
+            placeholder="yours@email.com"
+            autoComplete="on"
+            required={true}
+          />
 
-            <input
-              {...register("email", { required: true })}
-              className="headline headline__text field__input"
-              type="email"
-              placeholder="example@email.com"
-              autoComplete="on"
-              required
-            />
-          </div>
+          <InputField
+            register={register}
+            aria-invalid={errors.password ? "true" : "false"}
+            id="password"
+            labelText="Password"
+            message={
+              errors?.password?.message ? String(errors?.password?.message) : ""
+            }
+            status="normal"
+            // className=""
+            type="password"
+            placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
+            autoComplete="on"
+            required={true}
+          />
 
-          <div className="field--gap">
-            <label
-              className="headline headline__sml headline--white field__label"
-              htmlFor="email"
-            >
-              Password
-            </label>
-
-            <input
-              {...register("password", { required: true })}
-              className="headline headline__text field__input"
-              type="password"
-              placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;"
-              autoComplete="on"
-              required
-            />
-          </div>
-
-          <div className="inline-flex gap-14 flex-wrap">
-            <Link
-              className="block text-lg text-blue-700 mb-8 hover:text-blue-800"
-              to="/change-password/"
-            >
+          <div className="flex gap-6 flex-wrap mb-4">
+            <Link className="text-base cursor-pointer" to="/change-password/">
               Change Password
             </Link>
 
-            <Link
-              className="block text-lg text-blue-700 mb-8 hover:text-blue-800"
-              to="/forgot-password/"
-            >
+            <Link className="text-base cursor-pointer" to="/forgot-password/">
               Forgot Password
             </Link>
           </div>
 
-          <button className={"btn btn__curv"} disabled={disable ? true : false}>
-            <span className="headline headline__text headline--white headline--uppercase">
-              <b>
-                <i>Login →</i>
-              </b>
-            </span>
-          </button>
+          <Button
+            disabled={disable ? true : false}
+            type={"submit"}
+            textValue="Login to the dashboard"
+            iconRight="sparkle"
+            // className="mx-auto"
+            btnSize="med"
+            btnTheme="indigo"
+          />
         </form>
       </div>
     </Layout>

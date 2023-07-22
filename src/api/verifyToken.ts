@@ -1,7 +1,7 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 import validator from "validator"
-// @ts-ignore
-import { getSanityRef } from "../lib/getSanityRef.ts"
+
+import { sanityRequest } from "../lib/sanity/sanityActions"
 import jwt from "jsonwebtoken"
 
 export default async function handler(
@@ -25,7 +25,9 @@ export default async function handler(
       }
     }
 
-    let cusRef = await getSanityRef("customer", "email", decoded.email)
+    let cusRef = await sanityRequest(
+      `*[_type =='customer' && email=='${decoded.email}']`
+    )
 
     if (cusRef.length !== 0) {
       let token = jwt.sign(

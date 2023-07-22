@@ -8,6 +8,8 @@ import {
   cVerifyToken,
 } from "@utils/auth.ts"
 
+import Button from "@atom/button/index"
+
 import queryString from "query-string"
 
 import "@components/_site-header.scss"
@@ -20,6 +22,8 @@ import logo from "../images/logo.svg"
 import about from "../images/about-icon.svg"
 import blogs from "../images/blogs-icon.svg"
 import contact from "../images/contact-icon.svg"
+
+import { ContactIcon, TypeIcon, HomeIcon } from "lucide-react"
 
 const Header = ({ location }: any) => {
   const [hamBurger, handleHamBurger] = useState(false)
@@ -47,7 +51,7 @@ const Header = ({ location }: any) => {
 
   return (
     <>
-      <header className="site-header">
+      <header className="site-header bg-indigo-50">
         <div className="wrapper wrapper--narrow">
           <div className="flex flex--wrap justify-between gap-5 flex--items-center">
             <span className="headline headline--logo">
@@ -72,28 +76,28 @@ const Header = ({ location }: any) => {
                 }
               >
                 <ul>
-                  <li>
+                  <li className="text-base">
                     <Link to="/about?from=header">
                       <img src={about} alt="Taimoor Sattar" />
                       <span title={"About"}>About</span>
                     </Link>
                   </li>
 
-                  <li>
+                  <li className="text-base">
                     <Link to="/blogs?from=header">
                       <img src={blogs} alt="Taimoor Sattar" />
                       <span title={"Blogs"}>Blogs</span>
                     </Link>
                   </li>
 
-                  <li>
+                  <li className="text-base">
                     <Link to="/course?from=header">
                       <img src={blogs} alt="Taimoor Sattar" />
                       <span title={"Course"}>Course</span>
                     </Link>
                   </li>
 
-                  <li>
+                  <li className="text-base">
                     <Link to="/contact?from=header">
                       <img src={contact} alt="Taimoor Sattar" />
                       <span title={"Contact"}>Contact</span>
@@ -105,12 +109,12 @@ const Header = ({ location }: any) => {
 
             {typeof usr?.avatar == "string" ? (
               <div className="relative">
-                <button
+                <div
                   onClick={() => {
                     setToggleAvatar(prevState => !prevState)
                     handleHamBurger(() => false)
                   }}
-                  className="w-full"
+                  className="w-full cursor-pointer"
                 >
                   <div className="relative flex items-center justify-center w-10 h-10 m-1 mr-2 text-xl text-white bg-gray-500 rounded-full">
                     <img
@@ -119,7 +123,7 @@ const Header = ({ location }: any) => {
                       alt="Taimoor Sattar"
                     />
                   </div>
-                </button>
+                </div>
 
                 <div
                   className={`${
@@ -159,10 +163,18 @@ const Header = ({ location }: any) => {
                 </div>
               </div>
             ) : (
-              <Link to="/auth">
-                <button className="px-4 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
-                  Login
-                </button>
+              // <Link to="/auth">
+              //   <button className="px-4 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
+              //     Login
+              //   </button>
+              // </Link>
+              <Link className="no-underline" to="/auth">
+                <Button
+                  btnSize="sml"
+                  btnTheme="filled"
+                  iconRight={"graduationcap"}
+                  textValue="Course Login"
+                />
               </Link>
               // <Link to="/auth">
               //   <div className="relative flex items-center justify-center w-10 h-10 m-1 mr-2 text-xl text-white bg-gray-500 rounded-full cursor-pointer">

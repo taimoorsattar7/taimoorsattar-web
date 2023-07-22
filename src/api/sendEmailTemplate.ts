@@ -1,6 +1,6 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 
-import { sendEmailTemplate } from "../lib/sendEmailTemplate.ts"
+import { sendEmailTemplate } from "../lib/sendEmailTemplate"
 
 export default async function handler(
   req: GatsbyFunctionRequest,

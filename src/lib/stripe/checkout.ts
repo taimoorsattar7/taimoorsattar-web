@@ -10,7 +10,7 @@ export const createSession = async ({
   metadata = {},
 }: any) => {
   const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {
-    apiVersion: "2020-08-27",
+    apiVersion: "2022-11-15",
   })
 
   // Stripe docs: https://stripe.com/docs/api/checkout/sessions/create

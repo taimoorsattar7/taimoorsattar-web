@@ -3,7 +3,13 @@ import { PageProps, Link, graphql } from "gatsby"
 
 import AnimateLayout from "@components/AnimateLayout"
 import SEO from "@components/seo"
-import SiteBanner from "@components/site-banner"
+// import SiteBanner from "@components/site-banner"
+import Bio from "@components/bio/index"
+
+import SubstackEmbed from "@components/substack-embed/index"
+
+import BlogList from "@components/blog-list/index"
+import Button from "@atom/button/index"
 
 const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
   const posts = data.allMarkdownRemark.nodes
@@ -22,7 +28,8 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
           Node.js, and MongoDB/Sanity/harperdb."
         />
 
-        <SiteBanner />
+        {/* <SiteBanner /> */}
+        <Bio />
         <p>
           No blog posts found. Add markdown posts to "content/blog" (or the
           directory you specified for the "gatsby-source-filesystem" plugin in
@@ -42,55 +49,40 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
       />
 
       <div className="wrapper wrapper--narrow p-b-50">
-        <SiteBanner />
+        {/* <SiteBanner /> */}
+        <Bio />
 
-        <ol
-          style={{
-            listStyle: `none`,
-            margin: "0",
-            padding: "0",
-          }}
-        >
-          {posts.map((post: any) => {
-            const title = post.frontmatter.title || post.fields.slug
+        <BlogList posts={posts}>
+          <header className="mb-6">
+            <h2 className="text-3xl mb-1 text-center sm:text-left">
+              <b>Feature Blogs</b>
+            </h2>
+            <Link
+              className="block text-base mb-1 text-center sm:text-left"
+              to="/blogs/"
+            >
+              <b>View all blogs &#8594;</b>
+            </Link>
+          </header>
+        </BlogList>
+        
+        <section className="mt-8 mb-8 text-center">
+          <SubstackEmbed />
+        </section>
 
-            return (
-              <li key={post.fields.slug}>
-                <article
-                  className="post-list-item"
-                  itemScope
-                  itemType="http://schema.org/Article"
-                >
-                  <header>
-                    <h2>
-                      <Link to={post.fields.slug} itemProp="url">
-                        <span itemProp="headline">{title}</span>
-                      </Link>
-                    </h2>
-                    <small className="headline headline__sml">
-                      {post.frontmatter.date}
-                    </small>
-                  </header>
-                  <section>
-                    <p
-                      dangerouslySetInnerHTML={{
-                        __html: post.frontmatter.description || post.excerpt,
-                      }}
-                      className="headline headline__text"
-                      itemProp="description"
-                    />
-                  </section>
-                </article>
-              </li>
-            )
-          })}
-        </ol>
-
-        <div>
-          <Link className="block headline headline__text m-t-30" to="/blogs/">
-            <b>View more blogs &#8594;</b>
+        <section className="w-full flex flex-col items-center justify-center gap-2 text-center mt-6 mb-14">
+          <h2 className="max-w-3xl text-5xl [background:linear-gradient(110.8deg,_#000,_#4d4d4d_66.67%)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+            <b>Learn to build the Your Next Project.</b>
+          </h2>
+          <Link className="no-underline" to="/contact">
+            <Button
+              btnSize="large"
+              btnTheme="outline"
+              iconRight={"send"}
+              textValue="Send Message"
+            />
           </Link>
-        </div>
+        </section>
       </div>
     </AnimateLayout>
   )

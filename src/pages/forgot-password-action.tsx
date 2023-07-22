@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form"
 import axios from "axios"
 import queryString from "query-string"
 
-import { querySanity } from "@lib/querySanity"
+import { sanityRequest } from "../lib/sanity/sanityActions"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
 
@@ -52,9 +52,9 @@ const ForgotPasswordActionPage: React.FC<PageProps<any>> = ({ location }) => {
   async function onSubmit(data: { email: string; newPassword: string }) {
     setDisable(true)
     try {
-      let cusData = await querySanity(`
-          *[_type=='customer' && email=='${data.email}']
-        `)
+      let cusData = await sanityRequest(
+        `*[_type=='customer' && email=='${data.email}']`
+      )
 
       let changePasswordRequest: any = await axios.post(`/api/changePassword`, {
         email: cusData[0]?.email,

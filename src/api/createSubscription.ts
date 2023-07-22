@@ -3,23 +3,11 @@ import normalizeEmail from "validator/lib/normalizeEmail"
 import jwt from "jsonwebtoken"
 
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
-// @ts-ignore
-import { isSubscribed } from "../lib/isSubscribed.ts"
-// @ts-ignore
-import { getSanityRef } from "../lib/getSanityRef.ts"
-// @ts-ignore
-import { querySanity } from "../lib/querySanity.ts"
-// @ts-ignore
-import { sendEmailSG } from "../lib/sendEmailSG.ts"
-// @ts-ignore
-import { formatDate } from "../lib/formatDate.ts"
-// @ts-ignore
-import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
-// @ts-ignore
-import { unix_timestamp_data } from "../lib/unix_timestamp_data.ts"
-
-// @ts-ignore
-import { sendEmailTemplate } from "../lib/sendEmailTemplate.ts"
+import { isSubscribed } from "../lib/isSubscribed"
+import { sanityRequest, sanityCreate } from "../lib/sanity/sanityActions"
+import { formatDate } from "../lib/formatDate"
+import { unix_timestamp_data } from "../lib/unix_timestamp_data"
+import { sendEmailTemplate } from "../lib/sendEmailTemplate"
 
 export default async function handler(
   req: GatsbyFunctionRequest,
@@ -38,11 +26,13 @@ export default async function handler(
       typeof isSubscribe.cusid == "string" &&
       typeof isSubscribe.subid == "string"
     ) {
-      let cusRef = await getSanityRef("customer", "email", email)
+      let cusRef = await sanityRequest(
+        `*[_type =='customer' && email=='${email}']`
+      )
 
-      let priceKeywords = await querySanity(`
-          *[_id=='${priceRef}']{title, plans[]}
-        `)
+      let priceKeywords = await sanityRequest(
+        `*[_id=='${priceRef}']{title, plans[]}`
+      )
 
       if (priceKeywords[0]?.plans?.length == 0) {
         throw {
@@ -70,57 +60,50 @@ export default async function handler(
           numbers: true,
         })
 
-        let mutation = [
-          {
-            createIfNotExists: {
-              _id: cusID ? cusID : isSubscribe.cusid,
-              _type: "customer",
-              email: email,
-              password: cusRef[0]?.password ? cusRef[0]?.password : password,
-              name: name,
-              cusid: cusID ? cusID : isSubscribe.cusid,
-            },
+        await sanityCreate("createIfNotExists", {
+          _id: cusID ? cusID : isSubscribe.cusid,
+          _type: "customer",
+          email: email,
+          password: cusRef[0]?.password ? cusRef[0]?.password : password,
+          name: name,
+          cusid: cusID ? cusID : isSubscribe.cusid,
+        })
+
+        let subresults: any = await sanityCreate("createIfNotExists", {
+          _type: "subscriptions",
+          _id: isSubscribe.subid,
+          customer: {
+            _ref: cusID ? cusID : isSubscribe.cusid,
+            _type: "reference",
           },
-          {
-            createIfNotExists: {
-              _type: "subscriptions",
-              _id: isSubscribe.subid,
-              customer: {
-                _ref: cusID ? cusID : isSubscribe.cusid,
-                _type: "reference",
-              },
-              price: {
-                _ref: priceRef,
-                _type: "reference",
-              },
-
-              status: isSubscribe?.status,
-              cancel_at_period_end: isSubscribe.cancel_at_period_end,
-              canceled_at: isSubscribe?.canceled_at
-                ? formatDate(unix_timestamp_data(isSubscribe?.canceled_at))
-                : "",
-              cancel_at: isSubscribe?.cancel_at
-                ? formatDate(unix_timestamp_data(isSubscribe?.cancel_at))
-                : "",
-              start_date: isSubscribe.start_date
-                ? formatDate(unix_timestamp_data(isSubscribe.start_date))
-                : "",
-              livemode: isSubscribe?.livemode,
-
-              plankey: keyword,
-              subID: isSubscribe.subid,
-              title: `${email} ${
-                isSubscribe.start_date
-                  ? formatDate(unix_timestamp_data(isSubscribe.start_date))
-                  : ""
-              }`,
-            },
+          price: {
+            _ref: priceRef,
+            _type: "reference",
           },
-        ]
 
-        let results = await mutateSanity(mutation)
+          status: isSubscribe?.status,
+          cancel_at_period_end: isSubscribe.cancel_at_period_end,
+          canceled_at: isSubscribe?.canceled_at
+            ? formatDate(unix_timestamp_data(isSubscribe?.canceled_at))
+            : "",
+          cancel_at: isSubscribe?.cancel_at
+            ? formatDate(unix_timestamp_data(isSubscribe?.cancel_at))
+            : "",
+          start_date: isSubscribe.start_date
+            ? formatDate(unix_timestamp_data(isSubscribe.start_date))
+            : "",
+          livemode: isSubscribe?.livemode,
 
-        if (typeof results.transactionId == "string") {
+          plankey: keyword,
+          subID: isSubscribe.subid,
+          title: `${email} ${
+            isSubscribe.start_date
+              ? formatDate(unix_timestamp_data(isSubscribe.start_date))
+              : ""
+          }`,
+        })
+
+        if (typeof subresults?._id == "string") {
           var token = jwt.sign(
             {
               name: name,

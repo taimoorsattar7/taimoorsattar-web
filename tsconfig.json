@@ -19,10 +19,14 @@
     "typeRoots": ["./node_modules/@types", "./types"],
     "lib": ["dom", "es2015", "es2017"],
     "paths": {
+      "@images/*": ["./images/*"],
+      "@atom/*": ["./atom/*"],
+      "@molecule/*": ["./molecule/*"],
       "@components/*": ["./components/*"],
       "@lib/*": ["./lib/*"],
       "@middlewares/*": ["./middlewares/*"],
       "@hooks/*": ["./hooks/*"],
+      "@utils/*": ["./utils/*"],
       "*.ts": ["*"]
     },
     "forceConsistentCasingInFileNames": true,

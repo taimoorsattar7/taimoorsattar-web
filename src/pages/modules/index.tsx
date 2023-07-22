@@ -4,9 +4,11 @@ import { Link, navigate } from "gatsby"
 import Header from "@components/header"
 import SEO from "@components/seo"
 
-import { isLoggedIn, getCurrentUser } from "@utils/auth.ts"
+import { isLoggedIn, getCurrentUser } from "@utils/auth"
 
-import getSubscription from "@lib/getSubscription"
+import { sanityRequest } from "@lib/sanity/sanityActions"
+
+import Button from "@atom/button/index"
 
 const Modules = ({ location }: any) => {
   const [content, setcontent] = useState([])
@@ -22,9 +24,10 @@ const Modules = ({ location }: any) => {
   async function fetchData() {
     let usr = getCurrentUser()
 
-    let { data }: any = await getSubscription({
-      email: usr.email,
-    })
+    let data = await sanityRequest(
+      `*[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${usr.email}']._id]{'module': price->content->{_id, title, seo, 'img': seo.image.asset->{_updatedAt, extension, originalFilename, url}, slug}}`
+    )
+
     setcontent(data)
   }
 
@@ -91,14 +94,15 @@ const Modules = ({ location }: any) => {
 
                         <div className="flex flex-wrap items-center justify-between w-full mt-2">
                           <div className="w-full mt-4 sm:mt-0 sm:w-auto">
-                            <button
-                              className="w-full px-6 py-2 text-white bg-indigo-500 rounded sm:w-auto"
-                              onClick={() => {
+                            <Button
+                              onClickHandler={() => {
                                 navigate(doc.module.slug.current)
                               }}
-                            >
-                              Go to the course
-                            </button>
+                              btnSize="large"
+                              btnTheme="filled"
+                              iconRight={"feather"}
+                              textValue="Go to the course"
+                            />
                           </div>
                         </div>
                       </div>

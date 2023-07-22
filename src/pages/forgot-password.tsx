@@ -7,7 +7,7 @@ import validator from "validator"
 import { useForm } from "react-hook-form"
 import axios from "axios"
 
-import { querySanity } from "@lib/querySanity"
+import { sanityRequest } from "../lib/sanity/sanityActions"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
 
@@ -24,10 +24,9 @@ const ForgotPasswordPage: React.FC<PageProps<any>> = ({ location }) => {
     setDisable(true)
     try {
       if (validator.isEmail(data.email)) {
-        let cusData = await querySanity(`
-          *[_type=='customer' && email=='${data.email}']
-        `)
-
+        let cusData = await sanityRequest(
+          `*[_type=='customer' && email=='${data.email}']`
+        )
         if (cusData.length > 0) {
           let token: any = await axios.post(`/api/genToken`, {
             email: data.email,

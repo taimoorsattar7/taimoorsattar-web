@@ -3,12 +3,13 @@ import React, { useEffect, useState } from "react"
 import Layout from "@components/layout"
 
 import { Link, navigate, PageProps } from "gatsby"
-import { isLoggedIn, getCurrentUser } from "@utils/auth.ts"
+import { isLoggedIn, getCurrentUser } from "@utils/auth"
 import Axios, { AxiosResponse } from "axios"
 import toast, { Toaster } from "react-hot-toast"
 
-import { querySanity } from "@lib/querySanity.ts"
 import { format, compareAsc } from "date-fns"
+
+import { sanityRequest } from "@lib/sanity/sanityActions"
 
 // import { format, compareAsc } from 'date-fns'
 
@@ -21,22 +22,23 @@ const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
     } else {
       fetchSupscription()
     }
-  }, [subscriptions])
+  }, [])
 
   async function fetchSupscription() {
     let { email } = getCurrentUser()
 
-    let dataQuery = await querySanity(`
-    *[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${email}']._id]{
-      _id, _type, customer,
-      status,
-      cancel_at_period_end, canceled_at, cancel_at,
-      start_date, price,
-      'module': price->content->{
-        _id, _type, title, seo, 
-        'img': seo.image.asset->{_updatedAt, extension, originalFilename, url}
-        , slug}}
-    `)
+    let dataQuery = await sanityRequest(
+      `*[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${email}']._id]{
+        _id, _type, customer,
+        status,
+        cancel_at_period_end, canceled_at, cancel_at,
+        start_date, price,
+        'module': price->content->{
+          _id, _type, title, seo, 
+          'img': seo.image.asset->{_updatedAt, extension, originalFilename, url}
+          , slug}}
+      `
+    )
 
     setSubscriptions(dataQuery)
   }
@@ -49,6 +51,11 @@ const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
       })
       let { token } = getCurrentUser()
       try {
+        console.log({
+          token: token,
+          subID: req._id,
+          actionReq: req.actionReq,
+        })
         let { data, status }: AxiosResponse<any> = await Axios.post(
           `/api/cancelSubscription`,
           {

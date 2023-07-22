@@ -36,7 +36,7 @@ const Footer = (props: { FAQ: any }) => {
             </button>
 
             <div className="accordion-content">
-              <div className="headline headline__text">
+              <div className="text-base">
                 {item._rawAnswer && <PortableText blocks={item._rawAnswer} />}
               </div>
             </div>

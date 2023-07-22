@@ -5,11 +5,14 @@ import { useQuery } from "react-query"
 import queryString from "query-string"
 import "./ProductPage.scss"
 
+import Button from "@atom/button/index"
 import ProgressBar from "@components/progressBar/ProgressBar"
 
 import Form from "./modalState/form"
 import Success from "./modalState/success"
 import Fail from "./modalState/fail"
+
+import CurriculumList from "@components/curriculum-list/index"
 
 // @ts-ignore
 import { getCurrentUser } from "@utils/auth.ts"
@@ -17,6 +20,7 @@ import { getCurrentUser } from "@utils/auth.ts"
 const Modal = React.lazy(() => import("@components/modal/Modal"))
 
 import PortableText from "@components/portabletext/portableText"
+import ProductBanner from "@components/product-banner/index"
 import FAQ from "@components/FAQ"
 
 const Testimonial = React.lazy(() => import("@components/testimonial"))
@@ -77,91 +81,21 @@ function ProductPage({
   return (
     <article>
       {/* <Toaster position="top-center" /> */}
+      <ProductBanner
+        bgImage={bgimage?.asset?.gatsbyImageData?.images?.fallback?.src}
+        title={title}
+        text={<PortableText blocks={_rawShort} />}
+        logSlug={`/modules/${productPrice?.content?.slug?.current}`}
+        isLog={data?.is ? true : false}
+        onEventLog={() => {
+          setModalState("form")
+          setShowModal(true)
+        }}
+        vidUrl={mainvideo?.asset?.url}
+        vidPoster={mainvideo?.image?.asset?.url}
+      />
 
       <div className="p-b-30">
-        <div
-          className="m-3 bg-light-grey p-t-10 p-b-10 radius10"
-          style={{
-            backgroundImage: `url(${
-              bgimage?.asset?.gatsbyImageData?.images?.fallback?.src || ""
-            })`,
-            backgroundRepeat: "round",
-          }}
-        >
-          <div className="wrapper wrapper--narrow p-t-20 p-b-40">
-            <div className="block m-b-20">
-              <div className="flex m-auto flex--items-center gap-3">
-                {author?.image?.asset?.gatsbyImageData && (
-                  <GatsbyImage
-                    className="w-12 shadow-sm radius50prs"
-                    image={author?.image?.asset?.gatsbyImageData}
-                    alt={"heading"}
-                  />
-                )}
-
-                <div className="flex-grow-1">
-                  <span className="headline headline__sml headline--dull">
-                    <b>Taimoor Sattar</b>
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="flex flex-wrap align-top m-b-20">
-              <section className="mw600 md_max_width_full">
-                <h1
-                  title={title}
-                  className="headline md_text_center m-b-15 gradient"
-                >
-                  <b>{title}</b>
-                </h1>
-
-                <div className="mb-16 prose prose-xl">
-                  {_rawShort && <PortableText blocks={_rawShort} />}
-                </div>
-              </section>
-
-              {mainvideo?.asset?.url && (
-                <section className="mw300 md_max_width_full md_margin_lr">
-                  <video
-                    className="rounded-sm drop-shadow-lg"
-                    src={mainvideo?.asset?.url}
-                    poster={mainvideo.image?.asset?.url}
-                    controls="controls"
-                  ></video>
-
-                  {/* <GatsbyImage image={imagePlaceholder} alt={"heading"} /> */}
-                </section>
-              )}
-            </div>
-            {/* </div> */}
-
-            <div className="flex flex--items-center">
-              {data?.is ? (
-                <button className="btn btn__black md_margin_lr radius5 p-t-5 p-b-5 p-l-30 p-r-30">
-                  <a href={`/modules/${productPrice.content.slug.current}`}>
-                    <b className="headline headline__text headline--white">
-                      Go to the couse →
-                    </b>
-                  </a>
-                </button>
-              ) : (
-                <button
-                  className="btn btn__black md_margin_lr radius5 p-t-5 p-b-5 p-l-30 p-r-30"
-                  onClick={() => {
-                    setModalState("form")
-                    setShowModal(true)
-                  }}
-                >
-                  <b className="headline headline__text headline--white">
-                    Start from Here 🔥
-                  </b>
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-
         <div className="wrapper wrapper--narrow">
           <section>
             <h2 className="headline gradient m-b-30 m-t-20">
@@ -201,67 +135,30 @@ function ProductPage({
             </div>
           </section>
 
-          <div className="w-full prose prose-xl">
+          <div className="max-w-3xl prose prose-base mx-auto">
             {_rawBody && <PortableText blocks={_rawBody} />}
           </div>
 
-          <div className="mb-36">
-            <button
-              type="submit"
-              className="px-6 py-3 m-auto text-xl font-medium text-white bg-indigo-600 border border-transparent rounded-md cursor-pointer group max-w-fit hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:bg-gray-50 disabled:text-gray-500 disabled:border-gray-200 disabled:shadow-none disabled:pointer-events-none"
-              onClick={() => {
-                setModalState("form")
-                setShowModal(true)
-              }}
-            >
-              Enroll in the course
-            </button>
-          </div>
+          <Button
+            textValue="Enroll in the course"
+            iconRight="sparkle"
+            className="mx-auto"
+            btnSize="large"
+            btnTheme="outline"
+            onClickHandler={() => {
+              setModalState("form")
+              setShowModal(true)
+            }}
+          />
 
-          <section className="m-b-135">
-            <h2 className="headline gradient m-b-40">
+          <CurriculumList curriculum={curriculum}>
+            <h2 className="text-3xl mb-5">
               <b>The Curriculum</b>
             </h2>
-
-            <div className="flex gap-4 flex--wrap flex--align-stretch flex--justify-center">
-              {curriculum.map(
-                (
-                  chapter: {
-                    title:
-                      | boolean
-                      | React.ReactChild
-                      | React.ReactFragment
-                      | React.ReactPortal
-                      | null
-                      | undefined
-                    _rawBody: any
-                  },
-                  index: React.Key | null | undefined
-                ) => {
-                  return (
-                    <div
-                      key={index}
-                      className="bg-white border-2 border-gray-100 drop-shadow-sm radius3 column-xs-12 column-md-4 column-sm-6"
-                    >
-                      <article className="information [ card ]">
-                        <span className="tag">Module {index + 1}</span>
-                        <h2 className="title">{chapter.title}</h2>
-
-                        {chapter._rawBody && (
-                          <p className="info">
-                            <PortableText blocks={chapter._rawBody} />
-                          </p>
-                        )}
-                      </article>
-                    </div>
-                  )
-                }
-              )}
-            </div>
-          </section>
+          </CurriculumList>
 
           <section className="m-b-135">
-            <h2 className="headline gradient m-b-40">
+            <h2 className="text-3xl mb-5">
               <b>The Author</b>
             </h2>
 
@@ -275,18 +172,6 @@ function ProductPage({
               )}
 
               <div>
-                {/* <div>
-                  <span className="headline">
-                    <b>{author.name}</b>
-                  </span>
-
-                  <p className="headline headline__sml headline--dull">
-                    <i>
-                      Instructor for <b>{title}</b>
-                    </i>
-                  </p>
-                </div> */}
-
                 {author._rawDescription && (
                   <p className="prose prose-xl">
                     <PortableText blocks={author._rawDescription} />

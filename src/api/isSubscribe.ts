@@ -2,8 +2,7 @@ import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 import validator from "validator"
 import jwt from "jsonwebtoken"
 
-// @ts-ignore
-import { querySanity } from "../lib/querySanity.ts"
+import { sanityRequest } from "../lib/sanity/sanityActions"
 
 export default async function handler(
   req: GatsbyFunctionRequest,
@@ -26,10 +25,9 @@ export default async function handler(
         message: "Bad Token",
       }
     }
-
-    let dataQuery = await querySanity(`
-    *[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${decoded.email}']._id]{price->{_id, content}}
-        `)
+    let dataQuery = await sanityRequest(
+      `*[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${decoded.email}']._id]{price->{_id, content}}`
+    )
 
     if (dataQuery[0]?.price?.content?._ref == moduleRef) {
       res.status(200).json({

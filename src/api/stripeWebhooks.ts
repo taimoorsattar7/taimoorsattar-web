@@ -2,7 +2,8 @@ import stripeAPI from "stripe"
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 
 // @ts-ignore
-import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
+// import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
+import { sanityUpdate } from "../lib/sanity/sanityActions"
 
 // const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
@@ -22,7 +23,7 @@ export default async function handler(
 ) {
   try {
     const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {
-      apiVersion: "2020-08-27",
+      apiVersion: "2022-11-15",
     })
     const sig = req.headers["stripe-signature"]
 
@@ -45,20 +46,13 @@ export default async function handler(
         let cancel_at: any = new Date(event?.data?.object.cancel_at * 1000)
         cancel_at = cancel_at.toISOString().split("T")[0]
 
-        await mutateSanity([
-          {
-            patch: {
-              id: event?.data?.object.id,
-              set: {
-                status: event?.data?.object?.status,
-                cancel_at_period_end: event?.data?.object?.cancel_at_period_end,
-                canceled_at: canceled_at,
-                cancel_at: cancel_at,
-                livemode: event?.data?.object?.livemode,
-              },
-            },
-          },
-        ])
+        await sanityUpdate(event?.data?.object.id, {
+          status: event?.data?.object?.status,
+          cancel_at_period_end: event?.data?.object?.cancel_at_period_end,
+          canceled_at: canceled_at,
+          cancel_at: cancel_at,
+          livemode: event?.data?.object?.livemode,
+        })
 
         console.log("customer.subscription.updated Done")
 

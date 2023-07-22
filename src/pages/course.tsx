@@ -6,6 +6,8 @@ import SEO from "@components/seo"
 import { PageProps, Link, graphql } from "gatsby"
 import { GatsbyImage, getImage } from "gatsby-plugin-image"
 
+import Button from "@atom/button/index"
+
 const Books: React.FC<PageProps<any>> = ({ data, location }) => {
   const result = (data.allSanityProduct || {}).edges || []
   // const posts = data.allMarkdownRemark.nodes
@@ -25,7 +27,7 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
           <div className="wrapper wrapper--narrow">
             <div className="m-b-20">
               <header>
-                <h2 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
+                <h2 className="text-5xl font-heading text-center sm:text-left mb-4 font-heading font-semibold">
                   <b>From our Courses</b>
                 </h2>
 
@@ -61,14 +63,26 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
                   <div className="my-4">
                     <p className="text-base">{p?.node?.seo?.excerpt}</p>
 
-                    <button className="w-full py-2 mt-4 text-xl text-white bg-indigo-600 shadow-lg rounded-xl">
+                    <Link
+                      className="text-white no-underline pointer"
+                      to={`/p/${p?.node?.slug?.current}`}
+                    >
+                      <Button
+                        btnSize="large"
+                        btnTheme="filled"
+                        iconRight={"feather"}
+                        textValue="View the course page"
+                      />
+                    </Link>
+
+                    {/* <button className="w-full py-2 mt-4 text-xl text-white bg-indigo-600 shadow-lg rounded-xl">
                       <a
                         className="text-white no-underline pointer"
                         href={`/p/${p?.node?.slug?.current}`}
                       >
                         Go to the course
                       </a>
-                    </button>
+                    </button> */}
                   </div>
                 </div>
               )

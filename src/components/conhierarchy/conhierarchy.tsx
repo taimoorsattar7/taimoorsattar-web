@@ -1,9 +1,11 @@
 import React from "react"
 import { Link } from "gatsby"
 
-import "@components/_headline.scss"
+// import "@components/_headline.scss"
 import "@components/_FAQ.scss"
 import "@components/_wrapper.scss"
+
+import { MenuIcon } from "lucide-react"
 
 const ConHierarchy = ({ nav, slug, main }: any) => {
   const toggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -28,8 +30,8 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
   }
 
   return (
-    <div className="sideBar p-t-25 p-b-10 p-l-10 p-r-10">
-      <h2 className="mb-5 text-4xl">
+    <section>
+      <h2 className="mt-2 mb-2 text-2xl">
         <b>Table of content</b>
       </h2>
       {nav?.map(
@@ -38,7 +40,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
           index: React.Key | null | undefined
         ) => {
           return (
-            <aside key={index} className="sideBarFlex">
+            <aside key={index}>
               <div className="accordion">
                 <button
                   id="accordion-button-1"
@@ -56,21 +58,21 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
                 <div className="accordion-content">
                   {lists?.doc?.map((content, index) => {
                     return (
-                      <div key={index} className="block m-b-15">
+                      <div key={index} className="block mb-1">
                         <Link
                           key={index}
-                          className="no-ul"
+                          className="no-underline"
                           to={`/modules/${main}/${content?.slug?.current}`}
                         >
                           <span
-                            className={`text-base ${
-                              content?.slug?.current === slug && "bold"
+                            className={`text-neutral-900 text-sm ${
+                              content?.slug?.current === slug &&
+                              "text-indigo-500 bold"
                             }`}
                           >
                             {content.title}
                           </span>
                         </Link>
-                        <hr />
                       </div>
                     )
                   })}
@@ -80,7 +82,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
           )
         }
       )}
-    </div>
+    </section>
   )
 }
 

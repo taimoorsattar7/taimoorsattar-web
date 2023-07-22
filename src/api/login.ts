@@ -1,7 +1,8 @@
 import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
 import normalizeEmail from "validator/lib/normalizeEmail"
-// @ts-ignore
-import { getSanityRef } from "../lib/getSanityRef.ts"
+
+import { sanityRequest } from "../lib/sanity/sanityActions"
+
 import jwt from "jsonwebtoken"
 
 export default async function handler(
@@ -15,7 +16,9 @@ export default async function handler(
     if (!email && !password) {
       return res.status(403).send("A token is required for authentication")
     } else {
-      let cusRef = await getSanityRef("customer", "email", email)
+      let cusRef = await sanityRequest(
+        `*[_type =='customer' && email=='${email}']`
+      )
 
       if (cusRef?.length !== 0 && cusRef[0]?.password == password) {
         var token = jwt.sign(
