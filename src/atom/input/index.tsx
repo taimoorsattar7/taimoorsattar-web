@@ -9,15 +9,15 @@ const Input = ({
   placeholder,
   boolautocomplete,
   required,
+  options,
   ...props
 }: any) => {
   return (
     <input
       id={id}
-      {...register(id, { required: required })}
-      register
+      {...register(id, options ? options : {})}
       {...props}
-      className={`text-base mb-1`}
+      className={`${status == "error" ? "border-red-400" : "border-neutral-600"} text-base mb-1`}
       type={type}
       placeholder={placeholder}
       autoComplete={boolautocomplete}

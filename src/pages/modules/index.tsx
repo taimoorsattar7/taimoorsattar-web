@@ -9,6 +9,7 @@ import { isLoggedIn, getCurrentUser } from "@utils/auth"
 import { sanityRequest } from "@lib/sanity/sanityActions"
 
 import Button from "@atom/button/index"
+import HorizontalNavbar from "@atom/horizontal-navbar/index"
 
 const Modules = ({ location }: any) => {
   const [content, setcontent] = useState([])
@@ -40,33 +41,20 @@ const Modules = ({ location }: any) => {
 
       <section className="m-t-25 p-b-35">
         <div className="wrapper wrapper--narrow">
-          <div className="flex items-center justify-center mb-8">
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
-              <button
-                className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                  location.pathname == "/modules"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base border-indigo-500"
-                    : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2  sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-              >
-                <Link className="no-underline" to="/modules">
-                  <span className="mx-1 text-sm sm:text-base"> Modules </span>
-                </Link>
-              </button>
-
-              <button
-                className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                  location.pathname == "/settings"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base border-indigo-500"
-                    : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2  sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-              >
-                <Link className="no-underline" to="/settings">
-                  <span className="mx-1 text-sm sm:text-base"> Settings </span>
-                </Link>
-              </button>
-            </div>
-          </div>
+          <HorizontalNavbar
+            nav={[
+              {
+                title: "Modules",
+                goto: "/modules",
+                state: location.pathname == "/modules" ? "active" : "",
+              },
+              {
+                title: "Settings",
+                goto: "/settings",
+                state: location.pathname == "/settings" ? "active" : "",
+              },
+            ]}
+          />
 
           <h1 className="headline m-b-35">
             <b>Your courses</b>

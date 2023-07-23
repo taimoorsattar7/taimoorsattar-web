@@ -17,7 +17,7 @@ import CurriculumList from "@components/curriculum-list/index"
 // @ts-ignore
 import { getCurrentUser } from "@utils/auth.ts"
 
-const Modal = React.lazy(() => import("@components/modal/Modal"))
+const Modal = React.lazy(() => import("@atom/modal/index"))
 
 import PortableText from "@components/portabletext/portableText"
 import ProductBanner from "@components/product-banner/index"
@@ -41,8 +41,6 @@ function ProductPage({
   curriculum,
 }: any) {
   const isSSR = typeof window === "undefined"
-
-  const avatarImg = getImage(avatar)
 
   let [showModal, setShowModal] = useState(false)
   let [modalState, setModalState] = useState("") //form, success, fail, pending
@@ -181,7 +179,7 @@ function ProductPage({
             </div>
           </section>
         </div>
-
+    
         <div className="wrapper wrapper--narrow">
           <section>
             <h2 className="headline gradient m-b-40">

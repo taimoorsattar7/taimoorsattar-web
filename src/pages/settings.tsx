@@ -2,16 +2,17 @@ import React, { useEffect, useState } from "react"
 
 import Layout from "@components/layout"
 
-import { Link, navigate, PageProps } from "gatsby"
+import { navigate, PageProps } from "gatsby"
 import { isLoggedIn, getCurrentUser } from "@utils/auth"
 import Axios, { AxiosResponse } from "axios"
 import toast, { Toaster } from "react-hot-toast"
 
 import { format, compareAsc } from "date-fns"
-
 import { sanityRequest } from "@lib/sanity/sanityActions"
 
-// import { format, compareAsc } from 'date-fns'
+import LoadingAnima from "@atom/loading-anima/index"
+import Button from "@atom/button/index"
+import HorizontalNavbar from "@atom/horizontal-navbar/index"
 
 const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
   const [subscriptions, setSubscriptions] = useState<any>(null)
@@ -82,51 +83,9 @@ const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
     }
   }
 
-  function isDataLarge(date) {
+  function isDataLarge(date: string | number | Date) {
     let bool = compareAsc(new Date(), new Date(date))
     return bool == -1 ? true : false
-  }
-
-  if (subscriptions == null) {
-    return (
-      <Layout location={location}>
-        <section className="m-t-25 p-b-35">
-          <div className="wrapper wrapper--narrow">
-            <div className="flex items-center justify-center mb-8">
-              <div className="flex border-b border-gray-200 dark:border-gray-700">
-                <button
-                  className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                    location.pathname == "/modules"
-                      ? "text-indigo-600 dark:border-indigo-400 cursor-base"
-                      : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                  }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-                >
-                  <Link className="no-underline" to="/modules">
-                    <span className="mx-1 text-sm sm:text-base"> Modules </span>
-                  </Link>
-                </button>
-
-                <button
-                  className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                    location.pathname == "/settings"
-                      ? "text-indigo-600 dark:border-indigo-400 cursor-base"
-                      : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                  }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-                >
-                  <Link className="no-underline" to="/settings">
-                    <span className="mx-1 text-sm sm:text-base">
-                      {" "}
-                      Settings{" "}
-                    </span>
-                  </Link>
-                </button>
-              </div>
-            </div>
-            <p className="text-base">Please wait your data is loading...</p>
-          </div>
-        </section>
-      </Layout>
-    )
   }
 
   return (
@@ -134,146 +93,133 @@ const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
       <Toaster position="top-center" />
       <section className="m-t-25 p-b-35">
         <div className="wrapper wrapper--narrow">
-          <div className="flex items-center justify-center mb-8">
-            <div className="flex border-b border-gray-200 dark:border-gray-700">
-              <button
-                className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                  location.pathname == "/modules"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base"
-                    : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-              >
-                <Link className="no-underline" to="/modules">
-                  <span className="mx-1 text-sm sm:text-base"> Modules </span>
-                </Link>
-              </button>
+          <HorizontalNavbar
+            nav={[
+              {
+                title: "Modules",
+                goto: "/modules",
+                state: location.pathname == "/modules" ? "active" : "",
+              },
+              {
+                title: "Settings",
+                goto: "/settings",
+                state: location.pathname == "/settings" ? "active" : "",
+              },
+            ]}
+          />
 
-              <button
-                className={`flex items-center h-10 px-2 py-2 -mb-px text-center ${
-                  location.pathname == "/settings"
-                    ? "text-indigo-600 dark:border-indigo-400 cursor-base"
-                    : "border-transparent text-gray-700 dark:text-white hover:border-gray-400"
-                }  bg-transparent border-b-2 border-indigo-500 sm:px-4 -px-1  dark:text-indigo-300 whitespace-nowrap focus:outline-none`}
-              >
-                <Link className="no-underline" to="/settings">
-                  <span className="mx-1 text-sm sm:text-base"> Settings </span>
-                </Link>
-              </button>
-            </div>
-          </div>
+          {subscriptions == null ? (
+            <LoadingAnima />
+          ) : (
+            <>
+              <div className="prose prose-base max-w-fit m-b-20">
+                <p>
+                  For the subscription action, the user has two (2) options as
+                  below:
+                </p>
+                <ul>
+                  <li>
+                    <b>Cancel Subscription:</b> Cancel the subscription at the
+                    end of the period. You'll still be able to view content
+                    before the end of the period.
+                  </li>
 
-          <div className="prose max-w-fit m-b-20">
-            <p>
-              For the subscription action, the user has two (2) options as
-              below:
-            </p>
-            <ul>
-              <li>
-                <b>Cancel Subscription:</b> Cancel the subscription at the end
-                of the period. You'll still be able to view content before the
-                end of the period.
-              </li>
+                  <li>
+                    <b> Resume Subscription:</b>You can resume the subscription
+                    after you cancel the subscription.
+                  </li>
+                </ul>
 
-              <li>
-                <b> Resume Subscription:</b>You can resume the subscription
-                after you cancel the subscription.
-              </li>
-            </ul>
+                <p>
+                  If you have any questions, you can fill out this contact form
+                  or send the email at taimoor@taimoorsattar.dev
+                </p>
 
-            <p>
-              If you have any questions, you can fill out this contact form or
-              send the email at taimoor@taimoorsattar.dev
-            </p>
+                <p>
+                  Below, you can view the list of your subscription for the
+                  course.
+                </p>
+              </div>
+              <div className="flex justify-start flex--wrap flex--align-stretch">
+                {subscriptions?.map((sub: any, index: any) => {
+                  return (
+                    <div
+                      key={index}
+                      className="max-w-xs mx-auto overflow-hidden bg-white rounded-md shadow-lg"
+                    >
+                      <img
+                        className="object-cover w-full h-52"
+                        src={sub?.module?.img?.url}
+                        alt="Hotel Room"
+                      />
+                      <div className="px-6 py-7">
+                        <div className="inline-block px-1 py-1 mb-3 text-sm text-green-500 capitalize border border-gray-300 rounded-md">
+                          Active
+                        </div>
 
-            <p>
-              Below, you can view the list of your subscription for the course.
-            </p>
-          </div>
+                        <div className="text-2xl text-gray-900">
+                          {sub.module.title}
+                        </div>
 
-          {/* {JSON.stringify(subscriptions)} */}
+                        <hr className="mt-3 mb-5" />
 
-          {subscriptions ? (
-            <div className="flex justify-start flex--wrap flex--align-stretch">
-              {subscriptions?.map((sub: any, index: any) => {
-                return (
-                  <div
-                    key={index}
-                    className="max-w-xs mx-auto overflow-hidden bg-white rounded-md shadow-lg"
-                  >
-                    <img
-                      className="object-cover w-full h-52"
-                      src={sub?.module?.img?.url}
-                      alt="Hotel Room"
-                    />
-                    <div className="px-6 py-7">
-                      <div className="inline-block px-1 py-1 mb-3 text-sm text-green-500 capitalize border border-gray-300 rounded-md">
-                        Active
-                      </div>
-
-                      <div className="text-2xl text-gray-900">
-                        {sub.module.title}
-                      </div>
-
-                      <hr className="mt-3 mb-5" />
-
-                      {sub.start_date && (
-                        <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
-                          <b>
-                            Start date{": "}
-                            {format(new Date(sub.start_date), "MM LLL, yyyy")}
-                          </b>
-                        </span>
-                      )}
-
-                      {sub.cancel_at && isDataLarge(sub.cancel_at) && (
-                        <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
-                          <b>
-                            Cancel at{": "}
-                            {format(new Date(sub.cancel_at), "MM LLL, yyyy")}
-                          </b>
-                        </span>
-                      )}
-
-                      <div>
-                        {sub.cancel_at_period_end == true && (
-                          <button
-                            className="px-4 py-2 font-bold text-gray-800 bg-gray-300 rounded hover:bg-gray-400"
-                            onClick={() =>
-                              cancelSubscription({
-                                _id: sub._id,
-                                actionReq: "dont_cancel",
-                                confirmMsg:
-                                  "Do you want to resume the subsciption.",
-                              })
-                            }
-                          >
-                            Resume Subscription
-                          </button>
+                        {sub.start_date && (
+                          <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
+                            <b>
+                              Start date{": "}
+                              {format(new Date(sub.start_date), "MM LLL, yyyy")}
+                            </b>
+                          </span>
                         )}
-                        {sub.cancel_at_period_end == false && (
-                          <button
-                            className="px-4 py-2 text-base text-white uppercase bg-red-700 border-red-800 rounded focus:outline-none hover:shadow hover:bg-red-600"
-                            onClick={() =>
-                              cancelSubscription({
-                                _id: sub._id,
-                                confirmMsg:
-                                  "Do you want to cancel the subsciption at the end of trial period.",
-                              })
-                            }
-                          >
-                            Cancel Subscription
-                          </button>
+
+                        {sub.cancel_at && isDataLarge(sub.cancel_at) && (
+                          <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
+                            <b>
+                              Cancel at{": "}
+                              {format(new Date(sub.cancel_at), "MM LLL, yyyy")}
+                            </b>
+                          </span>
                         )}
+
+                        <div>
+                          {sub.cancel_at_period_end == true && (
+                            <Button
+                              textValue="Resume Subscription"
+                              iconRight="sparkle"
+                              btnSize="med"
+                              btnTheme="outline"
+                              onClickHandler={() => {
+                                cancelSubscription({
+                                  _id: sub._id,
+                                  actionReq: "dont_cancel",
+                                  confirmMsg:
+                                    "Do you want to resume the subsciption.",
+                                })
+                              }}
+                            />
+                          )}
+                          {sub.cancel_at_period_end == false && (
+                            <Button
+                              textValue="Cancel Subscription"
+                              iconRight="wallet"
+                              btnSize="med"
+                              btnTheme="indigo"
+                              onClickHandler={() => {
+                                cancelSubscription({
+                                  _id: sub._id,
+                                  confirmMsg:
+                                    "Do you want to cancel the subsciption at the end of trial period.",
+                                })
+                              }}
+                            />
+                          )}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="headline headline__text">
-              Please wait while we are loading your data
-            </div>
+                  )
+                })}
+              </div>
+            </>
           )}
         </div>
       </section>

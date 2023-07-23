@@ -3,7 +3,7 @@ import PropTypes from "prop-types"
 
 import Input from "@atom/input/index"
 
-const InputField = ({
+const InputField: any = ({
   labelText,
   register,
   id,
@@ -14,6 +14,7 @@ const InputField = ({
   placeholder,
   boolautocomplete,
   required,
+  options,
   ...props
 }: any) => {
   return (
@@ -21,8 +22,8 @@ const InputField = ({
       <label
         className={`text-base mb-1
       ${status == "normal" ? "text-neutral-600" : ""}
-      ${status == "success" ? "text-red-600" : ""}
-      ${status == "error" ? "text-green-600" : ""}
+      ${status == "success" ? "text-green-400" : ""}
+      ${status == "error" ? "text-red-400" : ""}
       `}
         htmlFor={id}
       >
@@ -32,8 +33,10 @@ const InputField = ({
       <Input
         {...props}
         register={register}
+        options={options}
         id={id}
         type={type}
+        status={status}
         placeholder={placeholder}
         autoComplete={boolautocomplete}
         required={required}
@@ -43,8 +46,8 @@ const InputField = ({
         <p
           className={`text-base mb-1 mt-1
           ${status == "normal" ? "text-neutral-600" : ""}
-          ${status == "success" ? "text-red-600" : ""}
-          ${status == "error" ? "text-green-600" : ""}
+          ${status == "success" ? "text-green-400" : ""}
+          ${status == "error" ? "text-red-400" : ""}
       `}
         >
           {message}

@@ -36,7 +36,7 @@ const ProductBanner: FunctionComponent = (props: any) => {
             <section className="mw600 mx-auto md_max_width_full">
               <h1
                 title={title}
-                className="text-5xl text-center md_text_center mt-3 mb-3 gradient"
+                className="text-3xl sm::text-4xl lg:text-5xl text-center md_text_center mt-3 mb-3 gradient"
               >
                 <b>{title}</b>
               </h1>
@@ -48,7 +48,9 @@ const ProductBanner: FunctionComponent = (props: any) => {
                   hidden: { opacity: 0, y: 100 },
                 }}
               >
-                <div className="mb-6 prose prose-xl text-center">{text}</div>
+                <div className="mb-6 prose prose-base sm:prose-xl lg:prose-xl text-center">
+                  {text}
+                </div>
               </AnimateOnScroll>
             </section>
 

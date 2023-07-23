@@ -13,7 +13,7 @@ const Bio: FunctionComponent = ({ data }: any) => {
     <div className="relative w-full flex flex-col items-center justify-between text-black">
       <div className="w-full flex flex-col md:flex-row flex-wrap items-center justify-start gap-11">
         <section className="flex-1">
-          <div className="w-96">
+          <div className="w-full max-w-5xl">
             <span className="w-full">
               <AnimateOnScroll
                 BoxVariants={{

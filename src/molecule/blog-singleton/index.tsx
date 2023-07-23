@@ -25,7 +25,7 @@ const BlogSingleton = ({
       <Link
         to={slug}
         itemProp="url"
-        className="no-underline h-full hover:shadow-[0px_1px_1px_rgba(0,_0,_0,_0.5)_inset] rounded bg-white box-border w-72 flex flex-1 flex-col p-3 items-start justify-start gap-[0.75rem] border-[1px] border-solid border-gray text-stone-900"
+        className="no-underline h-full hover:shadow-[0px_1px_1px_rgba(0,_0,_0,_0.5)_inset] rounded bg-white box-border max-w-full w-72 flex flex-1 flex-col p-3 items-start justify-start gap-4 border-1 border-solid border-gray text-stone-900"
       >
         <Avatar />
         <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem] text-[1.5rem]">

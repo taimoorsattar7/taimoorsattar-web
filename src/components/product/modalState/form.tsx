@@ -3,6 +3,8 @@ import toast, { Toaster } from "react-hot-toast"
 import axios, { AxiosResponse } from "axios"
 import { useForm } from "react-hook-form"
 
+import Button from "@atom/button/index"
+
 // import { navigate } from "gatsby"
 
 import removeParams from "@lib/removeParams"
@@ -10,7 +12,7 @@ import removeTrailing from "@lib/removeTrailing"
 
 import PortableText from "@components/portabletext/portableText"
 
-import LoadingIcon from "@components/icons/loading/LoadingIcon"
+import InputField from "@molecule/input-field/index"
 
 import "@styles/_field.scss"
 
@@ -36,7 +38,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
     register,
     handleSubmit,
     watch,
-    // formState: { errors },
+    formState: { errors },
   } = useForm()
 
   useEffect(() => {
@@ -80,7 +82,11 @@ const Form = ({ productPrice, location, onModalState }: any) => {
     } catch (error) {}
   }
 
-  async function yesSubmit(data: { name: any; price: any; email: any }) {
+  async function yesSubmit(data: {
+    name: any
+    price: any
+    email: any
+  }): Promise<void> {
     setDisable(true)
 
     try {
@@ -126,43 +132,41 @@ const Form = ({ productPrice, location, onModalState }: any) => {
   return (
     <>
       <Toaster position="top-center" />
-      <form className="field" onSubmit={handleSubmit(yesSubmit)}>
-        <div className="field--gap">
-          <label
-            className="headline headline__sml headline--white field__label"
-            htmlFor="name"
-          >
-            Name
-          </label>
+      <form
+        className="field"
+        onSubmit={handleSubmit((evt: any) => yesSubmit(evt))}
+      >
+        <InputField
+          register={register}
+          aria-invalid={errors.name ? "true" : "false"}
+          id="name"
+          labelText="Please enter your Name"
+          message={errors?.name ? "Please correct this field" : ""}
+          status={errors?.name ? "error" : "normal"}
+          type="text"
+          placeholder="Your Name"
+          options={{
+            required: true,
+            maxLength: 50,
+          }}
+          required={true}
+        />
 
-          <input
-            {...register("name", { required: true })}
-            className="headline headline__text field__input"
-            type="text"
-            placeholder="Enter your name here..."
-            autoComplete="on"
-            required
-          />
-        </div>
-        <div className="field--gap">
-          <label
-            className="headline headline__sml headline--white field__label"
-            htmlFor="email"
-          >
-            Email
-          </label>
+        <InputField
+          register={register}
+          aria-invalid={errors.email ? "true" : "false"}
+          id="email"
+          labelText="Type your Email"
+          message={errors?.email ? "Please correct this field" : ""}
+          status={errors?.email ? "error" : "normal"}
+          type="email"
+          placeholder="yours@email.com"
+          options={{ required: true }}
+          required={true}
+        />
 
-          <input
-            {...register("email", { required: true })}
-            className="headline headline__text field__input"
-            type="email"
-            placeholder="example@email.com"
-            autoComplete="on"
-            required
-          />
-        </div>
         <div className="m-b-25">
-          <fieldset>
+          <fieldset className="m-0 p-0 border-2 border-indigo-500">
             <legend className="sr-only">Select the plan</legend>
             <div className="-space-y-px bg-white rounded-md">
               {productPrice?.plans.map(
@@ -170,7 +174,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                   return (
                     <div
                       key={index}
-                      className={`relative border p-4 flex flex--items-center flex--justify-start ${
+                      className={`border p-4 flex flex--items-center flex--justify-start ${
                         watch("price") ==
                         (buildMeta.devstatus == "development"
                           ? prc.priceID_test
@@ -183,7 +187,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                           : "border border-gray-200"
                       } z-10`}
                     >
-                      <div className="flex items-center h-5">
+                      <div className="flex items-center">
                         <input
                           id={prc.keyword}
                           {...register("price")}
@@ -193,7 +197,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                               : prc.priceID
                           }
                           type="radio"
-                          className={`h-4 w-4 text-indigo-600 ${
+                          className={`text-indigo-600 ${
                             watch("price") == "" ||
                             watch("price") ==
                               (buildMeta.devstatus == "development"
@@ -213,7 +217,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                         className="ml-3 cursor-pointer"
                       >
                         <span
-                          className={`block text-sm font-medium  ${
+                          className={`m-0 p-0 block text-sm font-medium  ${
                             watch("price") ==
                             (buildMeta.devstatus == "development"
                               ? prc.priceID_test
@@ -234,7 +238,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                           {"month"} */}
                         </span>
                         <span
-                          className={`block text-sm ${
+                          className={`block text-sm m-0 p-0 ${
                             watch("price") ==
                             (buildMeta.devstatus == "development"
                               ? prc.priceID_test
@@ -257,7 +261,25 @@ const Form = ({ productPrice, location, onModalState }: any) => {
             </div>
           </fieldset>
         </div>
-        <button className={"btn btn__curv"} disabled={disable ? true : false}>
+        <Button
+          textValue={
+            !watch("price") ? (
+              <i id="free-course-check">Open House Content</i>
+            ) : (
+              <i id="proceed-checkout">Proceed to checkout</i>
+            )
+          }
+          type="submit"
+          disabled={disable ? true : false}
+          iconRight={!watch("price") ? "backpack" : "walletcards"}
+          btnSize="med"
+          btnTheme="indigo"
+          // onClickHandler={() => {
+          //   setModalState("form")
+          //   setShowModal(true)
+          // }}
+        />
+        {/* <button className={"btn btn__curv"} disabled={disable ? true : false}>
           <div className="flex flex--items-center">
             {disable == true && (
               <span className="in-block m-r-5 w25 h25">
@@ -266,16 +288,10 @@ const Form = ({ productPrice, location, onModalState }: any) => {
             )}
 
             <span className="headline headline__text headline--white headline--uppercase">
-              <b>
-                {!watch("price") ? (
-                  <i id="free-course-check">Open House Content →</i>
-                ) : (
-                  <i id="proceed-checkout">Proceed to checkout 💳 →</i>
-                )}
-              </b>
+              <b></b>
             </span>
           </div>
-        </button>
+        </button> */}
       </form>
     </>
   )

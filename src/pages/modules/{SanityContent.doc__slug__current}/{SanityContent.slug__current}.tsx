@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from "react"
+import React from "react"
 import { graphql } from "gatsby"
-
+import { LockIcon } from "lucide-react"
 import { useQuery } from "react-query"
 
 // import Axios, { AxiosResponse } from "axios"
 
 import SidebarLayout1 from "@components/sidebarLayout1/index"
-
-import { getCurrentUser } from "@utils/auth.ts"
+import { getCurrentUser } from "@utils/auth"
 
 import SEO from "@components/seo"
 
 import PortableText from "@components/portabletext/portableText"
-
 import ConHierarchy from "@components/conhierarchy/conhierarchy"
 
-import { LockIcon } from "lucide-react"
+import LoadingAnima from "@atom/loading-anima/index"
 
 // data
 // location
@@ -100,7 +98,6 @@ const Content = ({
                 <b>{sanityContent?.title}</b>
               </h1>
             </header>
-
             {/* {featureImg && (
             <GatsbyImage
               className="w-full h-auto mb-5"
@@ -108,7 +105,6 @@ const Content = ({
               alt={"heading"}
             />
           )} */}
-
             {sanityContent.plan == "Basic" || data?.is == true ? (
               <div className="w-full prose-base">
                 {sanityContent._rawBody && (
@@ -117,25 +113,7 @@ const Content = ({
               </div>
             ) : isLoading ? (
               <div className="m-t-25">
-                <div className="flex w-full h-full">
-                  <div className="flex justify-center space-x-1 text-sm text-gray-700 flex--items-center">
-                    <svg
-                      fill="none"
-                      className="w-6 h-6 animate-spin"
-                      viewBox="0 0 32 32"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M15.165 8.53a.5.5 0 01-.404.58A7 7 0 1023 16a.5.5 0 011 0 8 8 0 11-9.416-7.874.5.5 0 01.58.404z"
-                        fill="currentColor"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-
-                    <div>Loading ...</div>
-                  </div>
-                </div>
+                <LoadingAnima />
 
                 <div className="w-full m-5 prose prose-xl blur-sm hidden">
                   {sanityContent._rawBody && (

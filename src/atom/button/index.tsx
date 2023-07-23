@@ -1,5 +1,4 @@
 import * as React from "react"
-import { FunctionComponent } from "react"
 import PropTypes from "prop-types"
 import {
   SendIcon,
@@ -11,12 +10,27 @@ import {
   KeySquareIcon,
   PowerIcon,
   FeatherIcon,
+  WalletIcon,
+  PinIcon,
+  CopyXIcon,
+  WalletCards,
+  BackpackIcon,
 } from "lucide-react"
 
 // import SendIcon from "../../images/icons/send-white-icon.png"
 
 const Icons = ({ iconName, className }: any) => {
   switch (iconName) {
+    case "backpack":
+      return <BackpackIcon className={className} />
+    case "walletcards":
+      return <WalletCards className={className} />
+    case "copyx":
+      return <CopyXIcon className={className} />
+    case "pin":
+      return <PinIcon className={className} />
+    case "wallet":
+      return <WalletIcon className={className} />
     case "keysquare":
       return <KeySquareIcon className={className} />
     case "feather":
@@ -38,7 +52,7 @@ const Icons = ({ iconName, className }: any) => {
   }
 }
 
-const Button: FunctionComponent = (props: any) => {
+const Button: any = (props: any) => {
   const {
     type,
     btnSize,
@@ -89,7 +103,9 @@ const Button: FunctionComponent = (props: any) => {
       type={type}
       onClick={event => onClickHandler(event)}
       disabled={disabled}
-      className={`${className} ${" "} ${getButtonClasses()}`}
+      className={`${className} ${" "} ${
+        disabled ? "cursor-not-allowed opacity-50" : ""
+      }  ${getButtonClasses()}`}
     >
       {iconLeft && (
         <Icons

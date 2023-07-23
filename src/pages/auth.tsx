@@ -4,7 +4,7 @@ import toast, { Toaster } from "react-hot-toast"
 import { navigate, Link } from "gatsby"
 import { useForm } from "react-hook-form"
 
-import { handleLogin, isLoggedIn } from "@utils/auth.ts"
+import { handleLogin, isLoggedIn } from "@utils/auth"
 import Layout from "@components/layout"
 import SEO from "@components/seo"
 import Button from "@atom/button/index"

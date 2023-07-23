@@ -67,7 +67,7 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
         </BlogList>
         
         <section className="mt-8 mb-8 text-center">
-          <SubstackEmbed />
+          <SubstackEmbed className="max-w-full" />
         </section>
 
         <section className="w-full flex flex-col items-center justify-center gap-2 text-center mt-6 mb-14">
