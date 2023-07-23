@@ -107,9 +107,9 @@ function ProductPage({
                 className="flex flex-wrap justify-center xl:justify-between items-center gap-10 sm:gap-5 md:gap-3"
                 data-path="0.0.1.0"
               >
-                {techs.map(
+                {techs?.map(
                   (
-                    tech: { logo: { asset: ImageDataLike } },
+                    tech: { logo: { asset: any } },
                     index: React.Key | null | undefined
                   ) => {
                     return (
@@ -172,9 +172,9 @@ function ProductPage({
               )}
 
               <div>
-                {author._rawDescription && (
+                {author?._rawDescription && (
                   <p className="prose prose-xl">
-                    <PortableText blocks={author._rawDescription} />
+                    <PortableText blocks={author?._rawDescription} />
                   </p>
                 )}
               </div>
@@ -190,7 +190,7 @@ function ProductPage({
             <FAQ FAQ={faqs} />
           </section>
 
-          {testimonials.length !== 0 && (
+          {testimonials && testimonials?.length !== 0 && (
             <section>
               <h2 className="headline gradient m-b-40">
                 <b>What people says?</b>

@@ -22,7 +22,7 @@ const Footer = (props: { FAQ: any }) => {
   return (
     <div className="wrapper margin-b-large">
       <div className="accordion">
-        {FAQ.map((item: any, index: number) => (
+        {FAQ?.map((item: any, index: number) => (
           <div key={index} className="accordion-item">
             <button
               id="accordion-button-1"

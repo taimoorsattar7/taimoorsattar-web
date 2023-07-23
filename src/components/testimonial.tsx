@@ -9,7 +9,7 @@ const Testimonial = (props: { testimonial: any }) => {
   return (
     <>
       <div className="flex">
-        {testimonials.map((item: any, index: number) => (
+        {testimonials?.map((item: any, index: number) => (
           <figure key={index} className="testimonial">
             <div className="author">
               <h5>

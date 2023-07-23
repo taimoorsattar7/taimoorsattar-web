@@ -10,7 +10,7 @@ const CurriculumList = ({ children, curriculum }: any) => {
     <Container>
       {children}
       <FlexLayout>
-        {curriculum.map(
+        {curriculum?.map(
           (
             chapter: {
               title:
