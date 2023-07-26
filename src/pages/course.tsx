@@ -27,11 +27,11 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
           <div className="wrapper wrapper--narrow">
             <div className="m-b-20">
               <header>
-                <h2 className="text-5xl font-heading text-center sm:text-left mb-4 font-heading font-semibold">
+                <h2 className="text-5xl mb-1 text-center sm:text-left">
                   <b>From our Courses</b>
                 </h2>
 
-                <p className="text-lg text-gray-500">
+                <p className="text-base text-gray-500">
                   You can find blogs related to website development such as
                   HTML, CSS, Javascript, React Gatsbyjs, etc
                 </p>
@@ -43,11 +43,8 @@ const Books: React.FC<PageProps<any>> = ({ data, location }) => {
               return (
                 <div
                   key={index}
-                  className="max-w-sm px-6 pt-6 pb-2 transition duration-500 transform bg-white shadow-lg rounded-xl hover:scale-105"
+                  className="max-w-sm px-6 pt-2 pb-2 transition duration-500 transform bg-white shadow-lg rounded-xl hover:scale-105"
                 >
-                  <h3 className="mb-3 text-xl font-bold text-indigo-600">
-                    Intermediate
-                  </h3>
                   <div className="relative">
                     {featureImg && (
                       <GatsbyImage

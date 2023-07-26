@@ -25,7 +25,7 @@ const Footer = (props: { FAQ: any }) => {
         {FAQ?.map((item: any, index: number) => (
           <div key={index} className="accordion-item">
             <button
-              id="accordion-button-1"
+              id={`accordion-button-${index}`}
               aria-expanded="true"
               onClick={e => toggle(e)}
             >

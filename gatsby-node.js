@@ -179,6 +179,7 @@ exports.onCreateWebpackConfig = ({ actions }) => {
         fs: false,
       },
       alias: {
+        "@primitives": path.resolve(__dirname, "src/primitives"),
         "@atom": path.resolve(__dirname, "src/atom"),
         "@molecule": path.resolve(__dirname, "src/molecule"),
         "@components": path.resolve(__dirname, "src/components"),

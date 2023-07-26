@@ -44,8 +44,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="m-t-25 m-b-35">
-      <div className="wrapper wrapper--narrow">
+    <section>
         <header>
           <h1 className="mb-4 font-heading font-semibold text-gray-900 text-6xl sm:text-7xl">
             <b>Contact Form</b>
@@ -124,7 +123,7 @@ export default function Contact() {
             </button>
           </div>
         </form>
-      </div>
+
     </section>
   )
 }

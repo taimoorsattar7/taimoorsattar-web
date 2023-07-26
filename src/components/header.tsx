@@ -1,14 +1,10 @@
 import React, { useState, useEffect } from "react"
 import { Link, navigate } from "gatsby"
 
-import {
-  getCurrentUser,
-  logout,
-  isLoggedIn,
-  cVerifyToken,
-} from "@utils/auth.ts"
+import { getCurrentUser, logout, isLoggedIn, cVerifyToken } from "@utils/auth"
 
 import Button from "@atom/button/index"
+// import { StaticImage } from "gatsby-plugin-image"
 
 import queryString from "query-string"
 
@@ -19,16 +15,35 @@ import "@components/_primary-nav.scss"
 
 import logo from "../images/logo.svg"
 
-import about from "../images/about-icon.svg"
-import blogs from "../images/blogs-icon.svg"
-import contact from "../images/contact-icon.svg"
+// import about from "../images/about-icon.svg"
+// import blogs from "../images/blogs-icon.svg"
+// import contact from "../images/contact-icon.svg"
 
-import { ContactIcon, TypeIcon, HomeIcon } from "lucide-react"
+// import { ContactIcon, TypeIcon, HomeIcon } from "lucide-react"
 
 const Header = ({ location }: any) => {
   const [hamBurger, handleHamBurger] = useState(false)
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [usr, setUsr] = useState<any>(null)
+
+  let Breadcrumbs = [
+    {
+      title: "About",
+      goto: "/about",
+    },
+    {
+      title: "Blogs",
+      goto: "/blogs",
+    },
+    {
+      title: "Course",
+      goto: "/course",
+    },
+    {
+      title: "Contact",
+      goto: "/contact",
+    },
+  ]
 
   function handleLogout() {
     logout(navigate("/auth"))
@@ -56,6 +71,13 @@ const Header = ({ location }: any) => {
           <div className="flex flex--wrap justify-between gap-5 flex--items-center">
             <span className="headline headline--logo">
               <Link to="/?from=header">
+                {/* <StaticImage
+                  src="../images/logo.svg"
+                  className="inline-block w-24 h-24 object-cover"
+                  alt="Logo"
+                  placeholder="blurred"
+                  layout="fixed"
+                /> */}
                 <img
                   className="site-header__logo"
                   src={logo}
@@ -75,34 +97,22 @@ const Header = ({ location }: any) => {
                   (!hamBurger ? " primary-nav--vanish" : "")
                 }
               >
-                <ul>
-                  <li className="text-base">
-                    <Link to="/about?from=header">
-                      <img src={about} alt="Taimoor Sattar" />
-                      <span title={"About"}>About</span>
-                    </Link>
-                  </li>
-
-                  <li className="text-base">
-                    <Link to="/blogs?from=header">
-                      <img src={blogs} alt="Taimoor Sattar" />
-                      <span title={"Blogs"}>Blogs</span>
-                    </Link>
-                  </li>
-
-                  <li className="text-base">
-                    <Link to="/course?from=header">
-                      <img src={blogs} alt="Taimoor Sattar" />
-                      <span title={"Course"}>Course</span>
-                    </Link>
-                  </li>
-
-                  <li className="text-base">
-                    <Link to="/contact?from=header">
-                      <img src={contact} alt="Taimoor Sattar" />
-                      <span title={"Contact"}>Contact</span>
-                    </Link>
-                  </li>
+                <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                  {Breadcrumbs.map((item: any, index: any) => {
+                    return (
+                      <li
+                        key={index}
+                        property="itemListElement"
+                        typeof="ListItem"
+                        className="text-base"
+                      >
+                        <Link to={item.goto}>
+                          <span title={item.title}>{item.title}</span>
+                          <meta property="position" content={String(index)} />
+                        </Link>
+                      </li>
+                    )
+                  })}
                 </ul>
               </nav>
             </div>

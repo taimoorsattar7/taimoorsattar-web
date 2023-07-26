@@ -1,5 +1,5 @@
 import * as React from "react"
-import { FunctionComponent } from "react"
+// import { FunctionComponent } from "react"
 
 import Avatar from "@atom/avatar/index"
 import Button from "@atom/button/index"
@@ -8,7 +8,7 @@ import AnimateOnScroll from "@atom/animate-on-scroll/index"
 
 import { Link } from "gatsby"
 
-const ProductBanner: FunctionComponent = (props: any) => {
+const ProductBanner: any = (props: any) => {
   let bgImage = props.bgImage,
     title = props.title,
     text = props.text,
@@ -19,9 +19,7 @@ const ProductBanner: FunctionComponent = (props: any) => {
     vidPoster = props.vidPoster
 
   return (
-    <section
-    // className="m-t-25 m-b-35"
-    >
+    <section typeof="Course">
       <div
         className="m-3 bg-light-grey p-t-10 p-b-10 radius10"
         style={{
@@ -38,7 +36,7 @@ const ProductBanner: FunctionComponent = (props: any) => {
                 title={title}
                 className="text-3xl sm::text-4xl lg:text-5xl text-center md_text_center mt-3 mb-3 gradient"
               >
-                <b>{title}</b>
+                <b property="name">{title}</b>
               </h1>
 
               <AnimateOnScroll

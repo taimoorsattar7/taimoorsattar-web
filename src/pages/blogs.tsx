@@ -1,9 +1,9 @@
 import React from "react"
-import { Link, graphql } from "gatsby"
-import SEO from "@components/seo"
+import { graphql } from "gatsby"
 // import { GatsbyImage } from "gatsby-plugin-image"
 import BlogList from "@components/blog-list/index"
 import Container from "@atom/container/index"
+import SEOHead from "@atom/seo-head/index"
 
 // Container
 
@@ -14,13 +14,6 @@ const Blogs = ({ data, location }: any) => {
 
   return (
     <Layout location={location}>
-      <SEO
-        location={location}
-        title={"Blogs about web programming - Taimoor Sattar"}
-        description={
-          "You can find blogs related to web programming such as HTML, CSS, Javascript, React Gatsbyjs, etc"
-        }
-      />
       <Container>
         <BlogList posts={posts}>
           <header className="mb-6">
@@ -40,6 +33,18 @@ const Blogs = ({ data, location }: any) => {
 }
 
 export default Blogs
+
+export const Head = ({ location, params, data, pageContext }: any) => (
+  <>
+    <SEOHead
+      location={location}
+      title={"Blogs about web programming - Taimoor Sattar"}
+      description={
+        "You can find blogs related to web programming such as HTML, CSS, Javascript, React Gatsbyjs, etc"
+      }
+    />
+  </>
+)
 
 export const query = graphql`
   {

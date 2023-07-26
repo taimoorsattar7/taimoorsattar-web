@@ -36,22 +36,43 @@ const HeadSEO = ({
   }
 
   const blog_schema = {
-    "@context": "http://schema.org",
-    "@type": "BlogPosting",
-    headline: defaultTitle,
-    description: metaDescription,
-    thumbnailUrl: metaImage,
-    datePublished: date,
-    dateModified: date,
-    image: metaImage,
-    publisher: [
-      {
-        "@type": "Person",
-        name: "Taimoor Sattar",
-      },
-    ],
-    mainEntityOfPage: metaCanonical,
-  }
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": metaCanonical
+  },
+  "headline": defaultTitle,
+  "description": metaDescription,
+  "image": metaImage,  
+  thumbnailUrl: metaImage,
+  "author": {
+    "@type": "Person",
+    "name": "Taimoor Sattar",
+    "url": "https://taimoorsattar.com"
+  },
+  "datePublished": "2023-07-18",
+  "dateModified": "2023-07-28"
+}
+
+
+  // const blog_schema = {
+  //   "@context": "http://schema.org",
+  //   "@type": "BlogPosting",
+  //   headline: defaultTitle,
+  //   description: metaDescription,
+  //   thumbnailUrl: metaImage,
+  //   datePublished: date,
+  //   dateModified: date,
+  //   image: metaImage,
+  //   publisher: [
+  //     {
+  //       "@type": "Person",
+  //       name: "Taimoor Sattar",
+  //     },
+  //   ],
+  //   mainEntityOfPage: metaCanonical,
+  // }
 
   const book_schema = {
     "@context": "http://schema.org/",

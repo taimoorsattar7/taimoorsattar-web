@@ -1,9 +1,9 @@
 import React from "react"
 
 import Layout from "@components/layout"
-import SEO from "@components/seo"
 
 import ProductPage from "@components/product/ProductPage"
+import SEOHead from "@atom/seo-head/index"
 
 import { graphql } from "gatsby"
 import "@styles/_img.scss"
@@ -15,14 +15,14 @@ const ProductPost = ({ data, location, pageContext }: any) => {
 
   return (
     <Layout location={location}>
-      <SEO
+      {/* <SEO
         location={location}
         title={product?.seo?.title ?? product.title}
         description={product?.seo?.excerpt}
         image={product?.seo?.image?.asset?.url}
         schemaType={"course"}
-      />
-
+      /> */}
+ 
       {product && (
         <ProductPage location={location} avatar={data.avatar} {...product} />
       )}
@@ -31,6 +31,23 @@ const ProductPost = ({ data, location, pageContext }: any) => {
 }
 
 export default ProductPost
+
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <>
+    <SEOHead
+      title={data?.sanityProduct?.seo?.title ?? data?.sanityProduct?.title}
+      description={data?.sanityProduct?.seo?.excerpt}
+      location={location}
+      image={data?.sanityProduct?.seo?.image?.asset?.url}
+      schemaType={"course"}
+    />
+  </>
+)
 
 export const query = graphql`
   query SanityQery($id: String) {

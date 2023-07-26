@@ -2,9 +2,16 @@ import React from "react"
 import { graphql } from "gatsby"
 
 import BlogPage from "@components/blog/BlogPage"
+import SEOHead from "@atom/seo-head/index"
+
+import Container from "@primitives/container/container"
 
 import Layout from "@components/layout"
-import SEO from "@components/seo"
+// import CTA from "@atom/cta/index"
+import ShareSocial from "@atom/share-social/index"
+// import BioDetail from "@atom/bio-detail/index"
+
+// import BioDetail from "@atom/bio-detail/index"
 
 // data
 // location
@@ -16,30 +23,79 @@ import SEO from "@components/seo"
 // serverData
 // uri
 
-const BlogPostTemplate = ({ data, location }: any) => {
-  const post = data.markdownRemark
-  let featureImg = post.frontmatter?.featuredimage
-
+const BlogPostTemplate = ({
+  data,
+  location,
+}: // params, pageContext
+any) => {
   return (
     <Layout location={location}>
-      <SEO
-        title={post?.frontmatter?.title}
-        description={post?.frontmatter?.exerpt || post?.excerpt}
-        location={location}
-        image={
-          featureImg?.publicURL
-            ? `https://taimoorsattar.com${featureImg?.publicURL}`
-            : ""
-        }
-        schemaType={"blog"}
-      />
+      <Container>
+        <BlogPage data={data} />
 
-      <BlogPage data={data} />
+        <ShareSocial
+          data={[
+            {
+              url: location?.href,
+              name: "facebook",
+              title: data?.markdownRemark?.frontmatter?.title,
+            },
+            {
+              url: location?.href,
+              name: "twitter",
+              title: data?.markdownRemark?.frontmatter?.title,
+            },
+            {
+              url: location?.href,
+              name: "linkedin",
+              title: data?.markdownRemark?.frontmatter?.title,
+            },
+          ]}
+        />
+
+        {/* <CTA
+          keyword="Course"
+          pitch="Gatsby is the React-based framework to build static and
+        dynamic websites. In this course, we'll build a subscription
+        platform using Gatsby, Sanity, and Stripe."
+          goto="/p/build-standout-website"
+        /> */}
+      </Container>
     </Layout>
   )
 }
 
 export default BlogPostTemplate
+
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <>
+    <SEOHead
+      title={data?.markdownRemark?.frontmatter?.title}
+      description={
+        data?.markdownRemark?.frontmatter?.exerpt ||
+        data?.markdownRemark?.excerpt
+      }
+      location={location}
+      image={
+        data?.markdownRemark?.frontmatter?.featuredimage?.publicURL
+          ? `https://taimoorsattar.com${data?.markdownRemark?.frontmatter?.featuredimage?.publicURL}`
+          : ""
+      }
+      schemaType={"blog"}
+      datePublished={data?.markdownRemark?.frontmatter?.date}
+      dateModified={
+        data?.markdownRemark?.frontmatter?.date
+          ? data?.markdownRemark?.frontmatter?.date
+          : data?.markdownRemark?.frontmatter?.dateModified
+      }
+    />
+  </>
+)
 
 export const pageQuery = graphql`
   query BlogPostBySlug($id: String!) {
@@ -81,7 +137,8 @@ export const pageQuery = graphql`
       }
       frontmatter {
         title
-        date(formatString: "MMMM DD, YYYY")
+        date(formatString: "YYYY-MM-DD")
+        dateModified(formatString: "YYYY-MM-DD")
         description
         featuredimage {
           publicURL

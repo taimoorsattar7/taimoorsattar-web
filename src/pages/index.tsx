@@ -65,7 +65,7 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
             </Link>
           </header>
         </BlogList>
-        
+
         <section className="mt-8 mb-8 text-center">
           <SubstackEmbed className="max-w-full" />
         </section>
@@ -89,6 +89,17 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
 }
 
 export default BlogIndex
+
+// export const Head = ({ location, params, data, pageContext }: any) => (
+//   <>
+//     <title>{pageContext.title}</title>
+//     <meta name="description" content={data.page.description} />
+//     <meta
+//       name="twitter:url"
+//       content={`https://www.foobar.tld/${location.pathname}`}
+//     />
+//   </>
+// )
 
 export const pageQuery = graphql`
   query {

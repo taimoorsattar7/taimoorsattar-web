@@ -31,9 +31,20 @@ module.exports = {
     },
     description: `I'm Taimoor Sattar, a full-stack developer, experience to develop websites in React/JavaScript, Node, and HTML/CSS.`,
     siteUrl: `https://taimoorsattar.com`,
-    social: {
-      twitter: `taimoorsattar7`,
-    },
+    social: [
+      {
+        socialApp: "linkedin",
+        url: "https://www.linkedin.com/in/taimoorsattar",
+      },
+      {
+        socialApp: "twitter",
+        url: "https://twitter.com/taimoorsattar7",
+      },
+      {
+        socialApp: "tiktok",
+        url: "https://www.tiktok.com/@taimoornotes",
+      },
+    ],
     devstatus: process.env.NODE_ENV,
   },
   plugins: [
@@ -168,12 +179,6 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: `UA-69828471-5`,
-      },
-    },
     {
       resolve: `gatsby-plugin-feed`,
       options: {

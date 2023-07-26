@@ -3,6 +3,7 @@ title: How to use Promise in JavaScript
 description: Promise in JavaScript is the way to wait for certain action to
   process or complete.
 date: 2021-06-09T02:24:53.001Z
+dateModified: 2021-06-09T02:24:53.001Z
 tags:
   - javascript
   - promise

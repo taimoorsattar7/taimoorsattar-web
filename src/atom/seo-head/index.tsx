@@ -1,30 +1,32 @@
 import React from "react"
 import PropTypes from "prop-types"
-import { Helmet } from "react-helmet"
 import removeParams from "@lib/removeParams"
 import removeTrailing from "@lib/removeTrailing"
 
-// @ts-ignore
-import { useSiteMetadata } from "../hooks/use-site-metadata.tsx"
+import { useSiteMetadata } from "@hooks/use-site-metadata"
 
-const SEO = ({
+const SEOHead = ({
   location,
   description,
   title,
   image,
-
-  datePublished,
-  dateModified,
   schemaType,
   lang,
+  datePublished,
+  dateModified,
 }: any) => {
   let buildMeta = useSiteMetadata()
 
+  const metaOrigin = buildMeta?.siteUrl
+
   const metaCanonical = removeTrailing(
-    removeParams(location?.href || buildMeta?.siteUrl)
+    removeParams(
+      location?.pathname
+        ? `${metaOrigin}${location?.pathname}`
+        : buildMeta?.siteUrl
+    )
   )
 
-  const metaOrigin = location?.origin || buildMeta?.siteUrl
   const defaultTitle = title || buildMeta?.title
   const metaDescription = description || buildMeta?.description
   const metaImage = image ? image : `${metaOrigin}/banner.jpg`
@@ -35,32 +37,44 @@ const SEO = ({
     gender: "http://schema.org/Male",
     name: "Taimoor Sattar",
     image: image ? image : "",
-    url: metaOrigin,
+    url: metaCanonical,
     sameAs: [
       "https://www.linkedin.com/in/taimoorsattar",
       "https://twitter.com/taimoorsattar7",
     ],
   }
 
-let blog_schema = {
-  "@context": "https://schema.org",
-  "@type": "BlogPosting",
-  "mainEntityOfPage": {
-    "@type": "WebPage",
-    "@id": metaCanonical
-  },
-  "headline": defaultTitle,
-  "description": metaDescription,
-  thumbnailUrl: metaImage,
-  "image": metaImage,  
-  "author": {
-    "@type": "Person",
-    "name": "Taimoor Sattar",
-    "url": "https://taimoorsattar.com"
-  },
-  "datePublished": datePublished,
-  "dateModified": dateModified
-}
+  let blog_schema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": metaCanonical,
+    },
+    headline: defaultTitle,
+    description: metaDescription,
+    thumbnailUrl: metaImage,
+    image: metaImage,
+    author: {
+      "@type": "Person",
+      name: "Taimoor Sattar",
+      url: "https://taimoorsattar.com",
+    },
+    datePublished: datePublished,
+    dateModified: dateModified,
+  }
+
+  const course_schema = {
+    "@context": "https://schema.org",
+    "@type": "Course",
+    name: defaultTitle,
+    description: metaDescription,
+    author: {
+      "@type": "Person",
+      name: "Taimoor Sattar",
+      url: "https://taimoorsattar.com",
+    },
+  }
 
   const book_schema = {
     "@context": "http://schema.org/",
@@ -71,21 +85,21 @@ let blog_schema = {
   }
 
   return (
-    <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-    >
+    <>
+      <html lang={lang} />
       <meta name="yandex-verification" content="42cde140c0068db5" />
       <meta name="twitter:card" content="summary_large_image" />
 
       {/* Titles */}
       <title>{defaultTitle}</title>
       <meta name="title" content={`${defaultTitle} | Taimoor Sattar`}></meta>
-      <meta property="og:title" content={defaultTitle} />
-      <meta name="twitter:title" content={defaultTitle} />
+      <meta property="og:title" content={`${defaultTitle}  | Taimoor Sattar`} />
+      <meta
+        name="twitter:title"
+        content={`${defaultTitle}  | Taimoor Sattar`}
+      />
 
-      <meta http-equiv="Cache-control" content="public" />
+      <meta httpEquiv="Cache-control" content="public" />
 
       {/* Description */}
       <meta name="description" content={metaDescription} />
@@ -108,13 +122,7 @@ let blog_schema = {
       <meta property="og:url" content={metaCanonical} />
       <meta
         property="og:type"
-        content={
-          schemaType === "blog"
-            ? "article"
-            : schemaType === "book"
-            ? "book"
-            : "website"
-        }
+        content={schemaType === "blog" ? "article" : "website"}
       />
 
       <script type="application/ld+json">{JSON.stringify(main_schema)}</script>
@@ -124,34 +132,45 @@ let blog_schema = {
           {JSON.stringify(blog_schema)}
         </script>
       ) : (
-        ""
+        <></>
       )}
 
-      {schemaType === "book" ? (
+      {Boolean(schemaType === "course") ? (
+        <script type="application/ld+json">
+          {JSON.stringify(course_schema)}
+        </script>
+      ) : (
+        <></>
+      )}
+
+      {Boolean(schemaType === "book") ? (
         <script type="application/ld+json">
           {JSON.stringify(book_schema)}
         </script>
       ) : (
-        ""
+        <></>
       )}
-    </Helmet>
+    </>
   )
 }
 
-SEO.defaultProps = {
+SEOHead.defaultProps = {
   lang: `en`,
   meta: [],
   description: ``,
 }
 
-SEO.propTypes = {
+SEOHead.propTypes = {
+  location: PropTypes.any,
   description: PropTypes.string,
+  datePublished: PropTypes.string,
+  dateModified: PropTypes.string,
   lang: PropTypes.string,
   meta: PropTypes.arrayOf(PropTypes.object),
   title: PropTypes.string.isRequired,
-  location: PropTypes.any,
+  pathname: PropTypes.string,
   image: PropTypes.string,
   schemaType: PropTypes.string,
 }
 
-export default SEO
+export default SEOHead

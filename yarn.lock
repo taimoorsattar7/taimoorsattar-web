@@ -9131,6 +9131,13 @@ gatsby-plugin-advanced-sitemap@^2.1.0:
     pify "5.0.0"
     xml "^1.0.1"
 
+gatsby-plugin-clarity@^1.0.1:
+  version "1.0.1"
+  resolved "https://registry.npmjs.org/gatsby-plugin-clarity/-/gatsby-plugin-clarity-1.0.1.tgz"
+  integrity sha512-1GKF7GkuScINEDl9Jzhw/8CVABKvVl7NW5PUjOCfwfVQnxX1RP9C4Dj67XD7NSVyBA9ozD8g5Zv04Dzx6/FZwQ==
+  dependencies:
+    "@babel/runtime" "^7.12.5"
+
 gatsby-plugin-feed@^5.11.0:
   version "5.11.0"
   resolved "https://registry.npmjs.org/gatsby-plugin-feed/-/gatsby-plugin-feed-5.11.0.tgz"
@@ -9142,15 +9149,6 @@ gatsby-plugin-feed@^5.11.0:
     gatsby-plugin-utils "^4.11.0"
     lodash.merge "^4.6.2"
     rss "^1.2.2"
-
-gatsby-plugin-google-analytics@^5.11.0:
-  version "5.11.0"
-  resolved "https://registry.npmjs.org/gatsby-plugin-google-analytics/-/gatsby-plugin-google-analytics-5.11.0.tgz"
-  integrity sha512-XSWoJIxRlAvEV0rkPg6LiLPIj40/EIIM7tvonKsmoO2AwOyk5lMOLPa7IO9hAFv8m7Ztsa4woYbfTysAXV7jcQ==
-  dependencies:
-    "@babel/runtime" "^7.20.13"
-    minimatch "^3.1.2"
-    web-vitals "^1.1.2"
 
 gatsby-plugin-google-tagmanager@^5.11.0:
   version "5.11.0"
