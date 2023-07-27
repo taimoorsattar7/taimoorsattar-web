@@ -97,18 +97,24 @@ const Header = ({ location }: any) => {
                   (!hamBurger ? " primary-nav--vanish" : "")
                 }
               >
-                <ul vocab="https://schema.org/" typeof="BreadcrumbList">
+                <ul itemScope itemType="https://schema.org/BreadcrumbList">
                   {Breadcrumbs.map((item: any, index: any) => {
                     return (
                       <li
-                        key={index}
-                        property="itemListElement"
-                        typeof="ListItem"
+                        key={index + 1}
                         className="text-base"
+                        itemProp="itemListElement"
+                        itemScope
+                        itemType="https://schema.org/ListItem"
                       >
-                        <Link to={item.goto}>
-                          <span title={item.title}>{item.title}</span>
-                          <meta property="position" content={String(index)} />
+                        <Link itemProp="item" to={item.goto}>
+                          <span itemProp="name" title={item.title}>
+                            {item.title}
+                          </span>
+                          <meta
+                            itemProp="position"
+                            content={String(index + 1)}
+                          />
                         </Link>
                       </li>
                     )
