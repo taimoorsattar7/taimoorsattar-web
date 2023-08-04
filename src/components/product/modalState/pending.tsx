@@ -1,8 +1,10 @@
+"use client"
+
 import React, { useEffect } from "react"
 import axios, { AxiosResponse } from "axios"
 
 import toast, { Toaster } from "react-hot-toast"
-import { getCurrentUser, isLoggedIn } from "@utils/auth.ts"
+import { getCurrentUser, isLoggedIn } from "@utils/auth"
 
 import LoadingIcon from "@components/icons/loading/LoadingIcon"
 

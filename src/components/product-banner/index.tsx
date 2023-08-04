@@ -1,10 +1,12 @@
+"use client"
+
 import * as React from "react"
 // import { FunctionComponent } from "react"
 
 import Avatar from "@atom/avatar/index"
 import Button from "@atom/button/index"
 import VideoPlayer from "@atom/video-player/index"
-import AnimateOnScroll from "@atom/animate-on-scroll/index"
+// import AnimateOnScroll from "@atom/animate-on-scroll/index"
 
 import { Link } from "gatsby"
 
@@ -39,33 +41,21 @@ const ProductBanner: any = (props: any) => {
                 <b property="name">{title}</b>
               </h1>
 
-              <AnimateOnScroll
-                className="h-full"
-                BoxVariants={{
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-                  hidden: { opacity: 0, y: 100 },
-                }}
-              >
+              <p className="h-full">
                 <div className="mb-6 prose prose-base sm:prose-xl lg:prose-xl text-center">
                   {text}
                 </div>
-              </AnimateOnScroll>
+              </p>
             </section>
 
             <section className="mb-6">
-              <AnimateOnScroll
-                className="h-full"
-                BoxVariants={{
-                  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
-                  hidden: { opacity: 0, y: 100 },
-                }}
-              >
+              <div className="h-full">
                 <VideoPlayer
                   className={"mx-auto max-w-3xl"}
                   videoUrl={vidUrl}
                   videoPoster={vidPoster}
                 />
-              </AnimateOnScroll>
+              </div>
             </section>
 
             {isLog ? (
@@ -90,37 +80,6 @@ const ProductBanner: any = (props: any) => {
               />
             )}
           </main>
-
-          {/* btnSize = props.btnSize || "large", // sml, med, large
-    textValue = props.textValue || "Place Text here ...",
-    isLeftIcon = props.leftIcon.is || false,
-    srcLeftIcon = props.leftIcon.src || "",
-    isRightIcon = props.rightIcon.is || false,
-    srcRightIcon = props.rightIcon.src || "" */}
-
-          {/* <div className="flex flex--items-center">
-            {data?.is ? (
-              <button className="btn btn__black md_margin_lr radius5 p-t-5 p-b-5 p-l-30 p-r-30">
-                <a href={`/modules/${productPrice.content.slug.current}`}>
-                  <b className="headline headline__text headline--white">
-                    Go to the couse →
-                  </b>
-                </a>
-              </button>
-            ) : (
-              <button
-                className="btn btn__black md_margin_lr radius5 p-t-5 p-b-5 p-l-30 p-r-30"
-                onClick={() => {
-                  setModalState("form")
-                  setShowModal(true)
-                }}
-              >
-                <b className="headline headline__text headline--white">
-                  Start from Here 🔥
-                </b>
-              </button>
-            )}
-          </div> */}
         </div>
       </div>
     </section>

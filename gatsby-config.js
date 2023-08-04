@@ -251,6 +251,7 @@ module.exports = {
         icon: `content/assets/favicon.png`,
       },
     },
+    `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
   ],
   trailingSlash: "never",

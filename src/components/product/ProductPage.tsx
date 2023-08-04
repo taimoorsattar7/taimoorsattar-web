@@ -23,7 +23,8 @@ import PortableText from "@components/portabletext/portableText"
 import ProductBanner from "@components/product-banner/index"
 import FAQ from "@components/FAQ"
 
-const Testimonial = React.lazy(() => import("@components/testimonial"))
+import Testimonial from "@components/testimonial"
+// const Testimonial = React.lazy(() => import("@components/testimonial"))
 
 function ProductPage({
   location,
@@ -54,9 +55,13 @@ function ProductPage({
       let moduleRef = productPrice.content._id
       let { token } = getCurrentUser()
       if (token) {
-        return fetch(
-          `/api/isSubscribe?token=${token}&moduleRef=${moduleRef}`
-        ).then(res => res.json())
+        try {
+          return fetch(
+            `/api/isSubscribe?token=${token}&moduleRef=${moduleRef}`
+          ).then(res => res.json())
+        } catch {
+          return null
+        }
       } else {
         return null
       }
@@ -110,6 +115,7 @@ function ProductPage({
                     tech: { logo: { asset: any } },
                     index: React.Key | null | undefined
                   ) => {
+                    let image = getImage(tech.logo.asset)
                     return (
                       <div
                         className="w-1/2 sm:w-1/4 md:w-1/6 px-4"
@@ -120,7 +126,7 @@ function ProductPage({
                           className="block mx-auto grayscale"
                           width="fit-content"
                           height="fit-content"
-                          image={getImage(tech.logo.asset)}
+                          image={image}
                           alt={"heading"}
                           data-config-id="auto-img-1-10"
                           data-path="0.0.1.0.0.0"
@@ -179,7 +185,7 @@ function ProductPage({
             </div>
           </section>
         </div>
-    
+
         <div className="wrapper wrapper--narrow">
           <section>
             <h2 className="headline gradient m-b-40">
@@ -250,17 +256,6 @@ function ProductPage({
                     )}
 
                     {modalState == "fail" && <Fail />}
-
-                    {/* {modalState == "pending" && (
-                        <Pending
-                          productPrice={productPrice}
-                          onModalState={(
-                            state: React.SetStateAction<string>
-                          ) => {
-                            setModalState(state)
-                          }}
-                        />
-                      )} */}
                   </>
                 </div>
               </Modal>

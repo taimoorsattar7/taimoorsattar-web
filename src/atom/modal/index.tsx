@@ -1,6 +1,8 @@
+"use client"
+
 import React, { useState, useEffect } from "react"
 import Button from "@atom/button/index"
-import AnimateProp from "@atom/animation-prop/index"
+// import AnimateProp from "@atom/animation-prop/index"
 
 const Modal = (props: any) => {
   const [pop, setPop] = useState(false)
@@ -51,7 +53,9 @@ const Modal = (props: any) => {
           props.onClose(evt)
         }}
         className="fixed max-w-full max-h-screen inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-md"
-      >.</div>
+      >
+        .
+      </div>
 
       <div className="fixed inset-0 z-10 overflow-y-auto">
         <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">

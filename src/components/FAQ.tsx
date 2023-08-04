@@ -1,12 +1,13 @@
+"use client"
+
 import React from "react"
 import PortableText from "@components/portabletext/portableText"
 
-import "./_headline.scss"
 import "./_FAQ.scss"
 
 import "./_wrapper.scss"
 
-const Footer = (props: { FAQ: any }) => {
+const FAQ = (props: { FAQ: any }) => {
   const FAQ = props.FAQ
 
   const toggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -47,4 +48,4 @@ const Footer = (props: { FAQ: any }) => {
   )
 }
 
-export default Footer
+export default FAQ

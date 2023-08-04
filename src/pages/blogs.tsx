@@ -49,7 +49,10 @@ export const Head = ({ location, params, data, pageContext }: any) => (
 export const query = graphql`
   {
     allMarkdownRemark(
-      filter: { fields: { slug: { regex: "/blogs/" } } }
+      filter: {
+        fields: { slug: { regex: "/blogs/" } }
+        frontmatter: { status: { ne: "draft" } }
+      }
       sort: { frontmatter: { date: DESC } }
     ) {
       nodes {

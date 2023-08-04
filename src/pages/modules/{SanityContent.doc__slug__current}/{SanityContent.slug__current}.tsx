@@ -1,7 +1,10 @@
 import React from "react"
-import { graphql } from "gatsby"
-import { LockIcon } from "lucide-react"
+import { Link, graphql } from "gatsby"
 import { useQuery } from "react-query"
+
+import SEOHead from "@atom/seo-head/index"
+
+import Button from "@atom/button/index"
 
 // import Axios, { AxiosResponse } from "axios"
 
@@ -124,20 +127,19 @@ const Content = ({
             ) : (
               <div className="m-t-25">
                 <div className="relative overflow-y-hidden h-[32rem]">
-                  <button className="absolute z-20 right-2/4 top-2/4">
-                    <a
-                      href={"/p/build-standout-website/"}
-                      id="button"
-                      className="inline-flex items-center justify-between overflow-hidden text-white no-underline transition-all bg-blue-500 rounded-md shadow cursor-pointer group hover:glow"
-                    >
-                      <div className="w-12 px-3 mt-2 mb-2">
-                        <LockIcon />
-                        {/* <LockClosedIcon /> */}
-                      </div>
+                  <Link
+                    className="no-underline"
+                    to="/p/build-standout-website/"
+                  >
+                    <Button
+                      // className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
 
-                      <p className="px-4 mt-2 mb-2">Enroll in the course</p>
-                    </a>
-                  </button>
+                      btnSize="med"
+                      btnTheme="indigo"
+                      iconRight={"lock"}
+                      textValue="Enroll to access the course"
+                    />
+                  </Link>
 
                   <div className="w-full m-5 prose prose-xl blur-sm">
                     {sanityContent._rawBody && (
@@ -145,7 +147,7 @@ const Content = ({
                     )}
                   </div>
                 </div>
-                <div className="w-full mt-10 text-base text-center text-gray-500">
+                <div className="w-full mt-10 text-base text-gray-500">
                   <b>To view the full content, enroll in the course.</b>
                 </div>
               </div>
@@ -156,6 +158,39 @@ const Content = ({
     </>
   )
 }
+
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <>
+    <SEOHead
+      title={
+        data.sanityContent?.seo?.title
+          ? data.sanityContent?.seo?.title
+          : data.sanityContent?.title
+      }
+      description={
+        data.sanityContent?.seo?.excerpt ? data.sanityContent?.seo?.excerpt : ""
+      }
+      image={
+        data.sanityContent?.seo?.image?.asset?.url
+          ? data.sanityContent?.seo?.image?.asset?.url
+          : data.sanityContent?.bgimage?.asset?.url
+      }
+      schemaType={"blog"}
+      location={location}
+      datePublished={data?.sanityContent?._createdAt}
+      dateModified={
+        data?.sanityContent?._updatedAt
+          ? data?.sanityContent?._updatedAt
+          : data?.sanityContent?._createdAt
+      }
+    />
+  </>
+)
 
 export const query = graphql`
   query ($id: String, $doc__slug__current: String) {
@@ -174,6 +209,8 @@ export const query = graphql`
         current
       }
       plan
+      _updatedAt(formatString: "YYYY-MM-DD")
+      _createdAt(formatString: "YYYY-MM-DD")
       seo {
         title
         excerpt

@@ -1,5 +1,7 @@
+"use client"
+
 import React from "react"
-import { PageProps, Link, graphql } from "gatsby"
+import { PageProps } from "gatsby"
 
 // import BlogList from "@components/blog-list/index"
 
@@ -11,8 +13,6 @@ const SubstackEmbed: React.FC<PageProps<any>> = ({ className }: any) => {
       width="480"
       height="320"
       style={{ border: "1px solid #EEE", background: "white" }}
-      frameBorder="0"
-      scrolling="no"
     ></iframe>
   )
 }

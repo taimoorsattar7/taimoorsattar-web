@@ -1,3 +1,4 @@
+"use client"
 import React from "react"
 import PropTypes from "prop-types"
 
@@ -17,7 +18,9 @@ const Input = ({
       id={id}
       {...register(id, options ? options : {})}
       {...props}
-      className={`${status == "error" ? "border-red-400" : "border-neutral-600"} text-base mb-1`}
+      className={`${
+        status == "error" ? "border-red-400" : "border-neutral-600"
+      } text-base mb-1`}
       type={type}
       placeholder={placeholder}
       autoComplete={boolautocomplete}

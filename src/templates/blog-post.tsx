@@ -7,7 +7,7 @@ import SEOHead from "@atom/seo-head/index"
 import Container from "@primitives/container/container"
 
 import Layout from "@components/layout"
-// import CTA from "@atom/cta/index"
+import CTA from "@atom/cta/index"
 import ShareSocial from "@atom/share-social/index"
 // import BioDetail from "@atom/bio-detail/index"
 
@@ -23,11 +23,7 @@ import ShareSocial from "@atom/share-social/index"
 // serverData
 // uri
 
-const BlogPostTemplate = ({
-  data,
-  location,
-}: // params, pageContext
-any) => {
+const BlogPostTemplate = ({ data, location }: any) => {
   return (
     <Layout location={location}>
       <Container>
@@ -53,13 +49,11 @@ any) => {
           ]}
         />
 
-        {/* <CTA
+        <CTA
           keyword="Course"
-          pitch="Gatsby is the React-based framework to build static and
-        dynamic websites. In this course, we'll build a subscription
-        platform using Gatsby, Sanity, and Stripe."
+          pitch="Learn to build a website that standout and accelerates your career. We'll build a subscription website that allows users to access premium content based on their subscription."
           goto="/p/build-standout-website"
-        /> */}
+        />
       </Container>
     </Layout>
   )
@@ -89,9 +83,9 @@ any) => (
       schemaType={"blog"}
       datePublished={data?.markdownRemark?.frontmatter?.date}
       dateModified={
-        data?.markdownRemark?.frontmatter?.date
-          ? data?.markdownRemark?.frontmatter?.date
-          : data?.markdownRemark?.frontmatter?.dateModified
+        data?.markdownRemark?.frontmatter?.dateModified
+          ? data?.markdownRemark?.frontmatter?.dateModified
+          : data?.markdownRemark?.frontmatter?.date
       }
     />
   </>

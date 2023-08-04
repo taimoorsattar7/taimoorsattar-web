@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from "react"
 // import logo from "../images/logo.svg"
 import { Link, navigate } from "gatsby"
@@ -13,7 +15,7 @@ import {
   logout,
   isLoggedIn,
   cVerifyToken,
-} from "@utils/auth.ts"
+} from "@utils/auth"
 // import PropTypes from "prop-types"
 
 // import Input from "@atom/input/index"
@@ -135,14 +137,14 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
                   </div>
                 </div>
               ) : (
-                <div>
+                <Link className="no-underline" to="/auth">
                   <Button
                     btnSize="med"
                     btnTheme="filled"
                     iconRight={"keysquare"}
                     textValue="Login"
                   />
-                </div>
+                </Link>
               )}
             </div>
           </div>

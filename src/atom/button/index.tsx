@@ -1,3 +1,5 @@
+"use client"
+
 import * as React from "react"
 import PropTypes from "prop-types"
 import {
@@ -15,12 +17,15 @@ import {
   CopyXIcon,
   WalletCards,
   BackpackIcon,
+  LockIcon,
 } from "lucide-react"
 
 // import SendIcon from "../../images/icons/send-white-icon.png"
 
 const Icons = ({ iconName, className }: any) => {
   switch (iconName) {
+    case "lock":
+      return <LockIcon className={className} />
     case "backpack":
       return <BackpackIcon className={className} />
     case "walletcards":

@@ -1,9 +1,12 @@
+"use client"
+
 import React from "react"
 // import { GatsbyImage } from "gatsby-plugin-image"
 import { Link } from "gatsby"
 
 // import StarFill from "@images/icons/star-fill.svg"
-import StarIcon from "../../images/icons/star-icon.png"
+import { StarIcon } from "lucide-react"
+// import StarIcon from "../../images/icons/star-icon.png"
 import AnimateOnScroll from "@atom/animate-on-scroll/index"
 import Avatar from "@atom/avatar/index"
 
@@ -33,9 +36,8 @@ const BlogSingleton = ({
             <h3 className="text-xl mb-1">{title}</h3>
             <div className="self-stretch text-sm text-gray-700">{date}</div>
           </div>
-
           {isFeature == true && (
-            <img className=" w-[1.25rem] h-[1.25rem]" alt="" src={StarIcon} />
+            <StarIcon className=" w-[1.25rem] h-[1.25rem]" />
           )}
         </div>
         <p className="text-base text-neutral-600">{smDescription}</p>

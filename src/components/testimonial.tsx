@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import PortableText from "@components/portabletext/portableText"
 import "@styles/_testimonial.scss"

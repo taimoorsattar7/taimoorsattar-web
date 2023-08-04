@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import axios, { AxiosResponse } from "axios"
@@ -279,19 +281,6 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           //   setShowModal(true)
           // }}
         />
-        {/* <button className={"btn btn__curv"} disabled={disable ? true : false}>
-          <div className="flex flex--items-center">
-            {disable == true && (
-              <span className="in-block m-r-5 w25 h25">
-                <LoadingIcon />
-              </span>
-            )}
-
-            <span className="headline headline__text headline--white headline--uppercase">
-              <b></b>
-            </span>
-          </div>
-        </button> */}
       </form>
     </>
   )

@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 import { Link } from "gatsby"
 
@@ -5,7 +7,7 @@ import { Link } from "gatsby"
 import "@components/_FAQ.scss"
 import "@components/_wrapper.scss"
 
-import { MenuIcon } from "lucide-react"
+// import { MenuIcon } from "lucide-react"
 
 const ConHierarchy = ({ nav, slug, main }: any) => {
   const toggle = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
@@ -50,7 +52,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
                   }
                   onClick={e => toggle(e)}
                 >
-                  <span className="block text-lg m-r-20 gradient">
+                  <span className="block text-lg m-r-20">
                     <b>{lists.title}</b>
                   </span>
                   <span className="icon" aria-hidden="false"></span>

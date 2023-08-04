@@ -1,7 +1,9 @@
-import * as React from "react"
-import { FunctionComponent } from "react"
+"use client"
 
-const VideoPlayer: FunctionComponent = ({
+import * as React from "react"
+// import { FunctionComponent } from "react"
+
+const VideoPlayer: any = ({
   className,
   videoUrl,
   videoPoster,

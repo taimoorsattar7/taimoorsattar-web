@@ -1,9 +1,11 @@
+"use client"
+
 import React from "react"
 import PropTypes from "prop-types"
 import { navigate } from "gatsby"
 import Button from "@atom/button/index"
 
-const HorizontalNavbar = ({ nav }: any) => {
+const HorizontalNavbar: any = ({ nav }: any) => {
   return (
     <nav className="flex pl-3 pr-3 pb-3 pt-3 mb-3 mt-3">
       {nav.map((evt: any) => {

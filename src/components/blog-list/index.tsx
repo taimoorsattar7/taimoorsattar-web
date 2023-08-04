@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 // import SubscribeForm from "@components/blog/SubscribeForm"
 // import Modal from "@components/modal/Modal"

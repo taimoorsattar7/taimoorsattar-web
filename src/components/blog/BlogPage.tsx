@@ -1,3 +1,5 @@
+"use client"
+
 import React from "react"
 
 // import SubscribeForm from "@components/blog/SubscribeForm"
@@ -41,7 +43,6 @@ const BlogPage = ({ data }: any) => {
       <h1 className="font-heading font-semibold text-gray-900 text-3xl sm:text-4xl mb-2">
         <b title={post.frontmatter.title}>{post.frontmatter.title}</b>
       </h1>
-
       <div className="flex flex--items-center m-b-20">
         <div className="flex-grow-1">
           <span className="headline headline__sml headline--dull">
@@ -56,17 +57,15 @@ const BlogPage = ({ data }: any) => {
           </time>
         </div>
       </div>
-
       {featureImg && (
         <div className="m-b-20">
           <GatsbyImage
-            className="blogPost__img-main"
+            className="max-w-full"
             image={featureImg}
-            alt={"author"}
+            alt={"main Image"}
           />
         </div>
       )}
-
       <div
         className="prose prose-base max-w-fit"
         dangerouslySetInnerHTML={{ __html: post.html }}
