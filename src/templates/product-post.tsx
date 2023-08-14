@@ -15,14 +15,7 @@ const ProductPost = ({ data, location, pageContext }: any) => {
 
   return (
     <Layout location={location}>
-      {/* <SEO
-        location={location}
-        title={product?.seo?.title ?? product.title}
-        description={product?.seo?.excerpt}
-        image={product?.seo?.image?.asset?.url}
-        schemaType={"course"}
-      /> */}
- 
+
       {product && (
         <ProductPage location={location} avatar={data.avatar} {...product} />
       )}

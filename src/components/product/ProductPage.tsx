@@ -221,7 +221,7 @@ function ProductPage({
 
                 <div>
                   <>
-                    <ProgressBar
+                    {/* <ProgressBar
                       pbData={[
                         {
                           name: "Home",
@@ -236,7 +236,7 @@ function ProductPage({
                           active: modalState == "success" ? true : false,
                         },
                       ]}
-                    />
+                    /> */}
 
                     {modalState == "form" && (
                       <Form

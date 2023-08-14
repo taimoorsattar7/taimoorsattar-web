@@ -168,7 +168,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         />
 
         <div className="m-b-25">
-          <fieldset className="m-0 p-0 border-2 border-indigo-500">
+          <fieldset className="m-0 p-0 border-2 border-indigo-100">
             <legend className="sr-only">Select the plan</legend>
             <div className="-space-y-px bg-white rounded-md">
               {productPrice?.plans.map(
@@ -176,7 +176,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                   return (
                     <div
                       key={index}
-                      className={`border p-4 flex flex--items-center flex--justify-start ${
+                      className={`border p-2 flex flex--items-center flex--justify-start ${
                         watch("price") ==
                         (buildMeta.devstatus == "development"
                           ? prc.priceID_test
@@ -239,8 +239,9 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                           {" / "}
                           {"month"} */}
                         </span>
+
                         <span
-                          className={`block text-sm m-0 p-0 ${
+                          className={`block text-sm ${
                             watch("price") ==
                             (buildMeta.devstatus == "development"
                               ? prc.priceID_test

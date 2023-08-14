@@ -28,7 +28,7 @@ const Modal = (props: any) => {
   }
 
   return (
-    <div className="modal z-40">
+    <div className="modal z-40" onClick={e => alert("Hi")}>
       <div
         className="modal__content radius3 m-r-15 m-l-15 "
         onClick={e => e.stopPropagation()}

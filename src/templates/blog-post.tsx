@@ -51,7 +51,7 @@ const BlogPostTemplate = ({ data, location }: any) => {
 
         <CTA
           keyword="Course"
-          pitch="Learn to build a website that standout and accelerates your career. We'll build a subscription website that allows users to access premium content based on their subscription."
+          pitch="You will learn to build a website that will stand out and accelerate your career. Together, we will develop a subscription website that gives users access to premium content based on their subscription level."
           goto="/p/build-standout-website"
         />
       </Container>

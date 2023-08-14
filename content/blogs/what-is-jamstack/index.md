@@ -6,6 +6,7 @@ tags:
   - jamstack
 featuredpost: false
 featuredimage: ./jamstack.jpg
+status: "publish"
 ---
 
 Let's break down the word `JAMstack` as **JAM**, **stack**. JAM means Javascript, API, and markup. The Jamstack is a modern way of developing applications where the front-end is decoupled from the back-end (web server). We use APIs to communicate (retrieve/post the data) between the frontend and the backend. The API allows communication between the web app and the server by sending the HTTP request to the appropriate routes.

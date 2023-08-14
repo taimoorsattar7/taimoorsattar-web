@@ -36,7 +36,7 @@ const ProductBanner: any = (props: any) => {
             <section className="mw600 mx-auto md_max_width_full">
               <h1
                 title={title}
-                className="text-3xl sm::text-4xl lg:text-5xl text-center md_text_center mt-3 mb-3 gradient"
+                className="text-3xl sm::text-4xl lg:text-5xl text-center md_text_center mt-3 mb-3"
               >
                 <b property="name">{title}</b>
               </h1>
