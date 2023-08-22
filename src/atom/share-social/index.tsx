@@ -9,7 +9,7 @@ function generateFBLink({ url }: any) {
 
 function generateTwitterLink({ text = "", url }: any) {
   if (!url) return null
-  return `http://twitter.com/share?text=${text}&url=${url}&hashtags=hashtag1,hashtag2,hashtag3`
+  return `http://twitter.com/share?text=${text}&url=${url}`
 }
 
 function generateINLink({ url }: any) {
