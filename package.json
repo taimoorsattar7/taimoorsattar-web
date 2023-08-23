@@ -69,7 +69,7 @@
     "nodemailer": "^6.8.0",
     "nodemailer-sendgrid": "^1.0.3",
     "normalize.css": "^8.0.1",
-    "npm": "^9.1.2",
+    "npm": "^9.8.1",
     "path": "^0.12.7",
     "prismjs": "^1.29.0",
     "react": "^18.2.0",
