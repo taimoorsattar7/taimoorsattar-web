@@ -22,7 +22,7 @@
     "date-fns": "^2.29.3",
     "dotenv": "^16.0.3",
     "email-templates": "^10.0.1",
-    "framer-motion": "^10.12.21",
+    "framer-motion": "^10.15.0",
     "fs": "^0.0.1-security",
     "gatsby": "^5.11.0",
     "gatsby-codemods": "^4.11.0",
