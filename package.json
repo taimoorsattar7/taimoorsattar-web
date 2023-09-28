@@ -49,7 +49,7 @@
     "gatsby-source-custom-api": "^2.3.6",
     "gatsby-source-filesystem": "^5.11.0",
     "gatsby-source-graphql": "^5.11.0",
-    "gatsby-source-sanity": "7.5.1",
+    "gatsby-source-sanity": "7.6.0",
     "gatsby-transformer-remark": "^6.11.0",
     "gatsby-transformer-sharp": "^5.11.0",
     "generate-password": "^1.7.0",
