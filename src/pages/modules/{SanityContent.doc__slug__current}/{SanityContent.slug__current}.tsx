@@ -11,22 +11,11 @@ import Button from "@atom/button/index"
 import SidebarLayout1 from "@components/sidebarLayout1/index"
 import { getCurrentUser } from "@utils/auth"
 
-import SEO from "@components/seo"
-
-import PortableText from "@components/portabletext/portableText"
+import PortableTextReact from "@components/portabletext/portableText"
 import ConHierarchy from "@components/conhierarchy/conhierarchy"
 
 import LoadingAnima from "@atom/loading-anima/index"
 
-// data
-// location
-// navigate
-// pageContext
-// pageResources
-// params
-// path
-// serverData
-// uri
 const Content = ({
   //   serverData,
   location,
@@ -55,32 +44,6 @@ const Content = ({
 
   return (
     <>
-      <SEO
-        title={
-          sanityContent?.seo?.title
-            ? sanityContent?.seo?.title
-            : sanityContent?.title
-        }
-        description={
-          sanityContent?.seo?.excerpt ? sanityContent?.seo?.excerpt : ""
-        }
-        image={
-          sanityContent?.seo?.image?.asset?.url
-            ? sanityContent?.seo?.image?.asset?.url
-            : sanityContent?.bgimage?.asset?.url
-        }
-        location={location}
-      />
-
-      {/* <SideBarLayout
-        location={location}
-        navData={sanityModules.docs}
-        currentSlug={params.slug__current}
-        mainSlug={params.doc__slug__current}
-        params={params}
-        error={error}
-      ></SideBarLayout> */}
-
       <SidebarLayout1
         location={location}
         nav={sanityModules.docs}
@@ -111,7 +74,7 @@ const Content = ({
             {sanityContent.plan == "Basic" || data?.is == true ? (
               <div className="w-full prose-base">
                 {sanityContent._rawBody && (
-                  <PortableText blocks={sanityContent._rawBody} />
+                  <PortableTextReact blocks={sanityContent._rawBody} />
                 )}
               </div>
             ) : isLoading ? (
@@ -120,7 +83,7 @@ const Content = ({
 
                 <div className="w-full m-5 prose prose-xl blur-sm hidden">
                   {sanityContent._rawBody && (
-                    <PortableText blocks={sanityContent._rawBody} />
+                    <PortableTextReact blocks={sanityContent._rawBody} />
                   )}
                 </div>
               </div>
@@ -143,7 +106,7 @@ const Content = ({
 
                   <div className="w-full m-5 prose prose-xl blur-sm">
                     {sanityContent._rawBody && (
-                      <PortableText blocks={sanityContent._rawBody} />
+                      <PortableTextReact blocks={sanityContent._rawBody} />
                     )}
                   </div>
                 </div>

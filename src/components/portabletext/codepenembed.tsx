@@ -12,8 +12,8 @@ export const CodepenEmbed = (props: any) => {
         width: "100%",
       }}
       scrolling="no"
-      title={props?.node?.title ? props?.node?.title : ""}
-      src={props?.node?.url}
+      title={props?.value?.title ? props?.value?.title : ""}
+      src={props?.value?.url}
       frameBorder="no"
       loading="lazy"
       allowTransparency={true}

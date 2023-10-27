@@ -1,48 +1,43 @@
-"use client"
-
 import React from "react"
 import { Link } from "gatsby"
-import logo from "../../images/logo.svg"
 
-import "../_wrapper.scss"
-import "../_headline.scss"
-import "./footer.scss"
-import "@styles/_primary-nav.scss"
-import "@styles/_flex.scss"
-import "@components/_primary-nav.scss"
+import { ContainerInner, ContainerOuter } from "@components/Container"
 
-const Footer = () => (
-  <footer className="footer m-t-35 m-b-25">
-    <div className="flex flex-wrap justify-center items-center">
-      <div className="logo">
-        <Link to="/?from=header">
-          <img className="site-header__logo" src={logo} alt="Taimoor Sattar" />
-        </Link>
-      </div>
-      <nav className="footer_nav">
-        <ul>
-          <li>
-            <Link to="/about/">About</Link>
-          </li>
-          <li>
-            <Link to="/contact/">Contact</Link>
-          </li>
+function NavLink({
+  href,
+  children,
+}: {
+  href: string
+  children: React.ReactNode
+}) {
+  return (
+    <Link
+      to={href}
+      className="transition hover:text-teal-500 dark:hover:text-teal-400"
+    >
+      {children}
+    </Link>
+  )
+}
 
-          <li>
-            <b>
-              <a href="/privacy-policy/">Privacy Policy</a>
-            </b>
-          </li>
-
-          <li>
-            <b>
-              <a href="https://twitter.com/taimoorsattar7">Twitter</a>
-            </b>
-          </li>
-        </ul>
-      </nav>
-    </div>
-  </footer>
-)
-
-export default Footer
+export default function Footer() {
+  return (
+    <footer className="mt-32 flex-none">
+      <ContainerOuter>
+        <div className="border-t border-zinc-100 pb-16 pt-10 dark:border-zinc-700/40">
+          <ContainerInner>
+            <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
+              <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
+                <NavLink href="/about">About</NavLink>
+                <NavLink href="/course">Course</NavLink>
+              </div>
+              <p className="text-sm text-zinc-400 dark:text-zinc-500">
+                &copy; {new Date().getFullYear()} Taimoor Sattar
+              </p>
+            </div>
+          </ContainerInner>
+        </div>
+      </ContainerOuter>
+    </footer>
+  )
+}

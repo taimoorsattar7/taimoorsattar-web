@@ -39,26 +39,22 @@ const BlogPage = ({ data }: any) => {
     post.frontmatter?.featuredimage?.childImageSharp?.gatsbyImageData
 
   return (
-    <div className="m-t-25 m-b-25">
-      <h1 className="font-heading font-semibold text-gray-900 text-3xl sm:text-4xl mb-2">
-        <b title={post.frontmatter.title}>{post.frontmatter.title}</b>
-      </h1>
-      <div className="flex flex--items-center m-b-20">
-        <div className="flex-grow-1">
-          <span className="headline headline__sml headline--dull">
-            <b>Taimoor Sattar</b>
-          </span>
-          <span>・</span>
-          <time
-            className="headline headline__sml headline--dull"
-            dateTime={post.frontmatter.date}
-          >
-            {format_date(post.frontmatter.date)}
-          </time>
-        </div>
-      </div>
+    <article>
+      <header className="flex flex-col">
+        <h1 className="mt-6 text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
+          {post.frontmatter.title}
+        </h1>
+        <time
+          dateTime={post.frontmatter.date}
+          className="order-first flex items-center text-base text-zinc-400 dark:text-zinc-500"
+        >
+          <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
+          <span className="ml-3">{format_date(post.frontmatter.date)}</span>
+        </time>
+      </header>
+
       {featureImg && (
-        <div className="m-b-20">
+        <div className="mt-4">
           <GatsbyImage
             className="max-w-full"
             image={featureImg}
@@ -66,11 +62,12 @@ const BlogPage = ({ data }: any) => {
           />
         </div>
       )}
+
       <div
-        className="prose prose-base max-w-fit"
+        className="prose prose-lg max-w-fit mt-8"
         dangerouslySetInnerHTML={{ __html: post.html }}
       ></div>
-    </div>
+    </article>
   )
 }
 

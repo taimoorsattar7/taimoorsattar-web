@@ -7,7 +7,7 @@ export const CodesandboxEmbed = (props: any) => {
 
   return (
     <iframe
-      src={props?.node?.url}
+      src={props?.value?.url}
       style={{
         width: "100%",
         height: "500px",
@@ -15,7 +15,7 @@ export const CodesandboxEmbed = (props: any) => {
         borderRadius: "4px",
         overflow: "hidden",
       }}
-      title={props?.node?.url ? props?.node?.url : "Codesandbox Project"}
+      title={props?.value?.url ? props?.value?.url : "Codesandbox Project"}
       allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
       sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
     ></iframe>

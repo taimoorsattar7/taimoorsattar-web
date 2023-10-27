@@ -1,24 +1,27 @@
 import React from "react"
 import Layout from "@components/layout"
-import Seo from "@components/seo"
+import SEOHead from "@atom/seo-head/index"
 import Contact from "@components/contact"
-import Container from "@primitives/container/container"
 
 const ContactUs = ({ location }: any) => (
-  <>
-    <Layout location={location} title="Contact">
-
-      <Seo
-        title="Contact"
-        location={location}
-        description="Fill the contact form."
-      />
-
-<Container>
+  <Layout containersize={"small"} location={location} title="Contact">
+    <div className="lg:px-32">
       <Contact />
-      </Container>
-    </Layout>
-  </>
+    </div>
+  </Layout>
+)
+
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <SEOHead
+    title={"Contact"}
+    description="Fill the contact form."
+    location={location}
+  />
 )
 
 export default ContactUs

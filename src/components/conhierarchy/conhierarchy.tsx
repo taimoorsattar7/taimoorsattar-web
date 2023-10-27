@@ -5,7 +5,6 @@ import { Link } from "gatsby"
 
 // import "@components/_headline.scss"
 import "@components/_FAQ.scss"
-import "@components/_wrapper.scss"
 
 // import { MenuIcon } from "lucide-react"
 
@@ -52,7 +51,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
                   }
                   onClick={e => toggle(e)}
                 >
-                  <span className="block text-lg m-r-20">
+                  <span className="block text-lg mr-8">
                     <b>{lists.title}</b>
                   </span>
                   <span className="icon" aria-hidden="false"></span>
@@ -63,7 +62,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
                       <div key={index} className="block mb-1">
                         <Link
                           key={index}
-                          className="no-underline"
+                          className="no-underline mb-4"
                           to={`/modules/${main}/${content?.slug?.current}`}
                         >
                           <span
@@ -75,6 +74,7 @@ const ConHierarchy = ({ nav, slug, main }: any) => {
                             {content.title}
                           </span>
                         </Link>
+                        <hr />
                       </div>
                     )
                   })}

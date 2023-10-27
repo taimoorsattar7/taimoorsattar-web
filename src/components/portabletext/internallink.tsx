@@ -6,9 +6,9 @@ export const InternalLink = (props: any) => {
     <>
       <Link
         className="block cursor-pointer pt-3 pb-3 pl-4 pr-4 border-2 border-gray-700"
-        to={props?.node?.content?.slug?.current}
+        to={props?.value?.content?.slug?.current}
       >
-        {props?.node?.content?.title}
+        {props?.value?.content?.title}
       </Link>
     </>
   )

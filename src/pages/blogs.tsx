@@ -2,10 +2,7 @@ import React from "react"
 import { graphql } from "gatsby"
 // import { GatsbyImage } from "gatsby-plugin-image"
 import BlogList from "@components/blog-list/index"
-import Container from "@atom/container/index"
 import SEOHead from "@atom/seo-head/index"
-
-// Container
 
 import Layout from "@components/layout"
 
@@ -14,20 +11,18 @@ const Blogs = ({ data, location }: any) => {
 
   return (
     <Layout location={location}>
-      <Container>
-        <BlogList posts={posts}>
-          <header className="mb-6">
-            <h2 className="text-5xl mb-1 text-center sm:text-left">
-              <b>Feature Blogs</b>
-            </h2>
+      <BlogList posts={posts}>
+        <header className="mb-6">
+          <h2 className="text-5xl mb-1 text-center sm:text-left">
+            <b>Feature Blogs</b>
+          </h2>
 
-            <p className="text-neutral-600 block text-base mb-1 text-center sm:text-left">
-              You can find blogs related to web programming such as HTML, CSS,
-              Javascript, React Gatsbyjs, etc
-            </p>
-          </header>
-        </BlogList>
-      </Container>
+          <p className="text-neutral-600 block text-base mb-1 text-center sm:text-left">
+            You can find blogs related to web programming such as HTML, CSS,
+            Javascript, React Gatsbyjs, etc
+          </p>
+        </header>
+      </BlogList>
     </Layout>
   )
 }

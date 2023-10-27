@@ -2,10 +2,11 @@
 
 import React, { useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
+import Button from "@atom/button/index"
 
 import { Link } from "gatsby"
 
-import TickIcon from "@components/icons/tick/TickIcon"
+import { Check } from "lucide-react"
 import confetti from "canvas-confetti"
 
 const Success = ({ happyURL }: any) => {
@@ -54,7 +55,7 @@ const Success = ({ happyURL }: any) => {
       <Toaster position="top-center" />
 
       <div className="m-auto flex flex--items-center flex--justify-center h40 w40 circle bg-green">
-        <TickIcon />
+        <Check className="mx-auto" color="green" size={48} />
       </div>
       <div>
         <p className="headline headline__text text-center m-b-15">
@@ -62,14 +63,14 @@ const Success = ({ happyURL }: any) => {
           the course.
         </p>
       </div>
-
-      <button className="btn btn__black block m-auto radius5 p-t-5 p-b-5 p-l-30 p-r-30">
-        <Link to={happyURL}>
-          <b className="headline headline__text headline--white">
-            Go to the couse →
-          </b>
-        </Link>
-      </button>
+      <Link to={happyURL}>
+        <Button
+          className="mx-auto"
+          textValue="Go to the couse →"
+          btnSize="large"
+          btnTheme="outline"
+        />
+      </Link>
     </>
   )
 }

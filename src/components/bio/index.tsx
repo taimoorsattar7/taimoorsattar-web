@@ -24,10 +24,7 @@ const Bio: FunctionComponent = ({ data }: any) => {
             </span>
           </div>
 
-          <div
-            className="relative w-full flex flex-row items-start justify-start gap-9"
-
-          >
+          <div className="relative w-full flex flex-row items-start justify-start gap-9">
             <a
               className="no-underline"
               href="https://twitter.com/taimoorsattar7"
@@ -54,7 +51,7 @@ const Bio: FunctionComponent = ({ data }: any) => {
               />
             </a>
 
-            <a
+            {/* <a
               className="no-underline"
               href="https://www.tiktok.com/@taimoornotes"
             >
@@ -65,7 +62,7 @@ const Bio: FunctionComponent = ({ data }: any) => {
                 placeholder="blurred"
                 layout="fixed"
               />
-            </a>
+            </a> */}
           </div>
         </section>
         <AnimateOnScroll

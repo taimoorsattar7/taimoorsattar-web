@@ -10,12 +10,7 @@ import logo from "../../images/logo.svg"
 
 import { MenuIcon } from "lucide-react"
 
-import {
-  getCurrentUser,
-  logout,
-  isLoggedIn,
-  cVerifyToken,
-} from "@utils/auth"
+import { getCurrentUser, logout, isLoggedIn, cVerifyToken } from "@utils/auth"
 // import PropTypes from "prop-types"
 
 // import Input from "@atom/input/index"
@@ -46,7 +41,7 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
   }
 
   return (
-    <nav className="fixed bg-indigo-50 top-0 z-50 w-full border-b-4 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+    <nav className="fixed bg-slate-700 top-0 z-50 w-full border-b-4 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
           <div className="flex items-center justify-start">
@@ -137,12 +132,12 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
                   </div>
                 </div>
               ) : (
-                <Link className="no-underline" to="/auth">
+                <Link to="/auth">
                   <Button
-                    btnSize="med"
-                    btnTheme="filled"
-                    iconRight={"keysquare"}
-                    textValue="Login"
+                    textValue="Login to the course"
+                    iconRight="LockIcon"
+                    btnSize="sml"
+                    btnTheme="outline"
                   />
                 </Link>
               )}

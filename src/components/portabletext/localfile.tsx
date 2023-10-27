@@ -1,13 +1,14 @@
+"use client"
 import React from "react"
 
-export default ({ node }: any) => {
-  // if (!node || !node.code) {
-  //   return null
-  // }
+export default ({ value }: any) => {
+  if (!value || !value.code) {
+    return null
+  }
   return (
     <div>
       <a
-        href={node.asset.url}
+        href={value?.asset?.url}
         id="button"
         className="inline-flex group rounded-md shadow bg-blue-500 text-white cursor-pointer justify-between items-center overflow-hidden transition-all hover:glow no-underline"
       >
@@ -29,7 +30,7 @@ export default ({ node }: any) => {
         </div>
 
         <p className="px-4 mt-2 mb-2">
-          {node.asset.originalFilename} - {node.asset.size / 10000} MB
+          {value.asset.originalFilename} - {value.asset.size / 10000} MB
         </p>
       </a>
     </div>

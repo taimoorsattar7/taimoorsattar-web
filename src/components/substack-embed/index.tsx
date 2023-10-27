@@ -5,9 +5,13 @@ import { PageProps } from "gatsby"
 
 // import BlogList from "@components/blog-list/index"
 
-const SubstackEmbed: React.FC<PageProps<any>> = ({ className }: any) => {
+const SubstackEmbed: React.FC<PageProps<any>> = ({
+  className,
+  ...props
+}: any) => {
   return (
     <iframe
+      {...props}
       className={`${className}`}
       src="https://taimoor.substack.com/embed"
       width="480"

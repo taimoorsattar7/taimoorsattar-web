@@ -1,14 +1,15 @@
 import React from "react"
 import { GatsbyImage } from "gatsby-plugin-image"
 import { getGatsbyImageData } from "gatsby-source-sanity"
+// @ts-ignore
 import clientConfig from "../../../client-config"
 
-export const Figure = ({ node }: any) => {
-  if (!node || !node.asset || !node.asset._id) {
+export const Figure = ({ value }: any) => {
+  if (!value || !value.asset || !value.asset._id) {
     return null
   }
   const gatsbyImageData = getGatsbyImageData(
-    node,
+    value,
     { maxWidth: "100%" },
     clientConfig.sanity
   )
@@ -18,11 +19,11 @@ export const Figure = ({ node }: any) => {
         <GatsbyImage
           className="fullwidth"
           image={gatsbyImageData}
-          alt={node.alt}
+          alt={value.alt}
         />
       </a>
       <figcaption style={{ color: "gray", fontSize: "1rem" }}>
-        {node.caption}
+        {value.caption}
       </figcaption>
     </figure>
   )

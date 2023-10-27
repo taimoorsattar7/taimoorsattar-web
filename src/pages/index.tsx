@@ -1,12 +1,11 @@
 import React from "react"
 import { PageProps, Link, graphql } from "gatsby"
-
-import AnimateLayout from "@components/AnimateLayout"
+import SEOHead from "@atom/seo-head/index"
+import Layout from "@components/layout"
 import SEO from "@components/seo"
-// import SiteBanner from "@components/site-banner"
 import Bio from "@components/bio/index"
 
-import SubstackEmbed from "@components/substack-embed/index"
+// import SubstackEmbed from "@components/substack-embed/index"
 
 import BlogList from "@components/blog-list/index"
 import Button from "@atom/button/index"
@@ -18,7 +17,7 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
 
   if (posts.length === 0) {
     return (
-      <AnimateLayout location={location}>
+      <Layout location={location}>
         <SEO
           location={location}
           title="Taimoor Sattar"
@@ -35,12 +34,12 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
           directory you specified for the "gatsby-source-filesystem" plugin in
           gatsby-config.js).
         </p>
-      </AnimateLayout>
+      </Layout>
     )
   }
 
   return (
-    <AnimateLayout location={location}>
+    <Layout location={location}>
       <SEO
         title="Taimoor Sattar - Full-stack developer"
         description="My name is Taimoor Sattar, a full-stack developer. I have a bachelor's degree in engineering, but love to code."
@@ -48,58 +47,60 @@ const BlogIndex: React.FC<PageProps<any>> = ({ data, location }) => {
         location={location}
       />
 
-      <div className="wrapper wrapper--narrow p-b-50">
-        {/* <SiteBanner /> */}
-        <Bio />
+        <div className="wrapper wrapper--narrow p-b-50">
+          {/* <SiteBanner /> */}
+          <Bio />
 
-        <BlogList posts={posts}>
-          <header className="mb-6">
-            <h2 className="text-3xl mb-1 text-center sm:text-left">
-              <b>Feature Blogs</b>
+          <BlogList posts={posts}>
+            <header className="mb-6">
+              <h2 className="text-3xl mb-1 text-center sm:text-left">
+                <b>Feature Blogs</b>
+              </h2>
+              <Link
+                className="block text-base mb-1 text-center sm:text-left"
+                to="/blogs/"
+              >
+                <b>View all blogs &#8594;</b>
+              </Link>
+            </header>
+          </BlogList>
+
+          {/* <section className="mt-8 mb-8 text-center">
+            <SubstackEmbed className="max-w-full" />
+          </section> */}
+
+          <section className="w-full flex flex-col items-center justify-center gap-2 text-center mt-6 mb-14">
+            <h2 className="max-w-3xl text-5xl [background:linear-gradient(110.8deg,_#000,_#4d4d4d_66.67%)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
+              <b>Learn to build the Your Next Project.</b>
             </h2>
-            <Link
-              className="block text-base mb-1 text-center sm:text-left"
-              to="/blogs/"
-            >
-              <b>View all blogs &#8594;</b>
+            <Link className="no-underline" to="/contact">
+              <Button
+                btnSize="large"
+                btnTheme="outline"
+                iconRight={"send"}
+                textValue="Send Message"
+              />
             </Link>
-          </header>
-        </BlogList>
-
-        <section className="mt-8 mb-8 text-center">
-          <SubstackEmbed className="max-w-full" />
-        </section>
-
-        <section className="w-full flex flex-col items-center justify-center gap-2 text-center mt-6 mb-14">
-          <h2 className="max-w-3xl text-5xl [background:linear-gradient(110.8deg,_#000,_#4d4d4d_66.67%)] [-webkit-background-clip:text] [-webkit-text-fill-color:transparent]">
-            <b>Learn to build the Your Next Project.</b>
-          </h2>
-          <Link className="no-underline" to="/contact">
-            <Button
-              btnSize="large"
-              btnTheme="outline"
-              iconRight={"send"}
-              textValue="Send Message"
-            />
-          </Link>
-        </section>
-      </div>
-    </AnimateLayout>
+          </section>
+        </div>
+    </Layout>
   )
 }
 
 export default BlogIndex
 
-// export const Head = ({ location, params, data, pageContext }: any) => (
-//   <>
-//     <title>{pageContext.title}</title>
-//     <meta name="description" content={data.page.description} />
-//     <meta
-//       name="twitter:url"
-//       content={`https://www.foobar.tld/${location.pathname}`}
-//     />
-//   </>
-// )
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <SEOHead
+    title={"Taimoor Sattar - Full-stack developer"}
+    description="My name is Taimoor Sattar, a full-stack developer. I have a bachelor's degree in engineering, but love to code."
+    location={location}
+  />
+)
 
 export const pageQuery = graphql`
   query {

@@ -3,7 +3,6 @@
 import React from "react"
 import PortableText from "@components/portabletext/portableText"
 import "@styles/_testimonial.scss"
-import "@styles/_flex.scss"
 
 const Testimonial = (props: { testimonial: any }) => {
   const testimonials = props.testimonial

@@ -7,7 +7,7 @@ hr {
 /* Prose */
 
 p {
-  line-height: var(--lineHeight-relaxed);
+  line-height: vaar(--lineHeight-relaxed);
   --baseline-multiplier: 0.179;
   --x-height-multiplier: 0.35;
   padding: var(--spacing-0);
@@ -121,6 +121,23 @@ li > ul {
 
 .gatsby-highlight {
   margin-bottom: var(--spacing-8);
+}
+
+a {
+  color: black;
+}
+
+a:link {
+  text-decoration: none;
+}
+a:visited {
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: none;
+}
+a:active {
+  text-decoration: none;
 }
 
 /* Media queries */

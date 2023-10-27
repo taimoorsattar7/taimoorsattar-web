@@ -1,8 +1,7 @@
 import React from "react"
 import { graphql, Link } from "gatsby"
 
-import SEO from "@components/seo"
-import PortableText from "@components/portabletext/portableText"
+import PortableTextReact from "@components/portabletext/portableText"
 
 import ConHierarchy from "@components/conhierarchy/conhierarchy"
 
@@ -12,15 +11,11 @@ import { querySanity } from "@lib/querySanity.ts"
 import SidebarLayout1 from "@components/sidebarLayout1/index"
 import Button from "@atom/button/index"
 
+import SEOHead from "@atom/seo-head/index"
+
 const ModulesSpace = ({ data, location, params }: any) => {
   return (
     <>
-      <SEO
-        location={location}
-        title={data?.sanityModules?.title}
-        description={data?.sanityModules?.title}
-      />
-
       <SidebarLayout1
         location={location}
         SideBar={
@@ -41,7 +36,7 @@ const ModulesSpace = ({ data, location, params }: any) => {
 
             <section className="w-full prose-base mb-4">
               {data?.sanityModules?._rawBody && (
-                <PortableText blocks={data?.sanityModules?._rawBody} />
+                <PortableTextReact blocks={data?.sanityModules?._rawBody} />
               )}
 
               {data?.sanityModules?.docs[0]?.doc[0]?.slug?.current && (
@@ -61,43 +56,22 @@ const ModulesSpace = ({ data, location, params }: any) => {
           </div>
         </div>
       </SidebarLayout1>
-
-      {/* <SideBarLayout
-        location={location}
-        navData={data.sanityModules.docs}
-        mainSlug={params.doc__slug__current}
-        error={false}
-      >
-        <div className="m-l-30 mw800">
-          <div className="mt-8 mb-16">
-            <h1 className="headline m-b-30">
-              <b>{data?.sanityModules?.title}</b>
-            </h1>
-
-            <div className="w-full prose prose-xl m-b-15">
-              {data?.sanityModules?._rawBody && (
-                <PortableText blocks={data?.sanityModules?._rawBody} />
-              )}
-
-              {data?.sanityModules?.docs[0]?.doc[0]?.slug?.current && (
-                <button className="px-4 py-3 text-lg font-semibold leading-tight text-white bg-indigo-600 rounded-lg shadow-md hover:bg-indigo-700 ">
-                  <Link
-                    className="text-white no-underline"
-                    to={`${data?.sanityModules?.docs[0]?.doc[0]?.slug?.current}`}
-                  >
-                    Start the first lesson
-                  </Link>
-                </button>
-              )}
-            </div>
-          </div>
-        </div>
-      </SideBarLayout> */}
     </>
   )
 }
 
-// (_id: { eq: "e4cb62dd-3681-4869-8679-8bd480e68f27" })
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <SEOHead
+    title={data?.sanityModules?.title}
+    description={data?.sanityModules?.title}
+    location={location}
+  />
+)
 
 export const query = graphql`
   query ModulesSpace($doc__slug__current: String) {

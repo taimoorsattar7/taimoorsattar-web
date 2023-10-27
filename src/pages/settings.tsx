@@ -12,7 +12,7 @@ import { sanityRequest } from "@lib/sanity/sanityActions"
 
 import LoadingAnima from "@atom/loading-anima/index"
 import Button from "@atom/button/index"
-import HorizontalNavbar from "@atom/horizontal-navbar/index"
+import Tabs from "@atom/tabs/index"
 
 const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
   const [subscriptions, setSubscriptions] = useState<any>(null)
@@ -91,137 +91,135 @@ const Settings: React.FC<PageProps<any>> = ({ location }: any) => {
   return (
     <Layout location={location}>
       <Toaster position="top-center" />
-      <section className="m-t-25 p-b-35">
-        <div className="wrapper wrapper--narrow">
-          <HorizontalNavbar
-            nav={[
-              {
-                title: "Modules",
-                goto: "/modules",
-                state: location.pathname == "/modules" ? "active" : "",
-              },
-              {
-                title: "Settings",
-                goto: "/settings",
-                state: location.pathname == "/settings" ? "active" : "",
-              },
-            ]}
-          />
+      <section className="mt-8">
+        <Tabs
+          tabs={[
+            {
+              name: "Modules",
+              href: "/modules",
+              current: location?.pathname == "/modules" ? true : false,
+            },
+            {
+              name: "Settings",
+              href: "/settings",
+              current: location?.pathname == "/settings" ? true : false,
+            },
+          ]}
+        />
 
-          {subscriptions == null ? (
-            <LoadingAnima />
-          ) : (
-            <>
-              <div className="prose prose-base max-w-fit m-b-20">
-                <p>
-                  For the subscription action, the user has two (2) options as
-                  below:
-                </p>
-                <ul>
-                  <li>
-                    <b>Cancel Subscription:</b> Cancel the subscription at the
-                    end of the period. You'll still be able to view content
-                    before the end of the period.
-                  </li>
+        {subscriptions == null ? (
+          <LoadingAnima />
+        ) : (
+          <section className="mt-8">
+            <div className="prose prose-base max-w-fit m-b-20">
+              <p>
+                For the subscription action, the user has two (2) options as
+                below:
+              </p>
+              <ul>
+                <li>
+                  <b>Cancel Subscription:</b> Cancel the subscription at the end
+                  of the period. You'll still be able to view content before the
+                  end of the period.
+                </li>
 
-                  <li>
-                    <b> Resume Subscription:</b>You can resume the subscription
-                    after you cancel the subscription.
-                  </li>
-                </ul>
+                <li>
+                  <b> Resume Subscription:</b>You can resume the subscription
+                  after you cancel the subscription.
+                </li>
+              </ul>
 
-                <p>
-                  If you have any questions, you can fill out this contact form
-                  or send the email at taimoor@taimoorsattar.dev
-                </p>
+              <p>
+                If you have any questions, you can fill out this contact form or
+                send the email at taimoor@taimoorsattar.dev
+              </p>
 
-                <p>
-                  Below, you can view the list of your subscription for the
-                  course.
-                </p>
-              </div>
-              <div className="flex justify-start flex--wrap flex--align-stretch">
-                {subscriptions?.map((sub: any, index: any) => {
-                  return (
-                    <div
-                      key={index}
-                      className="max-w-xs mx-auto overflow-hidden bg-white rounded-md shadow-lg"
-                    >
-                      <img
-                        className="object-cover w-full h-52"
-                        src={sub?.module?.img?.url}
-                        alt="Hotel Room"
-                      />
-                      <div className="px-6 py-7">
-                        <div className="inline-block px-1 py-1 mb-3 text-sm text-green-500 capitalize border border-gray-300 rounded-md">
-                          Active
-                        </div>
+              <p>
+                Below, you can view the list of your subscription for the
+                course.
+              </p>
+            </div>
+            <div className="flex justify-start flex--wrap flex--align-stretch">
+              {subscriptions?.map((sub: any, index: any) => {
+                return (
+                  <div
+                    key={index}
+                    className="max-w-xs mx-auto overflow-hidden bg-white rounded-md shadow-lg"
+                  >
+                    <img
+                      className="object-cover w-full h-52"
+                      src={sub?.module?.img?.url}
+                      alt="Hotel Room"
+                    />
+                    <div className="px-6 py-7">
+                      <div className="inline-block px-1 py-1 mb-3 text-sm text-green-500 capitalize border border-gray-300 rounded-md">
+                        Active
+                      </div>
 
-                        <div className="text-2xl text-gray-900">
-                          {sub.module.title}
-                        </div>
+                      <div className="text-2xl text-gray-900">
+                        {sub.module.title}
+                      </div>
 
-                        <hr className="mt-3 mb-5" />
+                      <hr className="mt-3 mb-5" />
 
-                        {sub.start_date && (
-                          <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
-                            <b>
-                              Start date{": "}
-                              {format(new Date(sub.start_date), "MM LLL, yyyy")}
-                            </b>
-                          </span>
+                      {sub.start_date && (
+                        <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
+                          <b>
+                            Start date{": "}
+                            {format(new Date(sub.start_date), "MM LLL, yyyy")}
+                          </b>
+                        </span>
+                      )}
+
+                      {sub.cancel_at && isDataLarge(sub.cancel_at) && (
+                        <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
+                          <b>
+                            Cancel at{": "}
+                            {format(new Date(sub.cancel_at), "MM LLL, yyyy")}
+                          </b>
+                        </span>
+                      )}
+
+                      <div>
+                        {sub.cancel_at_period_end == true && (
+                          <Button
+                            textValue="Resume Subscription"
+                            iconRight="sparkle"
+                            btnSize="med"
+                            btnTheme="outline"
+                            onClickHandler={() => {
+                              cancelSubscription({
+                                _id: sub._id,
+                                actionReq: "dont_cancel",
+                                confirmMsg:
+                                  "Do you want to resume the subsciption.",
+                              })
+                            }}
+                          />
                         )}
-
-                        {sub.cancel_at && isDataLarge(sub.cancel_at) && (
-                          <span className="text-gray-400 text-sm mt-2.5 mb-6 block">
-                            <b>
-                              Cancel at{": "}
-                              {format(new Date(sub.cancel_at), "MM LLL, yyyy")}
-                            </b>
-                          </span>
+                        {sub.cancel_at_period_end == false && (
+                          <Button
+                            textValue="Cancel Subscription"
+                            iconRight="wallet"
+                            btnSize="med"
+                            btnTheme="indigo"
+                            onClickHandler={() => {
+                              cancelSubscription({
+                                _id: sub._id,
+                                confirmMsg:
+                                  "Do you want to cancel the subsciption at the end of trial period.",
+                              })
+                            }}
+                          />
                         )}
-
-                        <div>
-                          {sub.cancel_at_period_end == true && (
-                            <Button
-                              textValue="Resume Subscription"
-                              iconRight="sparkle"
-                              btnSize="med"
-                              btnTheme="outline"
-                              onClickHandler={() => {
-                                cancelSubscription({
-                                  _id: sub._id,
-                                  actionReq: "dont_cancel",
-                                  confirmMsg:
-                                    "Do you want to resume the subsciption.",
-                                })
-                              }}
-                            />
-                          )}
-                          {sub.cancel_at_period_end == false && (
-                            <Button
-                              textValue="Cancel Subscription"
-                              iconRight="wallet"
-                              btnSize="med"
-                              btnTheme="indigo"
-                              onClickHandler={() => {
-                                cancelSubscription({
-                                  _id: sub._id,
-                                  confirmMsg:
-                                    "Do you want to cancel the subsciption at the end of trial period.",
-                                })
-                              }}
-                            />
-                          )}
-                        </div>
                       </div>
                     </div>
-                  )
-                })}
-              </div>
-            </>
-          )}
-        </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        )}
       </section>
     </Layout>
   )

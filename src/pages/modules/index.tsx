@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from "react"
 import { Link, navigate } from "gatsby"
 
-import Header from "@components/header"
-import SEO from "@components/seo"
+import SEOHead from "@atom/seo-head/index"
 
 import { isLoggedIn, getCurrentUser } from "@utils/auth"
-
 import { sanityRequest } from "@lib/sanity/sanityActions"
+import Tabs from "@atom/tabs/index"
 
 import Button from "@atom/button/index"
-import HorizontalNavbar from "@atom/horizontal-navbar/index"
+import Layout from "@components/layout"
 
 const Modules = ({ location }: any) => {
   const [content, setcontent] = useState([])
@@ -20,7 +19,7 @@ const Modules = ({ location }: any) => {
     } else {
       navigate("/auth")
     }
-  }, [])
+  }, [location])
 
   async function fetchData() {
     let usr = getCurrentUser()
@@ -33,28 +32,24 @@ const Modules = ({ location }: any) => {
   }
 
   return (
-    <>
-      <SEO title="Login" location={location} />
-      {/* <Toaster position="top-center" /> */}
-
-      <Header location={location} />
-
+    <Layout>
       <section className="m-t-25 p-b-35">
         <div className="wrapper wrapper--narrow">
-          <HorizontalNavbar
-            nav={[
+          <Tabs
+            tabs={[
               {
-                title: "Modules",
-                goto: "/modules",
-                state: location.pathname == "/modules" ? "active" : "",
+                name: "Modules",
+                href: "/modules",
+                current: location?.pathname == "/modules" ? true : false,
               },
               {
-                title: "Settings",
-                goto: "/settings",
-                state: location.pathname == "/settings" ? "active" : "",
+                name: "Settings",
+                href: "/settings",
+                current: location?.pathname == "/settings" ? true : false,
               },
             ]}
           />
+          
 
           <h1 className="headline m-b-35">
             <b>Your courses</b>
@@ -106,8 +101,21 @@ const Modules = ({ location }: any) => {
           )}
         </div>
       </section>
-    </>
+    </Layout>
   )
 }
+
+export const Head = ({
+  location,
+  // params,
+  data,
+}: // pageContext
+any) => (
+  <SEOHead
+    title={"Modules"}
+    description="My name is Taimoor Sattar, a full-stack developer. I have a bachelor's degree in engineering, but love to code."
+    location={location}
+  />
+)
 
 export default Modules

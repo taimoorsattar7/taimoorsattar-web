@@ -1,53 +1,48 @@
-import React, { useState, useEffect } from "react"
-import { Link, navigate } from "gatsby"
-
-import { getCurrentUser, logout, isLoggedIn, cVerifyToken } from "@utils/auth"
-
-import Button from "@atom/button/index"
-// import { StaticImage } from "gatsby-plugin-image"
-
+import React, { useState, useEffect, Fragment } from "react"
+import { Disclosure, Menu, Transition } from "@headlessui/react"
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
+import { Container } from "@components/Container"
 import queryString from "query-string"
 
-import "@components/_site-header.scss"
-import "@components/_wrapper.scss"
-import "@components/_headline.scss"
-import "@components/_primary-nav.scss"
-
+import { Link, navigate } from "gatsby"
+import { getCurrentUser, logout, cVerifyToken } from "@utils/auth"
 import logo from "../images/logo.svg"
 
-// import about from "../images/about-icon.svg"
-// import blogs from "../images/blogs-icon.svg"
-// import contact from "../images/contact-icon.svg"
+import Button from "@atom/button/index"
 
-// import { ContactIcon, TypeIcon, HomeIcon } from "lucide-react"
+function classNames(...classes: string[]) {
+  return classes.filter(Boolean).join(" ")
+}
 
-const Header = ({ location }: any) => {
-  const [hamBurger, handleHamBurger] = useState(false)
-  const [toggleAvatar, setToggleAvatar] = useState(false)
+export default function Header({ location }: any) {
   const [usr, setUsr] = useState<any>(null)
-
-  let Breadcrumbs = [
-    {
-      title: "About",
-      goto: "/about",
-    },
-    {
-      title: "Blogs",
-      goto: "/blogs",
-    },
-    {
-      title: "Course",
-      goto: "/course",
-    },
-    {
-      title: "Contact",
-      goto: "/contact",
-    },
-  ]
 
   function handleLogout() {
     logout(navigate("/auth"))
   }
+
+  const navigation = [
+    {
+      name: "About",
+      href: "/about",
+      current: location?.pathname?.includes("about") ? true : false,
+    },
+    {
+      name: "Blogs",
+      href: "/blogs",
+      current: location?.pathname?.includes("blogs") ? true : false,
+    },
+    {
+      name: "Course",
+      href: "/course",
+      current: location?.pathname?.includes("course") ? true : false,
+    },
+    {
+      name: "Contact",
+      href: "/contact",
+      current: location?.pathname?.includes("contact") ? true : false,
+    },
+  ]
 
   useEffect(() => {
     setUsr(getCurrentUser())
@@ -63,163 +58,162 @@ const Header = ({ location }: any) => {
     await cVerifyToken(token)
     setUsr(getCurrentUser())
   }
-
   return (
-    <>
-      <header className="site-header bg-indigo-50">
-        <div className="wrapper wrapper--narrow">
-          <div className="flex flex--wrap justify-between gap-5 flex--items-center">
-            <span className="headline headline--logo">
-              <Link to="/?from=header">
-                {/* <StaticImage
-                  src="../images/logo.svg"
-                  className="inline-block w-24 h-24 object-cover"
-                  alt="Logo"
-                  placeholder="blurred"
-                  layout="fixed"
-                /> */}
-                <img
-                  className="site-header__logo"
-                  src={logo}
-                  alt="Taimoor Sattar"
-                />
-                <span className="site-header__logo-text">Taimoor Sattar</span>
-              </Link>
-            </span>
-
-            <div
-              className={`flex-grow-1 z-index-4 md_pos-r-10 md_pos-t-65 md_position_absolute
-              ${!hamBurger ? "md_display_none" : ""}`}
-            >
-              <nav
-                className={
-                  "m-0 p-0 primary-nav primary-nav--pull-right" +
-                  (!hamBurger ? " primary-nav--vanish" : "")
-                }
-              >
-                <ul itemScope itemType="https://schema.org/BreadcrumbList">
-                  {Breadcrumbs.map((item: any, index: any) => {
-                    return (
-                      <li
-                        key={index + 1}
-                        className="text-base"
-                        itemProp="itemListElement"
-                        itemScope
-                        itemType="https://schema.org/ListItem"
-                      >
-                        <Link itemProp="item" to={item.goto}>
-                          <span itemProp="name" title={item.title}>
-                            {item.title}
-                          </span>
-                          <meta
-                            itemProp="position"
-                            content={String(index + 1)}
-                          />
-                        </Link>
-                      </li>
-                    )
-                  })}
-                </ul>
-              </nav>
-            </div>
-
-            {typeof usr?.avatar == "string" ? (
-              <div className="relative">
-                <div
-                  onClick={() => {
-                    setToggleAvatar(prevState => !prevState)
-                    handleHamBurger(() => false)
-                  }}
-                  className="w-full cursor-pointer"
-                >
-                  <div className="relative flex items-center justify-center w-10 h-10 m-1 mr-2 text-xl text-white bg-gray-500 rounded-full">
+    <Disclosure as="nav" className="bg-slate-700">
+      {({ open }: any) => (
+        <Container>
+          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+            <div className="relative flex h-16 items-center justify-between">
+              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                {/* Mobile menu button*/}
+                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
+                  <span className="absolute -inset-0.5" />
+                  <span className="sr-only">Open main menu</span>
+                  {open ? (
+                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
+                  ) : (
+                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
+                  )}
+                </Disclosure.Button>
+              </div>
+              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                <div className="flex flex-shrink-0 items-center">
+                  <Link to={"/"}>
                     <img
-                      className="rounded-full"
-                      src={usr.avatar}
+                      className="h-7 w-auto"
+                      src={logo}
                       alt="Taimoor Sattar"
                     />
-                  </div>
+                  </Link>
                 </div>
-
-                <div
-                  className={`${
-                    toggleAvatar == false && "hidden"
-                  } absolute right-0 z-50 mt-2 origin-top-left bg-white rounded-md shadow-lg w-48`}
-                >
-                  <div className="px-2 py-2 text-base rounded-md shadow dropdown-gray">
-                    <Link
-                      className="block px-4 py-2 mt-2 text-gray-900 rounded-lg md:mt-0 hover:dropdown-text-bg"
-                      to="/modules"
-                    >
-                      <span className="mx-1 text-sm sm:text-base">Modules</span>
-                    </Link>
-
-                    <Link
-                      className="block px-4 py-2 mt-2 text-gray-900 rounded-lg md:mt-0 hover:dropdown-text-bg"
-                      to="/settings"
-                    >
-                      <span className="mx-1 text-sm sm:text-base">
-                        Settings
-                      </span>
-                    </Link>
-
-                    {isLoggedIn() == true && (
-                      <span
-                        className="block px-4 py-2 mt-2 text-gray-900 rounded-lg pointer md:mt-0 hover:dropdown-text-bg"
-                        onClick={() => {
-                          handleLogout()
-                        }}
+                <div className="hidden sm:ml-6 sm:block">
+                  <div className="flex space-x-4">
+                    {navigation.map(item => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={classNames(
+                          item.current
+                            ? " text-white"
+                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                          "rounded-md px-3 py-2 text-sm font-medium"
+                        )}
+                        aria-current={item.current ? "page" : undefined}
                       >
-                        <span className="mx-1 text-sm sm:text-base">
-                          Logout
-                        </span>
-                      </span>
-                    )}
+                        {item.name}
+                      </Link>
+                    ))}
                   </div>
                 </div>
               </div>
-            ) : (
-              // <Link to="/auth">
-              //   <button className="px-4 py-1 font-bold text-white bg-blue-500 rounded hover:bg-blue-600">
-              //     Login
-              //   </button>
-              // </Link>
-              <Link className="no-underline" to="/auth">
-                <Button
-                  btnSize="sml"
-                  btnTheme="filled"
-                  iconRight={"graduationcap"}
-                  textValue="Course Login"
-                />
-              </Link>
-              // <Link to="/auth">
-              //   <div className="relative flex items-center justify-center w-10 h-10 m-1 mr-2 text-xl text-white bg-gray-500 rounded-full cursor-pointer">
-              //     <img src={"/icons/avatar_person_icon.svg"} alt="Avatar" />
-              //   </div>
-              // </Link>
-            )}
 
-            <div className="flex flex--items-center">
-              <div
-                onClick={() => {
-                  setToggleAvatar(false)
-                  handleHamBurger(prevState => !prevState)
-                }}
-                className={
-                  !hamBurger
-                    ? "pointer site-header__menu-icon"
-                    : "pointer site-header__menu-icon--close-x"
-                }
-              >
-                <div className="site-header__menu-icon__middle"></div>
-              </div>
-              {/* </div> */}
+              {typeof usr?.avatar == "string" ? (
+                <>
+                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+                    {/* Profile dropdown */}
+                    <Menu as="div" className="relative ml-3">
+                      <div>
+                        <Menu.Button className="cursor-pointer relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                          <span className="absolute -inset-1.5" />
+                          <span className="sr-only">Open user menu</span>
+                          <img
+                            className="h-8 w-8 rounded-full"
+                            src={usr.avatar}
+                            alt=""
+                          />
+                        </Menu.Button>
+                      </div>
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="/modules"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Modules
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <Link
+                                to="#"
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Settings
+                              </Link>
+                            )}
+                          </Menu.Item>
+                          <Menu.Item>
+                            {({ active }) => (
+                              <span
+                                onClick={() => {
+                                  handleLogout()
+                                }}
+                                className={classNames(
+                                  active ? "bg-gray-100" : "",
+                                  "block px-4 py-2 text-sm text-gray-700"
+                                )}
+                              >
+                                Sign out
+                              </span>
+                            )}
+                          </Menu.Item>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                  </div>
+                </>
+              ) : (
+                <Link to="/auth">
+                  <Button
+                    textValue="Login to the course"
+                    iconRight="LockIcon"
+                    btnSize="sml"
+                    btnTheme="outline"
+                  />
+                </Link>
+              )}
             </div>
           </div>
-        </div>
-      </header>
-    </>
+
+          <Disclosure.Panel className="sm:hidden">
+            <div className="space-y-1 px-2 pb-3 pt-2">
+              {navigation.map(item => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    item.current
+                      ? "bg-gray-900 text-white"
+                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
+                    "block rounded-md px-3 py-2 text-base font-medium"
+                  )}
+                  aria-current={item.current ? "page" : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
+            </div>
+          </Disclosure.Panel>
+        </Container>
+      )}
+    </Disclosure>
   )
 }
-
-export default Header

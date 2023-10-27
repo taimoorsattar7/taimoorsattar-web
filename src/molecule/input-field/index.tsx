@@ -22,7 +22,7 @@ const InputField: any = ({
   return (
     <div className="mb-4">
       <label
-        className={`text-base mb-1
+        className={`block text-sm font-medium leading-6 text-gray-900
       ${status == "normal" ? "text-neutral-600" : ""}
       ${status == "success" ? "text-green-400" : ""}
       ${status == "error" ? "text-red-400" : ""}

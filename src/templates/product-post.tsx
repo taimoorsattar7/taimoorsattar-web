@@ -6,16 +6,13 @@ import ProductPage from "@components/product/ProductPage"
 import SEOHead from "@atom/seo-head/index"
 
 import { graphql } from "gatsby"
-import "@styles/_img.scss"
-import "@styles/_btn.scss"
 
 const ProductPost = ({ data, location, pageContext }: any) => {
   // const url = typeof window !== "undefined" ? window.location.href : ""
   const product = data.sanityProduct
 
   return (
-    <Layout location={location}>
-
+    <Layout noMargin={true} location={location}>
       {product && (
         <ProductPage location={location} avatar={data.avatar} {...product} />
       )}

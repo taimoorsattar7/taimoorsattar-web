@@ -4,9 +4,11 @@ import React, { useState, useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import axios, { AxiosResponse } from "axios"
 import { useForm } from "react-hook-form"
+import SelectMenu from "@components/SelectMenu"
 
 import Button from "@atom/button/index"
 
+import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
 // import { navigate } from "gatsby"
 
 import removeParams from "@lib/removeParams"
@@ -15,8 +17,6 @@ import removeTrailing from "@lib/removeTrailing"
 import PortableText from "@components/portabletext/portableText"
 
 import InputField from "@molecule/input-field/index"
-
-import "@styles/_field.scss"
 
 // @ts-ignore
 import { useSiteMetadata } from "@hooks/use-site-metadata.tsx"
@@ -167,9 +167,11 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           required={true}
         />
 
-        <div className="m-b-25">
-          <fieldset className="m-0 p-0 border-2 border-indigo-100">
-            <legend className="sr-only">Select the plan</legend>
+        <div className="mb-8">
+          <fieldset className="m-0 p-0 border-2 rounded-sm border-indigo-100">
+            <legend className="text-gray-600 px-1 text-sm">
+              Select the plan
+            </legend>
             <div className="-space-y-px bg-white rounded-md">
               {productPrice?.plans.map(
                 (prc: any, index: React.Key | null | undefined) => {
@@ -199,7 +201,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                               : prc.priceID
                           }
                           type="radio"
-                          className={`text-indigo-600 ${
+                          className={`border-2 border-cyan-900 text-indigo-600 ${
                             watch("price") == "" ||
                             watch("price") ==
                               (buildMeta.devstatus == "development"
@@ -210,8 +212,8 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                                 ? prc.priceID
                                 : "")
                               ? "focus:ring-indigo-500"
-                              : "border-gray-300"
-                          } cursor-pointer `}
+                              : " border-2 border-cyan-900"
+                          }`}
                         />
                       </div>
                       <label
@@ -233,11 +235,6 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                           }`}
                         >
                           {prc.keyword}
-                          {/* {" - "}
-                          {prc.price ? prc.price : "Free"}
-                          {prc.currency == "euro" ? "€" : ""}
-                          {" / "}
-                          {"month"} */}
                         </span>
 
                         <span

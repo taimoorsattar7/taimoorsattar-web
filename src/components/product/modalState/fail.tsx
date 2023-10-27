@@ -5,8 +5,6 @@ import toast, { Toaster } from "react-hot-toast"
 
 import { XCircle } from "lucide-react"
 
-import WarningIcon from "@components/icons/warning/WarningIcon"
-
 const Fail = () => {
   useEffect(() => {
     toast.error("Payment failed")
@@ -16,7 +14,7 @@ const Fail = () => {
     <>
       <Toaster position="top-center" />
 
-      <XCircle className="m-b-15 m-auto flex flex--items-center flex--justify-center h40 w40 circle bg-light-red" />
+      <XCircle color="red" className="block mb-8 mx-auto" />
 
       <div>
         <h3 className="headline text-center m-b-15">Payment Failed</h3>

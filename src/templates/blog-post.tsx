@@ -4,29 +4,15 @@ import { graphql } from "gatsby"
 import BlogPage from "@components/blog/BlogPage"
 import SEOHead from "@atom/seo-head/index"
 
-import Container from "@primitives/container/container"
+import { Container } from "@components/Container"
 
 import Layout from "@components/layout"
-import CTA from "@atom/cta/index"
 import ShareSocial from "@atom/share-social/index"
-// import BioDetail from "@atom/bio-detail/index"
-
-// import BioDetail from "@atom/bio-detail/index"
-
-// data
-// location
-// navigate
-// pageContext
-// pageResources
-// params
-// path
-// serverData
-// uri
 
 const BlogPostTemplate = ({ data, location }: any) => {
   return (
     <Layout location={location}>
-      <Container>
+      <Container className="mt-12 lg:mt-16">
         <BlogPage data={data} />
 
         <ShareSocial
@@ -48,12 +34,6 @@ const BlogPostTemplate = ({ data, location }: any) => {
             },
           ]}
         />
-
-        <CTA
-          keyword="Course"
-          pitch="You will learn to build a website that will stand out and accelerate your career. Together, we will develop a subscription website that gives users access to premium content based on their subscription level."
-          goto="/p/build-standout-website"
-        />
       </Container>
     </Layout>
   )
@@ -67,28 +47,25 @@ export const Head = ({
   data,
 }: // pageContext
 any) => (
-  <>
-    <SEOHead
-      title={data?.markdownRemark?.frontmatter?.title}
-      description={
-        data?.markdownRemark?.frontmatter?.exerpt ||
-        data?.markdownRemark?.excerpt
-      }
-      location={location}
-      image={
-        data?.markdownRemark?.frontmatter?.featuredimage?.publicURL
-          ? `https://taimoorsattar.com${data?.markdownRemark?.frontmatter?.featuredimage?.publicURL}`
-          : ""
-      }
-      schemaType={"blog"}
-      datePublished={data?.markdownRemark?.frontmatter?.date}
-      dateModified={
-        data?.markdownRemark?.frontmatter?.dateModified
-          ? data?.markdownRemark?.frontmatter?.dateModified
-          : data?.markdownRemark?.frontmatter?.date
-      }
-    />
-  </>
+  <SEOHead
+    title={data?.markdownRemark?.frontmatter?.title}
+    description={
+      data?.markdownRemark?.frontmatter?.exerpt || data?.markdownRemark?.excerpt
+    }
+    location={location}
+    image={
+      data?.markdownRemark?.frontmatter?.featuredimage?.publicURL
+        ? `https://taimoorsattar.com${data?.markdownRemark?.frontmatter?.featuredimage?.publicURL}`
+        : ""
+    }
+    schemaType={"blog"}
+    datePublished={data?.markdownRemark?.frontmatter?.date}
+    dateModified={
+      data?.markdownRemark?.frontmatter?.dateModified
+        ? data?.markdownRemark?.frontmatter?.dateModified
+        : data?.markdownRemark?.frontmatter?.date
+    }
+  />
 )
 
 export const pageQuery = graphql`

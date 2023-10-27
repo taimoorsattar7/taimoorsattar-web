@@ -1,48 +1,46 @@
 "use client"
-
 import React from "react"
-// import { GatsbyImage } from "gatsby-plugin-image"
 import { Link } from "gatsby"
 
-// import StarFill from "@images/icons/star-fill.svg"
-import { StarIcon } from "lucide-react"
-// import StarIcon from "../../images/icons/star-icon.png"
-import AnimateOnScroll from "@atom/animate-on-scroll/index"
-import Avatar from "@atom/avatar/index"
-
 const BlogSingleton = ({
+  index,
   title,
   slug,
   smDescription,
   date,
+  category,
   isFeature,
 }: any) => {
   return (
-    <AnimateOnScroll
-      className="h-full"
-      BoxVariants={{
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
-        hidden: { opacity: 0, y: 100 },
-      }}
+    <article
+      key={index}
+      className="flex max-w-xl flex-col items-start justify-between"
     >
-      <Link
-        to={slug}
-        itemProp="url"
-        className="no-underline h-full hover:shadow-[0px_1px_1px_rgba(0,_0,_0,_0.5)_inset] rounded bg-white box-border max-w-full w-72 flex flex-1 flex-col p-3 items-start justify-start gap-4 border-1 border-solid border-gray text-stone-900"
-      >
-        <Avatar />
-        <div className="self-stretch flex flex-row items-start justify-start gap-[0.75rem] text-[1.5rem]">
-          <div className="flex-1 flex flex-col items-start justify-start gap-[0.25rem]">
-            <h3 className="text-xl mb-1">{title}</h3>
-            <div className="self-stretch text-sm text-gray-700">{date}</div>
-          </div>
-          {isFeature == true && (
-            <StarIcon className=" w-[1.25rem] h-[1.25rem]" />
-          )}
-        </div>
-        <p className="text-base text-neutral-600">{smDescription}</p>
-      </Link>
-    </AnimateOnScroll>
+      <div className="flex items-center gap-x-4 text-xs">
+        <time dateTime={date} className="text-gray-500">
+          {date}
+        </time>
+
+        {category ? (
+          <p className="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">
+            {category}
+          </p>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className="group relative">
+        <h3 className="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
+          <Link to={slug}>
+            <span className="absolute inset-0" />
+            {title}
+          </Link>
+        </h3>
+        <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
+          {smDescription}
+        </p>
+      </div>
+    </article>
   )
 }
 

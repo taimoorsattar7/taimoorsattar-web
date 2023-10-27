@@ -3,6 +3,7 @@ import toast, { Toaster } from "react-hot-toast"
 
 import { navigate, Link } from "gatsby"
 import { useForm } from "react-hook-form"
+import SEOHead from "@atom/seo-head/index"
 
 import { handleLogin, isLoggedIn } from "@utils/auth"
 import Layout from "@components/layout"
@@ -55,26 +56,18 @@ const AuthPage = ({ location }: any) => {
 
   return (
     <Layout location={location}>
-      <SEO title="Login" location={location} />
-
       <Toaster position="top-center" />
-
-      <div className="wrapper wrapper--small m-b-25">
-        <div className="m-t-10 m-b-10">
-          {/* <img
+      <div className="lg:px-44">
+        {/* <img
             loading="lazy"
             className="block m-auto text-center m-t-10 m-b-10"
             width={60}
             src={"/img/locked_secure_icon.png"}
             alt="Logo"
           /> */}
-          <h1 className="text-3xl mb-4">
-            <b>LOGIN</b>
-          </h1>
-          <p className="text-base">
-            Enter your email and password to continue to dashboad.
-          </p>
-        </div>
+        <h1 className="text-3xl mb-4">
+          <b>Please login to access the course</b>
+        </h1>
 
         <form className="field" onSubmit={handleSubmit(onSubmit)}>
           <InputField
@@ -133,5 +126,13 @@ const AuthPage = ({ location }: any) => {
     </Layout>
   )
 }
+
+export const Head = ({ location }: any) => (
+  <SEOHead
+    title={"Login"}
+    description="Please login to access the course."
+    location={location}
+  />
+)
 
 export default AuthPage
