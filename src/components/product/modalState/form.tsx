@@ -22,34 +22,49 @@ import InputField from "@molecule/input-field/index"
 import { useSiteMetadata } from "@hooks/use-site-metadata.tsx"
 
 const Form = ({ productPrice, location, onModalState }: any) => {
-  const [SPrice, setSPrice] = useState<{
-    _key?: number | null
-    price?: number | null
-    priceID?: String | null
-    description?: String | null
-    amount?: Number | null
-  }>({
-    _key: null,
-    price: null,
-    priceID: null,
-    description: "",
-    amount: null,
-  })
+  // const [SPrice, setSPrice] = useState<{
+  //   _key?: number | null
+  //   price?: number | null
+  //   priceID?: String | null
+  //   description?: String | null
+  //   amount?: Number | null
+  // }>({
+  //   _key: null,
+  //   price: null,
+  //   priceID: null,
+  //   description: "",
+  //   amount: null,
+  // })
 
   const {
     register,
     handleSubmit,
     watch,
+    setValue,
     formState: { errors },
   } = useForm()
 
   useEffect(() => {
+    let defaultPriceValue = ""
     if (productPrice?.plans?.length > 0) {
-      setSPrice({
-        _key: productPrice?.plans[0]?._key,
-        description: productPrice?.plans[0]?._rawDescription,
-        priceID: productPrice?.plans[0]?.priceID,
-      })
+      for (let i = 0; i < Number(productPrice?.plans?.length); i++) {
+        if (productPrice?.plans[i].source == "Stripe") {
+          if (buildMeta.devstatus == "development") {
+            defaultPriceValue = productPrice?.plans[i].priceID_test
+            break
+          } else {
+            defaultPriceValue = productPrice?.plans[i].priceID
+            break
+          }
+        }
+      }
+      setValue("price", defaultPriceValue)
+
+      // setSPrice({
+      //   _key: productPrice?.plans[0]?._key,
+      //   description: productPrice?.plans[0]?._rawDescription,
+      //   priceID: productPrice?.plans[0]?.priceID,
+      // })
     }
   }, [])
 
@@ -216,6 +231,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                           }`}
                         />
                       </div>
+
                       <label
                         htmlFor={prc.keyword}
                         className="ml-3 cursor-pointer"

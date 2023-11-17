@@ -59,6 +59,7 @@ const Icons = ({ iconName, className }: any) => {
 
 const Button: any = (props: any) => {
   const {
+    id,
     type,
     btnSize,
     btnTheme,
@@ -105,6 +106,7 @@ const Button: any = (props: any) => {
 
   return (
     <button
+      id={id ? id : ""}
       type={type}
       onClick={event => onClickHandler(event)}
       disabled={disabled}

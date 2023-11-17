@@ -23,8 +23,9 @@ const ProductBanner: any = (props: any) => {
   return (
     <section typeof="Course">
       <div
-        className="m-5 px-6 bg-gray-500 pt-8 pb-8 rounded-lg"
+        className="m-5 px-6 pt-8 pb-8 rounded-lg"
         style={{
+          backgroundColor: "#d2dde0",
           backgroundImage: `url(${bgImage || ""})`,
           backgroundRepeat: "round",
         }}
@@ -64,6 +65,7 @@ const ProductBanner: any = (props: any) => {
                 </Link>
               ) : (
                 <Button
+                  id="form-modal-select-2"
                   textValue="Enroll in the course"
                   iconRight="sparkle"
                   className="mx-auto"

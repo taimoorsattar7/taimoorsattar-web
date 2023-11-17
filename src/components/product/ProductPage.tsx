@@ -141,6 +141,7 @@ function ProductPage({
         </div>
 
         <Button
+          id="form-modal-select-1"
           textValue="Enroll in the course"
           iconRight="sparkle"
           className="mx-auto"
