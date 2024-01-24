@@ -1,7 +1,7 @@
 import React from "react"
 import Header from "@components/header"
 import Footer from "@components/footer/footer"
-import Banner from "@components/Banner"
+// import Banner from "@components/Banner"
 import { Container } from "@components/Container"
 // import { Slice } from "gatsby"
 
@@ -11,10 +11,10 @@ const Layout = ({
   noFooter = false,
   location = {},
 }: any) => {
-  let pathname = String(location?.pathname)
+  // let pathname = String(location?.pathname)
   return (
     <div className="main">
-      {pathname?.includes("/blog") ? <Banner /> : <></>}
+      {/* {pathname?.includes("/blog") ? <Banner /> : <></>} */}
 
       <Header location={location} />
       {noMargin == true ? (

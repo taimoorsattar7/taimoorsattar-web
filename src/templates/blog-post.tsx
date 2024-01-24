@@ -8,12 +8,32 @@ import { Container } from "@components/Container"
 
 import Layout from "@components/layout"
 import ShareSocial from "@atom/share-social/index"
+import Divider from "@atom/divider/index"
 
 const BlogPostTemplate = ({ data, location }: any) => {
   return (
     <Layout location={location}>
       <Container className="mt-12 lg:mt-16">
         <BlogPage data={data} />
+
+        <div className="mt-8 mb-8">
+          <Divider />
+        </div>
+        <div className="prose prose-lg max-w-fit">
+          <p>Thanks for reading the post.</p>
+          <p>
+            If you want to learn how to build a full-stack subscription website,
+            please check out{" "}
+            <a href="https://taimoorsattar.com/p/build-standout-website">
+              my course
+            </a>
+            .
+          </p>
+          <p>
+            If you find this post useful, please share it on your social
+            platform to reach out to more people.
+          </p>
+        </div>
 
         <ShareSocial
           data={[
