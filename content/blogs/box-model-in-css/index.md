@@ -6,14 +6,16 @@ date: 2021-01-18T17:31:23.338Z
 tags:
   - box model
   - css
-featuredpost: false
+featuredpost: true
+status: publish
 ---
+
 We can consider HTML elements as boxes that take some area. Area of HTML element can be sum as below:
 
-* Content of HTML element
-* Space from the content to the boundary wall
-* Boundary wall
-* Space outside of the boundary
+- Content of HTML element
+- Space from the content to the boundary wall
+- Boundary wall
+- Space outside of the boundary
 
 In CSS, we can adjust the space of the HTML element with the Box Model. Box model mainly consists of 3 elements:
 
@@ -51,4 +53,4 @@ For more customization, we can expand `padding: 8px 15px` code as below:
 }
 ```
 
-The above case is the same for margin. We can adjust the top, left, bottom, and right values individually. 
+The above case is the same for margin. We can adjust the top, left, bottom, and right values individually.

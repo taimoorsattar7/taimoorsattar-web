@@ -1,6 +1,6 @@
 backend:
   name: github
-  repo: taimoorsattar7/taimoorsattar.dev
+  repo: taimoorsattar7/taimoorsattar-web
   branch: master
   commit_messages:
     create: "Create {{collection}} “{{slug}}”"
@@ -19,7 +19,7 @@ collections:
     folder: "content/blogs"
     slug: "index"
     author: "{{author}}"
-    path: '{{title}}/index'
+    path: "{{title}}/index"
     create: true
     fields:
       - { name: title, label: Title }
@@ -57,15 +57,15 @@ collections:
           widget: image,
           required: false,
         }
-  - name: 'book'
-    label: 'Book'
-    folder: 'content/books'
+  - name: "book"
+    label: "Book"
+    folder: "content/books"
     create: true
-    slug: 'index'
+    slug: "index"
     author: "{{author}}"
-    media_folder: ''
-    public_folder: ''
-    path: '{{title}}/index'
+    media_folder: ""
+    public_folder: ""
+    path: "{{title}}/index"
     editor:
       preview: false
     fields:
@@ -75,16 +75,16 @@ collections:
         minimize_collapsed: true
         widget: "list"
         fields:
-          - {label: NAME, name: name, widget: string, default: "name"}
-          - {label: PRICE, name: price, widget: number, default: "Pricing"}
+          - { label: NAME, name: name, widget: string, default: "name" }
+          - { label: PRICE, name: price, widget: number, default: "Pricing" }
           - { label: "CURRENCY", name: buyLink, widget: text }
           - label: "INTERVAL"
             name: "interval"
             widget: "select"
             options: ["month", "6 month", "year"]
-          - {label: BUTTON TEXT, name: btntxt, widget: string }
-          - {label: BUTTON LINK, name: btnlink, widget: string }
-          - {label: EXERPT, name: exerpt, widget: string }
+          - { label: BUTTON TEXT, name: btntxt, widget: string }
+          - { label: BUTTON LINK, name: btnlink, widget: string }
+          - { label: EXERPT, name: exerpt, widget: string }
       - { label: "EXERPT", name: "exerpt", widget: "string" }
       - { name: date, label: DATE, widget: date }
       - { name: body, label: BODY, widget: markdown }
@@ -96,4 +96,4 @@ collections:
           widget: image,
           required: false,
         }
-      - {label: "POPULAR", name: "popular", widget: "boolean", default: false}
+      - { label: "POPULAR", name: "popular", widget: "boolean", default: false }

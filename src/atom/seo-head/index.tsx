@@ -17,6 +17,7 @@ const SEOHead = ({
 }: any) => {
   let buildMeta = useSiteMetadata()
 
+
   const metaOrigin = buildMeta?.siteUrl
 
   const metaCanonical = removeTrailing(
