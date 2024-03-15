@@ -14,14 +14,7 @@ module.exports = {
   flags: {
     FAST_DEV: true,
     DEV_SSR: true,
-    PARALLEL_QUERY_RUNNING: true,
-    QUERY_ON_DEMAND: true,
-    PRESERVE_WEBPACK_CACHE: true,
-    DEV_WEBPACK_CACHE: true,
-    LMDB_STORE: true,
     PARALLEL_SOURCING: true,
-    FUNCTIONS: true,
-    GRAPHQL_NESTED_SORT_AND_AGGREGATE: true,
   },
   siteMetadata: {
     title: `Taimoor Sattar`,
@@ -262,5 +255,5 @@ module.exports = {
     `gatsby-plugin-offline`,
     `gatsby-plugin-react-helmet`,
   ],
-  trailingSlash: "never",
+  trailingSlash: "ignore",
 }

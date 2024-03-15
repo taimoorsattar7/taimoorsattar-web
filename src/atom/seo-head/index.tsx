@@ -17,7 +17,6 @@ const SEOHead = ({
 }: any) => {
   let buildMeta = useSiteMetadata()
 
-
   const metaOrigin = buildMeta?.siteUrl
 
   const metaCanonical = removeTrailing(
@@ -75,6 +74,21 @@ const SEOHead = ({
       name: "Taimoor Sattar",
       url: "https://taimoorsattar.com",
     },
+    provider: {
+      "@type": "Person",
+      name: "Taimoor Sattar",
+    },
+    hasCourseInstance: [
+      {
+        "@type": "CourseInstance",
+        courseMode: ["Gatsby js", "React js", "Sanity io", "Stripe", "Online"],
+        offers: {
+          "@type": "Offer",
+          price: "39",
+          priceCurrency: "USD",
+        },
+      },
+    ],
   }
 
   const book_schema = {
