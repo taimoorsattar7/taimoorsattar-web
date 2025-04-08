@@ -28,7 +28,7 @@
     "email-templates": "^10.0.1",
     "framer-motion": "^10.12.21",
     "fs": "^0.0.1-security",
-    "gatsby": "^5.11.0",
+    "gatsby": "^5.14.2",
     "gatsby-codemods": "^4.11.0",
     "gatsby-image": "^3.11.0",
     "gatsby-plugin-advanced-sitemap": "^2.1.0",
