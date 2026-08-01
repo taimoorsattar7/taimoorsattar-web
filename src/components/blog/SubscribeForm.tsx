@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import { useForm } from "react-hook-form"
@@ -5,8 +7,6 @@ import { useForm } from "react-hook-form"
 import validateEmail from "@lib/validate"
 
 import axios, { AxiosResponse } from "axios"
-
-import "@styles/_field.scss"
 
 const SubscribeForm = (props: any) => {
   const {

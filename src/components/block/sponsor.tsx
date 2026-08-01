@@ -1,46 +1,35 @@
 import React from "react"
-import { GatsbyImage } from "gatsby-plugin-image"
+import Link from "next/link"
+import Image from "next/image"
 
 const SponsorBlock = ({ data }: any) => {
-  return (
-    <div className="flex flex-col space-y-96 mt-16 mb-16">
-      {data.map(({ node }: any) => (
-        <div className="flex border-solid">
-          {node?.seo?.image?.asset?.gatsbyImageData && (
-            <a
-              href={`/p/${node?.slug?.current}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mb-0.5 hover:underline"
-            >
-              <GatsbyImage
-                className="w-20 h-20 flex-shrink-0 mr-4 object-cover border-2"
-                image={node?.seo?.image?.asset?.gatsbyImageData}
-                alt={"img"}
-              />
-            </a>
-          )}
+  if (!data || !Array.isArray(data)) return null
 
-          <div className="flex-grow flex flex-col">
-            <div>
-              <h3 className="flex items-center font-sans font-bold text-xs text-gray-900 text-opacity-40 mb-1">
-                <span className="w-2 h-2 rounded-full bg-green-700 flex-shrink-0 mr-2.5"></span>
-                SPONSOR
-              </h3>
-              <a
-                href={`/p/${node?.slug?.current}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mb-0.5 hover:underline"
-              >
-                <b>{node.title}</b>
-              </a>
-            </div>
-            <p className="text-gray-600 text-opacity-40 text-xs mt-auto font-sans">
-              <span className="text-blue-400 lg:inline block hover:underline">
-                Programming
-              </span>
-            </p>
+  return (
+    <div className="flex flex-col gap-8 my-8">
+      {data.map(({ node }: any) => (
+        <div key={node?.id || node?.slug?.current} className="flex items-center gap-4">
+          <Link href={`/p/${node?.slug?.current}`} className="no-underline">
+            <Image
+              className="w-16 h-16 rounded-lg object-cover border border-zinc-200 dark:border-zinc-800"
+              src={node?.seo?.image?.asset?.url || "/static/banner.jpg"}
+              alt={node?.title || "Sponsor"}
+              width={64}
+              height={64}
+              unoptimized
+            />
+          </Link>
+
+          <div className="flex flex-col">
+            <span className="text-xs font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wider">
+              SPONSOR
+            </span>
+            <Link
+              href={`/p/${node?.slug?.current}`}
+              className="font-bold text-zinc-900 dark:text-zinc-100 hover:underline no-underline"
+            >
+              {node.title}
+            </Link>
           </div>
         </div>
       ))}

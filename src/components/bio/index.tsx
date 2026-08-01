@@ -1,85 +1,68 @@
 import * as React from "react"
 import { FunctionComponent } from "react"
-import { StaticImage } from "gatsby-plugin-image"
+import Image from "next/image"
+import {
+  GitHubIcon,
+  LinkedInIcon,
+  TwitterIcon,
+} from "@components/socialicons/SocialIcons"
 
-import AnimateOnScroll from "@atom/animate-on-scroll/index"
-
-const Bio: FunctionComponent = ({ data }: any) => {
+const Bio: FunctionComponent = () => {
   return (
-    <div className="relative w-full flex flex-col items-center justify-between text-black">
-      <div className="w-full flex flex-col md:flex-row flex-wrap items-center justify-start gap-11">
-        <section className="flex-1">
-          <div className="w-full max-w-5xl">
-            <span className="w-full">
-              <h1 className="text-3xl">
-                <b>Hi, I'm Taimoor Sattar</b>
-                <br /> - Full Stack Developer
-              </h1>
+    <div className="py-8 sm:py-12 max-w-2xl">
+      {/* Spotlight Avatar Photo */}
+      <div className="mb-6">
+        <Image
+          src="/profile-pic.jpg"
+          className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover border border-zinc-200 dark:border-zinc-700/80 shadow-md"
+          alt="Taimoor Sattar"
+          width={80}
+          height={80}
+          unoptimized
+        />
+      </div>
 
-              <p className="text-base">
-                I've been building user interfaces for half a decade. I designed
-                the website using components, take care of every pixel during
-                development, and responsive to different screen sizes.
-              </p>
-            </span>
-          </div>
+      {/* Main Title */}
+      <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl leading-tight">
+        Software developer, course author, and full-stack engineer.
+      </h1>
 
-          <div className="relative w-full flex flex-row items-start justify-start gap-9">
-            <a
-              className="no-underline"
-              href="https://twitter.com/taimoorsattar7"
-            >
-              <StaticImage
-                src="../../images/social-img/twitter-img.png"
-                className={`relative object-cover w-8 h-8 overflow-hidden shrink-0`}
-                alt="Twitter"
-                placeholder="blurred"
-                layout="fixed"
-              />
-            </a>
+      {/* Description */}
+      <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400 font-normal leading-relaxed">
+        I'm Taimoor Sattar, a software engineer and author. I build web applications and write about React, TypeScript, Next.js, and modern full-stack development.
+      </p>
 
-            <a
-              className="no-underline"
-              href="https://github.com/taimoorsattar7"
-            >
-              <StaticImage
-                src="../../images/social-img/github-img.png"
-                className={`relative object-cover w-8 h-8 overflow-hidden shrink-0`}
-                alt="Github"
-                placeholder="blurred"
-                layout="fixed"
-              />
-            </a>
-
-            {/* <a
-              className="no-underline"
-              href="https://www.tiktok.com/@taimoornotes"
-            >
-              <StaticImage
-                src="../../images/social-img/tiktok-img.png"
-                className={`relative object-cover w-8 h-8 overflow-hidden shrink-0`}
-                alt="Tiktok"
-                placeholder="blurred"
-                layout="fixed"
-              />
-            </a> */}
-          </div>
-        </section>
-        <AnimateOnScroll
-          className="h-full"
-          BoxVariants={{
-            visible: { opacity: 1, y: 0, transition: { duration: 0.2 } },
-            hidden: { opacity: 0, y: 30 },
-          }}
+      {/* Social Links Row */}
+      <div className="mt-6 flex items-center gap-6">
+        <a
+          href="https://twitter.com/taimoorsattar7"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+          aria-label="Follow on Twitter"
         >
-          <StaticImage
-            src="../../images/photos/IMG_6457.jpg"
-            className={`relative border border-b-[2px] border-solid border-darkgray rounded-full w-56 h-56 object-cover`}
-            alt="Avatar"
-            placeholder="blurred"
-            layout="fixed"
-          />
-        </AnimateOnScroll>
+          <TwitterIcon className="h-5 w-5 fill-zinc-500 transition group-hover:fill-teal-500" />
+        </a>
+
+        <a
+          href="https://github.com/taimoorsattar7"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+          aria-label="Follow on GitHub"
+        >
+          <GitHubIcon className="h-5 w-5 fill-zinc-500 transition group-hover:fill-teal-500" />
+        </a>
+
+        <a
+          href="https://www.linkedin.com/in/taimoorsattar/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="group flex items-center text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-teal-600 dark:hover:text-teal-400 transition-colors"
+          aria-label="Follow on LinkedIn"
+        >
+          <LinkedInIcon className="h-5 w-5 fill-zinc-500 transition group-hover:fill-teal-500" />
+        </a>
       </div>
     </div>
   )

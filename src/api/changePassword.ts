@@ -1,4 +1,4 @@
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 import normalizeEmail from "validator/lib/normalizeEmail"
 import validator from "validator"
 
@@ -6,8 +6,8 @@ import { sanityRequest, sanityUpdate } from "../lib/sanity/sanityActions"
 // import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   try {
     const email: string = String(
@@ -71,7 +71,7 @@ export default async function handler(
     const message = error.response?.data?.message || error.message
 
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

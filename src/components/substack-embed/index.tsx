@@ -1,14 +1,8 @@
 "use client"
 
 import React from "react"
-import { PageProps } from "gatsby"
 
-// import BlogList from "@components/blog-list/index"
-
-const SubstackEmbed: React.FC<PageProps<any>> = ({
-  className,
-  ...props
-}: any) => {
+const SubstackEmbed = ({ className, ...props }: any) => {
   return (
     <iframe
       {...props}

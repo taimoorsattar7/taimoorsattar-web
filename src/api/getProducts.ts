@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from "axios"
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 // var jwt = require("jsonwebtoken")
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   // res.setHeader('Access-Control-Allow-Origin', '*')
   try {

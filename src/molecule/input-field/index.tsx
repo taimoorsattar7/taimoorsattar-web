@@ -1,8 +1,5 @@
-"use client"
-
 import React from "react"
 import PropTypes from "prop-types"
-
 import Input from "@atom/input/index"
 
 const InputField: any = ({
@@ -10,8 +7,8 @@ const InputField: any = ({
   register,
   id,
   message,
-  status, // error, success, normal
-  className,
+  status = "normal",
+  className = "",
   type,
   placeholder,
   boolautocomplete,
@@ -19,18 +16,23 @@ const InputField: any = ({
   options,
   ...props
 }: any) => {
+  const labelColor =
+    status === "success"
+      ? "text-emerald-500"
+      : status === "error"
+      ? "text-red-500"
+      : "text-slate-700 dark:text-slate-300"
+
   return (
-    <div className="mb-4">
-      <label
-        className={`block text-sm font-medium leading-6 text-gray-900
-      ${status == "normal" ? "text-neutral-600" : ""}
-      ${status == "success" ? "text-green-400" : ""}
-      ${status == "error" ? "text-red-400" : ""}
-      `}
-        htmlFor={id}
-      >
-        <b>{labelText}</b>
-      </label>
+    <div className={`mb-4 ${className}`}>
+      {labelText && (
+        <label
+          className={`block text-sm font-medium mb-1.5 ${labelColor}`}
+          htmlFor={id}
+        >
+          {labelText} {required && <span className="text-red-500">*</span>}
+        </label>
+      )}
 
       <Input
         {...props}
@@ -45,13 +47,7 @@ const InputField: any = ({
       />
 
       {message && (
-        <p
-          className={`text-base mb-1 mt-1
-          ${status == "normal" ? "text-neutral-600" : ""}
-          ${status == "success" ? "text-green-400" : ""}
-          ${status == "error" ? "text-red-400" : ""}
-      `}
-        >
+        <p className={`text-xs mt-1 ${labelColor}`}>
           {message}
         </p>
       )}
@@ -69,18 +65,18 @@ InputField.propTypes = {
   className: PropTypes.string,
   type: PropTypes.string,
   placeholder: PropTypes.string,
-  autoComplete: PropTypes.bool,
+  autoComplete: PropTypes.string,
   required: PropTypes.bool,
 }
 
 InputField.defaultProps = {
   id: "text",
   labelText: "Label Text",
-  message: "Your's message here...",
+  message: "",
   status: "normal",
   className: "",
   type: "text",
-  placeholder: "Place text here",
+  placeholder: "",
   autoComplete: "on",
   required: false,
 }

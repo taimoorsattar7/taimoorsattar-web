@@ -1,176 +1,129 @@
 "use client"
 
 import React, { useState, useEffect } from "react"
-// import logo from "../images/logo.svg"
-import { Link, navigate } from "gatsby"
-import queryString from "query-string"
-import Button from "@atom/button/index"
-
-import logo from "../../images/logo.svg"
-
-import { MenuIcon } from "lucide-react"
-
-import { getCurrentUser, logout, isLoggedIn, cVerifyToken } from "@utils/auth"
-// import PropTypes from "prop-types"
-
-// import Input from "@atom/input/index"
+import Link from "next/link"
+import Image from "next/image"
+import { useRouter } from "next/navigation"
+import { Menu, LogOut, User, BookOpen, Mail, Lock } from "lucide-react"
+import { getCurrentUser, logout, isLoggedIn } from "@utils/auth"
 
 const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
-  //   const [clkAvatar, handleClkAvatar] = useState(false)
-  //   const [hamBurger, handleHamBurger] = useState(false)
   const [toggleAvatar, setToggleAvatar] = useState(false)
   const [usr, setUsr] = useState<any>(null)
+  const router = useRouter()
 
   function handleLogout() {
-    logout(navigate("/auth"))
+    logout(() => router.push("/auth"))
   }
 
   useEffect(() => {
     setUsr(getCurrentUser())
-
-    const queriedTheme = queryString.parse(location.search)
-
-    if (queriedTheme.token) {
-      checkToken(queriedTheme.token)
-    }
   }, [])
 
-  async function checkToken(token: any) {
-    await cVerifyToken(token)
-    setUsr(getCurrentUser())
-  }
-
   return (
-    <nav className="fixed bg-slate-700 top-0 z-50 w-full border-b-4 border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-      <div className="px-3 py-3 lg:px-5 lg:pl-3">
+    <header className="fixed top-0 z-50 w-full backdrop-blur-md bg-white/90 dark:bg-[#0b0f19]/90 border-b border-zinc-200 dark:border-zinc-800/80 transition-colors">
+      <div className="px-4 py-3 lg:px-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center justify-start">
+          {/* Left Logo & Mobile Drawer Toggle */}
+          <div className="flex items-center gap-3">
             <button
-              onClick={event => {
-                onClickSideMenuHandler(event)
-              }}
-              data-drawer-target="logo-sidebar"
-              data-drawer-toggle="logo-sidebar"
-              aria-controls="logo-sidebar"
+              onClick={onClickSideMenuHandler}
               type="button"
-              className="cursor-pointer inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+              className="p-2 text-zinc-600 dark:text-zinc-300 rounded-xl sm:hidden hover:bg-zinc-100 dark:hover:bg-zinc-800/80 focus:outline-none transition-colors"
+              aria-label="Toggle sidebar"
             >
-              <span className="sr-only">Open sidebar</span>
-              <MenuIcon className="w-6 h-6" />
+              <Menu className="w-5 h-5" />
             </button>
 
-            <Link className="flex ml-2 md:mr-24" to="/modules">
-              <img className="h-8 mr-3" src={logo} alt="Taimoor Sattar" />
-              {/* <span className="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">
+            <Link href="/modules" className="flex items-center gap-2.5 no-underline group">
+              <div className="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-extrabold text-sm flex items-center justify-center shadow-md">
+                T
+              </div>
+              <span className="font-extrabold text-lg tracking-tight text-zinc-900 dark:text-zinc-100 hover:text-zinc-600 dark:hover:text-zinc-300 transition-colors">
                 Taimoor Sattar
-              </span> */}
+              </span>
             </Link>
           </div>
-          <div className="flex items-center">
-            <div className="flex items-center ml-3">
-              {isLoggedIn() == true ? (
-                <div className="relative">
-                  <div
-                    onClick={() => {
-                      setToggleAvatar(prevState => !prevState)
-                    }}
-                    className="w-full"
-                  >
-                    <div className="relative flex items-center justify-center w-10 h-10 m-1 mr-2 text-xl text-white bg-gray-500 rounded-full">
-                      <img
-                        className="rounded-full"
-                        src={usr?.avatar}
-                        alt="Taimoor Sattar"
-                      />
-                    </div>
+
+          {/* Right User State & Actions */}
+          <div className="flex items-center gap-4">
+            <Link
+              href="/p/build-standout-website"
+              className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-semibold bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 border border-zinc-200 dark:border-zinc-700 hover:bg-zinc-200 dark:hover:bg-zinc-700 transition-colors no-underline"
+            >
+              <BookOpen className="w-3.5 h-3.5" /> Course Overview
+            </Link>
+
+            {isLoggedIn() === true ? (
+              <div className="relative">
+                <button
+                  onClick={() => setToggleAvatar(prev => !prev)}
+                  className="flex items-center gap-2 p-1 rounded-full border border-zinc-200 dark:border-zinc-700 hover:border-zinc-400 transition-colors focus:outline-none"
+                >
+                  <div className="relative w-8 h-8 rounded-full overflow-hidden grayscale">
+                    <Image
+                      src={usr?.avatar || "/profile-pic.jpg"}
+                      alt="User avatar"
+                      fill
+                      className="object-cover grayscale"
+                      unoptimized
+                    />
                   </div>
+                </button>
 
-                  <div
-                    className={`${
-                      toggleAvatar == false && "hidden"
-                    } absolute right-0 z-50 mt-2 origin-top-left bg-white rounded-md shadow-lg w-48`}
-                  >
-                    <div className="px-2 py-2 text-base rounded-md shadow dropdown-gray">
-                      <Link
-                        className="block px-4 py-2 mt-2 text-gray-900 rounded-lg md:mt-0 hover:dropdown-text-bg"
-                        to="/contact"
-                      >
-                        <span className="mx-1 text-sm sm:text-base">
-                          contact
-                        </span>
-                      </Link>
-
-                      <Link
-                        className="block px-4 py-2 mt-2 text-gray-900 rounded-lg md:mt-0 hover:dropdown-text-bg"
-                        to="/modules"
-                      >
-                        <span className="mx-1 text-sm sm:text-base">
-                          Modules
-                        </span>
-                      </Link>
-
-                      <Link
-                        className="block px-4 py-2 mt-2 text-gray-900 rounded-lg md:mt-0 hover:dropdown-text-bg"
-                        to="/settings"
-                      >
-                        <span className="mx-1 text-sm sm:text-base">
-                          Settings
-                        </span>
-                      </Link>
-
-                      <span
-                        className="block px-4 py-2 mt-2 text-gray-900 rounded-lg pointer md:mt-0 hover:dropdown-text-bg"
-                        onClick={() => {
-                          handleLogout()
-                        }}
-                      >
-                        <span className="mx-1 text-sm sm:text-base">
-                          Logout
-                        </span>
-                      </span>
+                {toggleAvatar && (
+                  <div className="absolute right-0 z-50 mt-3 w-56 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-2 space-y-1">
+                    <div className="px-3 py-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
+                      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Signed in as</p>
+                      <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">{usr?.email || "Student"}</p>
                     </div>
+
+                    <Link
+                      href="/modules"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 no-underline transition-colors"
+                      onClick={() => setToggleAvatar(false)}
+                    >
+                      <BookOpen className="w-4 h-4 text-zinc-500" /> Course Modules
+                    </Link>
+
+                    <Link
+                      href="/settings"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 no-underline transition-colors"
+                      onClick={() => setToggleAvatar(false)}
+                    >
+                      <User className="w-4 h-4 text-zinc-500" /> Account Settings
+                    </Link>
+
+                    <Link
+                      href="/contact"
+                      className="flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 no-underline transition-colors"
+                      onClick={() => setToggleAvatar(false)}
+                    >
+                      <Mail className="w-4 h-4 text-zinc-500" /> Contact Instructor
+                    </Link>
+
+                    <button
+                      onClick={handleLogout}
+                      className="w-full flex items-center gap-2 px-3 py-2 rounded-xl text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 text-left transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" /> Sign Out
+                    </button>
                   </div>
-                </div>
-              ) : (
-                <Link to="/auth">
-                  <Button
-                    textValue="Login to the course"
-                    iconRight="LockIcon"
-                    btnSize="sml"
-                    btnTheme="outline"
-                  />
-                </Link>
-              )}
-            </div>
+                )}
+              </div>
+            ) : (
+              <Link
+                href="/auth"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-semibold text-xs shadow-md hover:opacity-90 transition-opacity no-underline"
+              >
+                <Lock className="w-3.5 h-3.5" /> Sign In
+              </Link>
+            )}
           </div>
         </div>
       </div>
-    </nav>
+    </header>
   )
 }
 
 export default HeaderLogin
-
-// HeaderLogin.propTypes = {
-//   id: PropTypes.string,
-//   labelText: PropTypes.string,
-//   message: PropTypes.string,
-//   status: PropTypes.string,
-//   className: PropTypes.string,
-//   type: PropTypes.string,
-//   placeholder: PropTypes.string,
-//   autoComplete: PropTypes.bool,
-//   required: PropTypes.bool,
-// }
-
-// HeaderLogin.defaultProps = {
-//   id: "text",
-//   labelText: "Label Text",
-//   message: "Your's message here...",
-//   status: "normal",
-//   className: "",
-//   type: "text",
-//   placeholder: "Place text here",
-//   autoComplete: "on",
-//   required: false,
-// }

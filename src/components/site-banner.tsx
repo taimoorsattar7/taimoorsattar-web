@@ -1,65 +1,34 @@
-import React from "react"
-import { useStaticQuery } from "gatsby"
-// import { GatsbyImage } from "gatsby-plugin-image"
-import { graphql, Link } from "gatsby"
+'use client'
 
+import React from "react"
+import Link from "next/link"
+import Image from "next/image"
 import Newsletter from "@components/newsletter"
 
-import "./_wrapper.scss"
-import "./_headline.scss"
-import "./_site-banner.scss"
-import "@styles/_grid.scss"
-import "@styles/_img.scss"
-import "@styles/_btn.scss"
-
 const SiteBanner = () => {
-  const data = useStaticQuery(graphql`
-    query PicQuery {
-      avatar: file(absolutePath: { regex: "/full-pic.jpg/" }) {
-        childImageSharp {
-          gatsbyImageData
-        }
-      }
-    }
-  `)
-
   return (
-    <div className="wrapper margin-b-large">
-      <section className="grid info">
-        <div className="column-xs-12 column-md-1">
-          <div className="about">
-            <h1 className="text-5xl section-heading">
-              <b>About Me</b>
-            </h1>
-          </div>
-        </div>
-        {/* <div className="column-xs-12 column-md-4 img__not_med_size">
-          <GatsbyImage
-            alt="image"
-            image={data.avatar?.childImageSharp.gatsbyImageData}
-          />
-        </div> */}
-
-        <div className="column-xs-12 column-md-7">
-          <div>
-            <p className="headline headline__text m-b-10">
-              I'm Taimoor Sattar, a full-stack developer, and educator. I've
-              been building websites for about half a decade. I have experience
-              building modern websites using Gatsby/Next.js, Node.js, and
-              MongoDB/Sanity/HarperDB.
-            </p>
-            <p className="headline headline__text m-b-10">
-              Also, I've published a developer course, Build A Standout Website
-              With Gatsby, Sanity, and Stripe. In this course, we use the Gatsby
-              (React) framework to build dynamic websites integrated with Stripe
-              payment and Sanity.
-            </p>
-          </div>
-
+    <section className="py-12">
+      <div className="flex flex-col md:flex-row items-center gap-8">
+        <div className="flex-1 space-y-4">
+          <h1 className="text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-5xl">
+            Hi, I'm Taimoor Sattar
+          </h1>
+          <p className="text-lg text-zinc-600 dark:text-zinc-400">
+            Full-stack engineer & educator building modern web applications.
+          </p>
           <Newsletter />
         </div>
-      </section>
-    </div>
+        <div className="w-48 h-48 relative rounded-full overflow-hidden border-2 border-zinc-200 dark:border-zinc-800">
+          <Image
+            src="/profile-pic.jpg"
+            alt="Taimoor Sattar"
+            fill
+            className="object-cover"
+            unoptimized
+          />
+        </div>
+      </div>
+    </section>
   )
 }
 

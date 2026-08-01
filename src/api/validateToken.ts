@@ -1,4 +1,4 @@
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 import { sanityRequest } from "../lib/sanity/sanityActions"
 
@@ -6,8 +6,8 @@ import normalizeEmail from "validator/lib/normalizeEmail"
 import jwt from "jsonwebtoken"
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   try {
     let email = normalizeEmail(req.body.email)
@@ -40,7 +40,7 @@ export default async function handler(
     const message = error.response?.data?.message || error.message
 
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

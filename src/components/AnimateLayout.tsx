@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect, useRef, useState } from "react"
+'use client'
 
+import React, { useCallback, useEffect, useRef, useState } from "react"
 import Header from "@components/header"
 import Footer from "@components/footer/footer"
 
-const AnimateLayout = ({ children, location }: any) => {
-  const myRef = useRef()
+const AnimateLayout = ({ children }: any) => {
+  const myRef = useRef<HTMLDivElement | null>(null)
 
   const [scale, setScale] = useState(1)
   const [diffY, setDiffY] = useState("0")
 
   const callScale = useCallback(() => {
+    if (!myRef.current) return
     const mainHeight = myRef.current.clientHeight
     const clientWidth = myRef.current.clientWidth
     setScale(-0.1 * (clientWidth / mainHeight) + 0.98)
@@ -29,8 +31,9 @@ const AnimateLayout = ({ children, location }: any) => {
 
   useEffect(() => {
     window.onscroll = () => {
-      const mainHeight = myRef.current?.clientHeight
-      const clientWidth = myRef.current?.clientWidth
+      if (!myRef.current) return
+      const mainHeight = myRef.current.clientHeight
+      const clientWidth = myRef.current.clientWidth
 
       if (clientWidth > mainHeight) {
         resetScale()
@@ -45,7 +48,7 @@ const AnimateLayout = ({ children, location }: any) => {
         }
       }
     }
-  }, [])
+  }, [callDiffY, callScale, resetDiffY, resetScale])
 
   return (
     <div style={{ background: "rgb(200 216 220)" }} className="main">
@@ -59,7 +62,7 @@ const AnimateLayout = ({ children, location }: any) => {
           boxShadow: "rgb(0 0 0 / 20%) 0px 12px 50px",
         }}
       >
-        <Header location={location} />
+        <Header />
         <main className="no-p">{children}</main>
       </div>
 

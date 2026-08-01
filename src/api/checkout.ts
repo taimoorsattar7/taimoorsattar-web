@@ -1,4 +1,4 @@
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 import Joi from "joi"
 
 // @ts-ignore
@@ -11,8 +11,8 @@ import { createSession, retrieveSession } from "../lib/stripe/checkout.ts"
  */
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   try {
     if (req.method === "POST") {
@@ -31,7 +31,7 @@ export default async function handler(
 
     // Respond with error code and message
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }
@@ -45,8 +45,8 @@ export default async function handler(
  */
 
 const createStripeSession = async (
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) => {
   // 1. Validate the data coming in
   const schema = Joi.object({
@@ -90,8 +90,8 @@ const createStripeSession = async (
  */
 
 const fetchStripeSession = async (
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) => {
   // 1. Validate the data coming in
   const schema = Joi.object({

@@ -4,7 +4,7 @@ import React, { useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
 import Button from "@atom/button/index"
 
-import { Link } from "gatsby"
+import Link from "next/link"
 
 import { Check } from "lucide-react"
 import confetti from "canvas-confetti"
@@ -63,7 +63,7 @@ const Success = ({ happyURL }: any) => {
           the course.
         </p>
       </div>
-      <Link to={happyURL}>
+      <Link href={happyURL}>
         <Button
           className="mx-auto"
           textValue="Go to the couse →"

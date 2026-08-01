@@ -1,6 +1,5 @@
 import React from "react"
 import AnimateOnScroll from "@atom/animate-on-scroll/index"
-import "./style.scss"
 
 const CurriculumSingleton = ({ title, moduleIndex, rawBody }: any) => {
   return (

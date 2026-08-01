@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react"
+'use client'
 
-import { GatsbyImage, getImage } from "gatsby-plugin-image"
+import React, { useState, useEffect } from "react"
 import { useQuery } from "react-query"
 import queryString from "query-string"
-import "./ProductPage.scss"
 import Pricing from "@components/Pricing"
 
 import Button from "@atom/button/index"
@@ -88,7 +87,7 @@ function ProductPage({
     <article>
       {/* <Toaster position="top-center" /> */}
       <ProductBanner
-        bgImage={bgimage?.asset?.gatsbyImageData?.images?.fallback?.src}
+        bgImage={bgimage?.asset?.url}
         title={title}
         text={<PortableTextReact blocks={_rawShort} />}
         logSlug={`/modules/${productPrice?.content?.slug?.current}`}
@@ -109,25 +108,22 @@ function ProductPage({
             >
               {techs?.map(
                 (
-                  tech: { logo: { asset: any } },
+                  tech: { logo?: { asset?: { url?: string } } },
                   index: React.Key | null | undefined
                 ) => {
-                  let image = getImage(tech?.logo?.asset)
+                  const imgUrl = tech?.logo?.asset?.url
                   return (
                     <div
                       className="w-1/2 sm:w-1/4 md:w-1/6 px-4"
-                      data-path="0.0.1.0.0"
                       key={index}
                     >
-                      <GatsbyImage
-                        className="block mx-auto grayscale"
-                        width="fit-content"
-                        height="fit-content"
-                        image={image}
-                        alt={"heading"}
-                        data-config-id="auto-img-1-10"
-                        data-path="0.0.1.0.0.0"
-                      />
+                      {imgUrl && (
+                        <img
+                          className="block mx-auto grayscale h-10 w-auto"
+                          src={imgUrl}
+                          alt={"technology logo"}
+                        />
+                      )}
                     </div>
                   )
                 }
@@ -136,22 +132,11 @@ function ProductPage({
           </div>
         </section>
 
-        <div className="max-w-3xl prose prose-lg mx-auto">
+        <div className="max-w-4xl prose prose-zinc dark:prose-invert text-left my-12">
           {_rawBody && <PortableTextReact blocks={_rawBody} />}
         </div>
 
-        <Button
-          id="form-modal-select-1"
-          textValue="Enroll in the course"
-          iconRight="sparkle"
-          className="mx-auto"
-          btnSize="large"
-          btnTheme="outline"
-          onClickHandler={() => {
-            setModalState("form")
-            setShowModal(true)
-          }}
-        />
+
 
         <CurriculumList curriculum={curriculum}>
           <h2 className="text-3xl mb-5">
@@ -160,8 +145,8 @@ function ProductPage({
         </CurriculumList>
 
         <Author
-          description={<PortableTextReact blocks={author?._rawDescription} />}
-          authorImage={author?.image?.asset?.gatsbyImageData}
+          description={<PortableTextReact blocks={author?.description} />}
+          authorImage={author?.image?.asset?.url}
         />
 
         <FAQ FAQ={faqs} />
@@ -180,7 +165,7 @@ function ProductPage({
           </section>
         )}
 
-        <Pricing setShowModal={setShowModal} setModalState={setModalState} />
+        <Pricing productPrice={productPrice} setShowModal={setShowModal} setModalState={setModalState} />
 
         {!isSSR && (
           <React.Suspense fallback={<div />}>

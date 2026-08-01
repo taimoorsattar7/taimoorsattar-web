@@ -1,46 +1,23 @@
 import React from "react"
-import { useStaticQuery, graphql } from "gatsby"
-
-import { StaticImage } from "gatsby-plugin-image"
+import Image from "next/image"
 
 const BioDetail = () => {
-  const data = useStaticQuery(graphql`
-    query BioQuery {
-      site {
-        siteMetadata {
-          author {
-            name
-            summary
-          }
-          social {
-            twitter
-          }
-        }
-      }
-    }
-  `)
-
-  // Set these values by editing "siteMetadata" in gatsby-config.js
-  const author = data?.site?.siteMetadata?.author
-
-  // const avatar = data.avatar?.childImageSharp?.fixed
-
   return (
-    <div className="flex flex-wrap items-center justify-between">
-      <StaticImage
-        src="../../images/photos/IMG_6457.jpg"
-        className="w-36 h-36 flex-shrink-0 mr-4 object-cover border-2 rounded-full"
-        alt="Avatar"
-        placeholder="blurred"
-        layout="fixed"
+    <div className="flex flex-wrap items-center justify-between gap-4">
+      <Image
+        src="/static/img/profile-pic.jpg"
+        className="w-24 h-24 flex-shrink-0 object-cover border-2 rounded-full border-zinc-200 dark:border-zinc-800"
+        alt="Taimoor Sattar"
+        width={96}
+        height={96}
+        unoptimized
       />
-      {author?.name && (
-        <div>
-          <h3 className="text-lg">{author?.name}</h3>
-
-          <p className="text-base">{author?.summary ? author?.summary : ""}</p>
-        </div>
-      )}
+      <div className="flex-1">
+        <h3 className="text-lg font-bold text-zinc-900 dark:text-zinc-100">Taimoor Sattar</h3>
+        <p className="text-sm text-zinc-600 dark:text-zinc-400">
+          Full-stack developer and course author building clean, reliable web applications.
+        </p>
+      </div>
     </div>
   )
 }

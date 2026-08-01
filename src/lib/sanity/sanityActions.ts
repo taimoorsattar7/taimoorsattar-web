@@ -1,12 +1,13 @@
-import createClient from "@sanity/client"
+import { createClient } from "@sanity/client"
 
 const client = createClient({
-  projectId: process.env.GATSBY_SANITY_PROJECT_ID,
-  dataset: process.env.GATSBY_SANITY_DATASET,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.GATSBY_SANITY_PROJECT_ID || '7p4bxs1b',
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.GATSBY_SANITY_DATASET || 'production',
   useCdn: false, // set to `false` to bypass the edge cache
   apiVersion: "2023-05-03", // use current date (YYYY-MM-DD) to target the latest API version
-  token: process.env.GATSBY_SANITY_BEARER_TOKEN, // Only if you want to update content with the client
+  token: process.env.SANITY_API_TOKEN || process.env.GATSBY_SANITY_BEARER_TOKEN, // Only if you want to update content with the client
 })
+
 
 export const sanityRequest = async (query: string) => {
   try {

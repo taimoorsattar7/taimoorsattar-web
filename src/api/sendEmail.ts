@@ -1,10 +1,10 @@
 import { sendEmailSG } from "../lib/sendEmailSG"
 
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   const email = req?.body?.email || req?.query?.email
   const subject = req?.body?.subject || req?.query?.subject
@@ -25,7 +25,7 @@ export default async function handler(
     const message = error.response?.data?.message || error.message
 
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

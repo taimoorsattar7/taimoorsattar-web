@@ -1,219 +1,243 @@
+'use client'
+
 import React, { useState, useEffect, Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
+import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline"
 import { Container } from "@components/Container"
-import queryString from "query-string"
-
-import { Link, navigate } from "gatsby"
-import { getCurrentUser, logout, cVerifyToken } from "@utils/auth"
-import logo from "../images/logo.svg"
-
-import Button from "@atom/button/index"
+import Link from "next/link"
+import Image from "next/image"
+import { usePathname, useRouter } from "next/navigation"
+import { getCurrentUser, logout } from "@utils/auth"
+import { useTheme } from "../context/ThemeContext"
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ")
 }
 
-export default function Header({ location }: any) {
+export default function Header() {
   const [usr, setUsr] = useState<any>(null)
+  const { theme, toggleTheme } = useTheme()
+  const pathname = usePathname()
+  const router = useRouter()
 
   function handleLogout() {
-    logout(navigate("/auth"))
+    logout(() => router.push("/auth"))
   }
 
   const navigation = [
     {
       name: "About",
       href: "/about",
-      current: location?.pathname?.includes("about") ? true : false,
+      current: pathname === "/about" || pathname?.startsWith("/about/"),
     },
     {
       name: "Blogs",
       href: "/blogs",
-      current: location?.pathname?.includes("blogs") ? true : false,
+      current: pathname === "/blogs" || pathname?.startsWith("/blogs/") || pathname?.startsWith("/p/"),
     },
     {
       name: "Course",
       href: "/course",
-      current: location?.pathname?.includes("course") ? true : false,
+      current: pathname === "/course" || pathname?.startsWith("/course/"),
     },
     {
       name: "Contact",
       href: "/contact",
-      current: location?.pathname?.includes("contact") ? true : false,
+      current: pathname === "/contact" || pathname?.startsWith("/contact/"),
     },
   ]
 
   useEffect(() => {
     setUsr(getCurrentUser())
-
-    const queriedTheme = queryString.parse(location.search)
-
-    if (queriedTheme.token) {
-      checkToken(queriedTheme.token)
-    }
   }, [])
 
-  async function checkToken(token: any) {
-    await cVerifyToken(token)
-    setUsr(getCurrentUser())
-  }
   return (
-    <Disclosure as="nav" className="bg-slate-700">
-      {({ open }: any) => (
-        <Container>
-          <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-            <div className="relative flex h-16 items-center justify-between">
-              <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-                {/* Mobile menu button*/}
-                <Disclosure.Button className="relative inline-flex items-center justify-center rounded-md p-2 text-gray-400 hover:bg-gray-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white">
-                  <span className="absolute -inset-0.5" />
-                  <span className="sr-only">Open main menu</span>
-                  {open ? (
-                    <XMarkIcon className="block h-6 w-6" aria-hidden="true" />
-                  ) : (
-                    <Bars3Icon className="block h-6 w-6" aria-hidden="true" />
-                  )}
-                </Disclosure.Button>
-              </div>
-              <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                <div className="flex flex-shrink-0 items-center">
-                  <Link to={"/"}>
-                    <img
-                      className="h-7 w-auto"
-                      src={logo}
-                      alt="Taimoor Sattar"
-                    />
-                  </Link>
-                </div>
-                <div className="hidden sm:ml-6 sm:block">
-                  <div className="flex space-x-4">
-                    {navigation.map(item => (
-                      <Link
-                        key={item.name}
-                        to={item.href}
-                        className={classNames(
-                          item.current
-                            ? " text-white"
-                            : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                          "rounded-md px-3 py-2 text-sm font-medium"
-                        )}
-                        aria-current={item.current ? "page" : undefined}
-                      >
-                        {item.name}
-                      </Link>
-                    ))}
+    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-[#0b0f19]/85 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors duration-200">
+      <Disclosure as="nav" aria-label="Main Navigation">
+        {({ open }: any) => (
+          <>
+            <Container>
+              <div className="mx-auto max-w-7xl px-2 sm:px-4 lg:px-8">
+                <div className="relative flex h-16 items-center justify-between">
+                  
+                  {/* Mobile Hamburger Button */}
+                  <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
+                    <Disclosure.Button 
+                      className="relative inline-flex items-center justify-center rounded-full p-2 text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 transition-colors"
+                      aria-label={open ? "Close main menu" : "Open main menu"}
+                    >
+                      <span className="sr-only">{open ? "Close main menu" : "Open main menu"}</span>
+                      {open ? (
+                        <XMarkIcon className="block h-5 w-5 transition-transform duration-200 rotate-90" aria-hidden="true" />
+                      ) : (
+                        <Bars3Icon className="block h-5 w-5 transition-transform duration-200" aria-hidden="true" />
+                      )}
+                    </Disclosure.Button>
                   </div>
-                </div>
-              </div>
 
-              {typeof usr?.avatar == "string" ? (
-                <>
-                  <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-                    {/* Profile dropdown */}
-                    <Menu as="div" className="relative ml-3">
-                      <div>
-                        <Menu.Button className="cursor-pointer relative flex rounded-full text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-                          <span className="absolute -inset-1.5" />
-                          <span className="sr-only">Open user menu</span>
-                          <img
-                            className="h-8 w-8 rounded-full"
-                            src={usr.avatar}
-                            alt=""
-                          />
-                        </Menu.Button>
+                  {/* Spotlight Logo: Profile Photo Avatar + Name */}
+                  <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
+                    <Link 
+                      href="/" 
+                      className="flex items-center gap-3 group no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-full px-1 py-0.5"
+                    >
+                      <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-sm group-hover:scale-105 motion-reduce:group-hover:scale-100 transition-transform duration-200 shrink-0">
+                        <Image
+                          src="/profile-pic.jpg"
+                          alt="Taimoor Sattar"
+                          width={36}
+                          height={36}
+                          className="h-full w-full object-cover"
+                          unoptimized
+                        />
                       </div>
-                      <Transition
-                        as={Fragment}
-                        enter="transition ease-out duration-100"
-                        enterFrom="transform opacity-0 scale-95"
-                        enterTo="transform opacity-100 scale-100"
-                        leave="transition ease-in duration-75"
-                        leaveFrom="transform opacity-100 scale-100"
-                        leaveTo="transform opacity-0 scale-95"
-                      >
-                        <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="/modules"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Modules
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <Link
-                                to="#"
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Settings
-                              </Link>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <span
-                                onClick={() => {
-                                  handleLogout()
-                                }}
-                                className={classNames(
-                                  active ? "bg-gray-100" : "",
-                                  "block px-4 py-2 text-sm text-gray-700"
-                                )}
-                              >
-                                Sign out
-                              </span>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Transition>
-                    </Menu>
-                  </div>
-                </>
-              ) : (
-                <Link to="/auth">
-                  <Button
-                    textValue="Login to the course"
-                    iconRight="LockIcon"
-                    btnSize="sml"
-                    btnTheme="outline"
-                  />
-                </Link>
-              )}
-            </div>
-          </div>
+                      <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100 tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                        Taimoor Sattar
+                      </span>
+                    </Link>
 
-          <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map(item => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    item.current
-                      ? "bg-gray-900 text-white"
-                      : "text-gray-300 hover:bg-gray-700 hover:text-white",
-                    "block rounded-md px-3 py-2 text-base font-medium"
-                  )}
-                  aria-current={item.current ? "page" : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
-            </div>
-          </Disclosure.Panel>
-        </Container>
-      )}
-    </Disclosure>
+                    {/* Nav links matching floating nav style */}
+                    <div className="hidden sm:ml-8 sm:flex sm:items-center">
+                      <div className="flex items-center space-x-1 px-3 py-1 rounded-full bg-white/90 dark:bg-zinc-800/90 shadow-md shadow-zinc-800/5 border border-zinc-200/80 dark:border-zinc-700/60 backdrop-blur">
+                        {navigation.map(item => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              item.current
+                                ? "text-teal-600 dark:text-teal-400 font-semibold"
+                                : "text-zinc-700 dark:text-zinc-300 hover:text-teal-600 dark:hover:text-teal-400",
+                              "relative rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 hover:scale-105 motion-reduce:hover:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+                            {item.current && (
+                              <span 
+                                className="nav-active-indicator absolute bottom-0.5 left-3.5 right-3.5 h-0.5 rounded-full bg-teal-500 dark:bg-teal-400 shadow-sm" 
+                                aria-hidden="true"
+                              />
+                            )}
+                          </Link>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Right Actions: Dark/Light Mode Switcher & User Profile */}
+                  <div className="flex items-center gap-2">
+                    
+                    {/* Theme Toggle Button */}
+                    <button
+                      onClick={toggleTheme}
+                      type="button"
+                      aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+                      className="theme-toggle-button p-2 rounded-full text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 border border-zinc-200/80 dark:border-zinc-700/60"
+                    >
+                      {theme === "dark" ? (
+                        <SunIcon className="theme-toggle-icon h-4 w-4 text-amber-400" aria-hidden="true" />
+                      ) : (
+                        <MoonIcon className="theme-toggle-icon h-4 w-4 text-zinc-700" aria-hidden="true" />
+                      )}
+                    </button>
+
+                    {/* User Profile / Access Link */}
+                    {typeof usr?.avatar === "string" ? (
+                      <Menu as="div" className="relative ml-1">
+                        <div>
+                          <Menu.Button className="cursor-pointer relative flex rounded-full text-sm ring-1 ring-zinc-300 dark:ring-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 transition-transform duration-150 hover:scale-105 motion-reduce:hover:scale-100">
+                            <span className="sr-only">Open user menu</span>
+                            <img
+                              className="h-8 w-8 rounded-full object-cover"
+                              src={usr.avatar}
+                              alt="User profile avatar"
+                            />
+                          </Menu.Button>
+                        </div>
+                        <Transition
+                          as={Fragment}
+                          enter="transition ease-out duration-150"
+                          enterFrom="transform opacity-0 scale-95 -translate-y-1"
+                          enterTo="transform opacity-100 scale-100 translate-y-0"
+                          leave="transition ease-in duration-100"
+                          leaveFrom="transform opacity-100 scale-100 translate-y-0"
+                          leaveTo="transform opacity-0 scale-95 -translate-y-1"
+                        >
+                          <Menu.Items className="absolute right-0 z-50 mt-2 w-48 origin-top-right rounded-xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 py-1 shadow-xl focus:outline-none">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/modules"
+                                  className={classNames(
+                                    active ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" : "text-zinc-700 dark:text-zinc-300",
+                                    "block px-4 py-2.5 text-xs font-medium transition-colors focus:outline-none focus-visible:bg-zinc-100 dark:focus-visible:bg-zinc-800"
+                                  )}
+                                >
+                                  Modules
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  onClick={handleLogout}
+                                  className={classNames(
+                                    active ? "bg-zinc-100 dark:bg-zinc-800 text-red-600 dark:text-red-400" : "text-zinc-700 dark:text-zinc-300",
+                                    "w-full text-left block px-4 py-2.5 text-xs font-medium transition-colors focus:outline-none focus-visible:bg-zinc-100 dark:focus-visible:bg-zinc-800"
+                                  )}
+                                >
+                                  Sign out
+                                </button>
+                              )}
+                            </Menu.Item>
+                          </Menu.Items>
+                        </Transition>
+                      </Menu>
+                    ) : (
+                      <Link href="/auth" className="no-underline hidden sm:inline-block focus:outline-none rounded-full">
+                        <span className="text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-white border border-zinc-200 dark:border-zinc-700/80 rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:ring-2 focus-visible:ring-teal-500 inline-block">
+                          Course Access
+                        </span>
+                      </Link>
+                    )}
+                  </div>
+
+                </div>
+              </div>
+            </Container>
+
+            {/* Mobile Navigation Panel with smooth transition */}
+            <Transition
+              as={Fragment}
+              enter="transition duration-200 ease-out"
+              enterFrom="transform opacity-0 -translate-y-2 scale-98"
+              enterTo="transform opacity-100 translate-y-0 scale-100"
+              leave="transition duration-150 ease-in"
+              leaveFrom="transform opacity-100 translate-y-0 scale-100"
+              leaveTo="transform opacity-0 -translate-y-2 scale-98"
+            >
+              <Disclosure.Panel className="sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800 px-4 pt-3 pb-5 space-y-1.5 shadow-lg">
+                {navigation.map(item => (
+                  <Disclosure.Button
+                    key={item.name}
+                    as={Link}
+                    href={item.href}
+                    className={classNames(
+                      item.current
+                        ? "bg-teal-500/10 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold border-l-4 border-teal-500"
+                        : "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-zinc-900 dark:hover:text-white",
+                      "block rounded-lg px-3.5 py-2.5 text-base font-medium transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                    )}
+                    aria-current={item.current ? "page" : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ))}
+              </Disclosure.Panel>
+            </Transition>
+          </>
+        )}
+      </Disclosure>
+    </header>
   )
 }

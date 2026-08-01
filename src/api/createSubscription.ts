@@ -2,7 +2,7 @@ import generator from "generate-password"
 import normalizeEmail from "validator/lib/normalizeEmail"
 import jwt from "jsonwebtoken"
 
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 import { isSubscribed } from "../lib/isSubscribed"
 import { sanityRequest, sanityCreate } from "../lib/sanity/sanityActions"
 import { formatDate } from "../lib/formatDate"
@@ -10,8 +10,8 @@ import { unix_timestamp_data } from "../lib/unix_timestamp_data"
 import { sendEmailTemplate } from "../lib/sendEmailTemplate"
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   const email = normalizeEmail(req.body?.email || req.query?.email)
   const priceId = req.body?.priceId || req.query?.priceId
@@ -177,7 +177,7 @@ export default async function handler(
 
     res.status(status).json({
       // @ts-ignore
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

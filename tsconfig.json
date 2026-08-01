@@ -1,53 +1,66 @@
 {
-  "compileOnSave": false,
   "compilerOptions": {
-    "target": "es6",
-    "module": "commonjs",
-    "jsx": "react",
-    "allowJs": false,
-    "strict": true,
-    "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "removeComments": true,
-    "preserveConstEnums": true,
-    "sourceMap": true,
+    "target": "es2020",
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
+    "allowJs": true,
     "skipLibCheck": true,
-    "esModuleInterop": true,
-    "baseUrl": "src",
-    "typeRoots": ["./node_modules/@types", "./types"],
-    "lib": ["dom", "es2015", "es2017"],
-    "paths": {
-      "@images/*": ["./images/*"],
-      "@primitives/*": ["./primitives/*"],
-      "@atom/*": ["./atom/*"],
-      "@molecule/*": ["./molecule/*"],
-      "@components/*": ["./components/*"],
-      "@lib/*": ["./lib/*"],
-      "@middlewares/*": ["./middlewares/*"],
-      "@hooks/*": ["./hooks/*"],
-      "@utils/*": ["./utils/*"],
-      "*.ts": ["*"]
-    },
-    "forceConsistentCasingInFileNames": true,
+    "strict": false,
     "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./*"
+      ],
+      "@images/*": [
+        "src/images/*"
+      ],
+      "@primitives/*": [
+        "src/primitives/*"
+      ],
+      "@atom/*": [
+        "src/atom/*"
+      ],
+      "@molecule/*": [
+        "src/molecule/*"
+      ],
+      "@components/*": [
+        "src/components/*"
+      ],
+      "@lib/*": [
+        "src/lib/*"
+      ],
+      "@hooks/*": [
+        "src/hooks/*"
+      ],
+      "@utils/*": [
+        "src/utils/*"
+      ]
+    },
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "strictNullChecks": true
   },
-  "exclude": [
-    ".netlify",
-    ".cache",
-    "out",
-    "middlewares",
-    "node_modules",
-    ".vscode",
-    "gatsby-config.js",
-    "postcss.config.js",
-    "**/*.spec.ts",
-    "**/*.spec.tsx",
-    "**/*.test.ts",
-    "**/*.test.tsx"
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
   ],
-  "include": ["./src/**/*"]
+  "exclude": [
+    "node_modules"
+  ]
 }

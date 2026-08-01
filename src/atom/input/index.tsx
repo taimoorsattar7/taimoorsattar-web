@@ -1,4 +1,3 @@
-"use client"
 import React from "react"
 import PropTypes from "prop-types"
 
@@ -13,14 +12,19 @@ const Input = ({
   options,
   ...props
 }: any) => {
+  const borderClass =
+    status === "error"
+      ? "border-red-500 focus:border-red-500 focus:ring-red-500/20"
+      : status === "success"
+      ? "border-emerald-500 focus:border-emerald-500 focus:ring-emerald-500/20"
+      : "border-slate-300 dark:border-slate-700/80 focus:border-indigo-500 focus:ring-indigo-500/20"
+
   return (
     <input
       id={id}
-      {...register(id, options ? options : {})}
+      {...(register ? register(id, options ? options : {}) : {})}
       {...props}
-      className={`${
-        status == "error" ? "border-red-400" : "border-neutral-600"
-      } className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"`}
+      className={`block w-full rounded-xl bg-slate-50 dark:bg-slate-900 border ${borderClass} px-4 py-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 text-sm font-medium transition-all`}
       type={type}
       placeholder={placeholder}
       autoComplete={boolautocomplete}
@@ -34,7 +38,7 @@ Input.propTypes = {
   id: PropTypes.string,
   type: PropTypes.string,
   placeholder: PropTypes.string,
-  autoComplete: PropTypes.bool,
+  autoComplete: PropTypes.string,
   required: PropTypes.bool,
 }
 

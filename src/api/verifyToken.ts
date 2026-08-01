@@ -1,12 +1,12 @@
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 import validator from "validator"
 
 import { sanityRequest } from "../lib/sanity/sanityActions"
 import jwt from "jsonwebtoken"
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   try {
     const token =
@@ -57,7 +57,7 @@ export default async function handler(
 
     res.status(status).json({
       // @ts-ignore
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

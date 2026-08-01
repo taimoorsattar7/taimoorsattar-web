@@ -1,4 +1,4 @@
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 import Airtable from "airtable"
 import validator from "validator"
 import normalizeEmail from "validator/lib/normalizeEmail"
@@ -6,8 +6,8 @@ import normalizeEmail from "validator/lib/normalizeEmail"
 // const nodemailerSendgrid = require("nodemailer-sendgrid")
 
 export default function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   //pull the required information from your environment variables, which can be set in the Netlify UI
 
@@ -24,7 +24,7 @@ export default function handler(
         message: "email not valid",
       })
     } else {
-      table.create(
+      (table.create as any)(
         [
           {
             fields: {
@@ -50,7 +50,7 @@ export default function handler(
     const message = error.response?.data?.message || error.message
 
     res.status(status).json({
-      message: error.expose ? message : `Faulty ${req.baseUrl}: ${message}`,
+      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
     })
   }
 }

@@ -7,8 +7,8 @@ export default function get_gravatar_image_url(
   allowed_rating: string,
   force_default: string | boolean
 ) {
-  email = typeof email !== "undefined" ? email : "john.doe@example.com"
-  size = size >= 1 && size <= 2048 ? size : 80
+  const sizeNum = Number(size)
+  const finalSize = sizeNum >= 1 && sizeNum <= 2048 ? sizeNum : 80
   default_image = typeof default_image !== "undefined" ? default_image : "mm"
   allowed_rating = typeof allowed_rating !== "undefined" ? allowed_rating : "g"
   force_default = force_default === true ? "y" : "n"
@@ -17,7 +17,7 @@ export default function get_gravatar_image_url(
     "https://secure.gravatar.com/avatar/" +
     md5(email.toLowerCase().trim()) +
     "?size=" +
-    size +
+    finalSize +
     "&default=" +
     encodeURIComponent(default_image) +
     "&rating=" +

@@ -1,5 +1,5 @@
 import stripeAPI from "stripe"
-import { GatsbyFunctionRequest, GatsbyFunctionResponse } from "gatsby"
+import type { NextApiRequest, NextApiResponse } from "next"
 
 // @ts-ignore
 // import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
@@ -18,8 +18,8 @@ export const config = {
 }
 
 export default async function handler(
-  req: GatsbyFunctionRequest,
-  res: GatsbyFunctionResponse
+  req: NextApiRequest,
+  res: NextApiResponse
 ) {
   try {
     const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {

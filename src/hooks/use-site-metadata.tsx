@@ -1,35 +1,11 @@
-import { graphql, useStaticQuery } from "gatsby"
-
-type Props = {
-  site: {
-    siteMetadata: {
-      title: string
-      siteUrl: string
-      description: string
-      social: any
-      devstatus: any
-    }
-  }
-}
-
 export const useSiteMetadata = () => {
-  const { site } = useStaticQuery<Props>(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            siteUrl
-            description
-            social {
-              twitter
-            }
-            devstatus
-          }
-        }
-      }
-    `
-  )
-
-  return site.siteMetadata
+  return {
+    title: "Taimoor Sattar",
+    siteUrl: "https://taimoorsattar.com",
+    description: "Personal website, blog, and courses by Taimoor Sattar.",
+    social: {
+      twitter: "https://twitter.com/taimoorsattar7",
+    },
+    devstatus: process.env.NODE_ENV,
+  }
 }

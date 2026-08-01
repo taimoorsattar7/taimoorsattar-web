@@ -1,10 +1,9 @@
 export function jsonToHtml(jsonStr: string) {
-  obj = JSON.parse(jsonStr)
+  const obj = JSON.parse(jsonStr)
 
   let html = ""
-  obj["blocks"].forEach(function (
-    block: { [x: string]: { [x: string]: { [x: string]: string } } },
-    index: any
+  obj["blocks"]?.forEach(function (
+    block: any
   ) {
     switch (block["type"]) {
       case "paragraph":
@@ -27,9 +26,9 @@ export function jsonToHtml(jsonStr: string) {
         break
 
       case "list":
-        lsType = block["data"]["style"] == "ordered" ? "ol" : "ul"
+        const lsType = block["data"]["style"] === "ordered" ? "ol" : "ul"
         html += "<" + lsType + ">"
-        block["data"]["items"].forEach(function (item, index) {
+        block["data"]["items"]?.forEach(function (item: any) {
           html += "<li>" + item + "</li>"
         })
         html += "</" + lsType + ">"

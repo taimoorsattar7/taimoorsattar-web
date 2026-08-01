@@ -1,81 +1,56 @@
 "use client"
 
 import * as React from "react"
-// import { FunctionComponent } from "react"
-
-import Avatar from "@atom/avatar/index"
 import Button from "@atom/button/index"
-import VideoPlayer from "@atom/video-player/index"
-// import AnimateOnScroll from "@atom/animate-on-scroll/index"
-
-import { Link } from "gatsby"
+import Link from "next/link"
 
 const ProductBanner: any = (props: any) => {
-  let bgImage = props.bgImage,
-    title = props.title,
+  let title = props.title,
     text = props.text,
-    logSlug = props.logSlug,
+    logSlug = props.logSlug || "/modules/build-a-standout-website",
     isLog = props.isLog,
-    onEventLog = props.onEventLog,
-    vidUrl = props.vidUrl,
-    vidPoster = props.vidPoster
+    onEventLog = props.onEventLog
 
   return (
-    <section typeof="Course">
-      <div
-        className="m-5 px-6 pt-8 pb-8 rounded-lg"
-        style={{
-          backgroundColor: "#d2dde0",
-          backgroundImage: `url(${bgImage || ""})`,
-          backgroundRepeat: "round",
-        }}
-      >
-        <div className="max-w-full">
-          <Avatar className={"mx-auto justify-center"} size="medium" />
+    <section typeof="Course" className="w-full py-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+        <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-8 sm:p-12 space-y-6 text-left">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 text-xs font-semibold uppercase tracking-wider">
+            Course Overview
+          </div>
 
-          <main>
-            <section className="max-w-full mx-auto md:max-w-3xl">
-              <h1
-                title={title}
-                className="text-3xl sm:text-2xl lg:text-5xl font-bold text-center md:text-center mt-3 mb-3"
-              >
-                {title}
-              </h1>
+          <h1
+            title={title}
+            className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight max-w-3xl"
+          >
+            {title}
+          </h1>
 
-              <p className="mb-6 prose prose-base sm:prose-xl lg:prose-xl text-center">
-                {text}
-              </p>
+          <div className="text-zinc-600 dark:text-zinc-300 text-base sm:text-lg leading-relaxed max-w-2xl">
+            {text}
+          </div>
 
-              <VideoPlayer
-                className={"block mb-8 max-w-full md:max-w-full mx-auto"}
-                videoUrl={vidUrl}
-                videoPoster={vidPoster}
-              />
-
-              {isLog ? (
-                <Link className="no-underline" to={logSlug}>
-                  <Button
-                    textValue="Go to the course"
-                    iconRight="arrowuprightsquare"
-                    className="mx-auto"
-                    btnSize="large"
-                    btnTheme="filled"
-                    // onClickHandler={(event: any) => onEventLog(event)}
-                  />
-                </Link>
-              ) : (
+          <div className="pt-2 flex justify-start">
+            {isLog ? (
+              <Link className="no-underline" href={logSlug}>
                 <Button
-                  id="form-modal-select-2"
-                  textValue="Enroll in the course"
-                  iconRight="sparkle"
-                  className="mx-auto"
+                  textValue="Go to the course"
+                  iconRight="arrowuprightsquare"
                   btnSize="large"
-                  btnTheme="indigo"
-                  onClickHandler={(event: any) => onEventLog(event)}
+                  btnTheme="filled"
                 />
-              )}
-            </section>
-          </main>
+              </Link>
+            ) : (
+              <Button
+                id="form-modal-select-2"
+                textValue="Enroll in the course"
+                iconRight="sparkle"
+                btnSize="large"
+                btnTheme="indigo"
+                onClickHandler={(event: any) => onEventLog?.(event)}
+              />
+            )}
+          </div>
         </div>
       </div>
     </section>

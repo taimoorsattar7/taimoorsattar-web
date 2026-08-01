@@ -1,172 +1,104 @@
+"use client"
+
 import React from "react"
 import { CheckIcon } from "@heroicons/react/20/solid"
-import Button from "@atom/button/index"
+import PortableText from "@components/portabletext/portableText"
 
-const tiers = [
-  {
-    name: "Open House",
-    id: "open-house",
-    href: "#",
-    priceMonthly: "0",
-    description:
-      "Introduction to using Gatsby and deploying a website on Netlify",
-    features: [
-      "Get Started with Gatsby",
-      "Git and Github",
-      "Deploy your website using Netlify",
-    ],
-    featured: false,
-  },
-  {
-    name: "Master",
-    id: "master",
-    href: "#",
-    priceMonthly: "$35",
-    priceRecurring: "$9",
-    description:
-      "Create a subscription website to collect payments from users based on the plan you offer.",
-    features: [
-      "++ Everything include in Free Open House",
-      "Create checkout and collect payments",
-      "Create Subscription using Stripe",
-      "Create contact form",
-      "Manage content in the Sanity Studio",
-      "Refund and Cancel user's Subscription",
-    ],
-    featured: true,
-  },
-]
+export default function Pricing({ productPrice, setShowModal, setModalState }: any) {
+  const plans = productPrice?.plans || []
 
-function classNames(...classes: any) {
-  return classes.filter(Boolean).join(" ")
-}
-
-export default function Pricing({ setShowModal, setModalState }: any) {
   return (
-    <div className="relative isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
-      <div
-        className="absolute inset-x-0 -top-3 -z-10 transform-gpu overflow-hidden px-36 blur-3xl"
-        aria-hidden="true"
-      >
-        <div
-          className="mx-auto aspect-[1155/678] w-[72.1875rem] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30"
-          style={{
-            clipPath:
-              "polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)",
-          }}
-        />
+    <section className="my-20">
+      <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
+        <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
+          Course Access & Pricing
+        </h2>
+        <p className="text-base text-zinc-600 dark:text-zinc-400">
+          Select a plan to start learning full-stack web development with Gatsby, Sanity & Stripe.
+        </p>
       </div>
 
-      <p className="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">
-        You have found the right price for the course that you are looking for.
-      </p>
-      <div className="mx-auto mt-16 grid max-w-lg grid-cols-1 items-center gap-y-6 sm:mt-20 sm:gap-y-0 lg:max-w-4xl lg:grid-cols-2">
-        {tiers.map((tier, tierIdx) => (
-          <div
-            key={tier.id}
-            className={classNames(
-              tier.featured
-                ? "relative bg-gray-900 shadow-2xl"
-                : "bg-white/60 sm:mx-8 lg:mx-0",
-              tier.featured
-                ? ""
-                : tierIdx === 0
-                ? "rounded-t-3xl sm:rounded-b-none lg:rounded-tr-none lg:rounded-bl-3xl"
-                : "sm:rounded-t-none lg:rounded-tr-3xl lg:rounded-bl-none",
-              "rounded-3xl p-8 ring-1 ring-gray-900/10 sm:p-10"
-            )}
-          >
-            <h3
-              id={tier.id}
-              className={classNames(
-                tier.featured ? "text-indigo-400" : "text-indigo-600",
-                "text-base font-semibold leading-7"
-              )}
-            >
-              {tier.name}
-            </h3>
-            <p className="mt-4 items-baseline gap-x-2">
-              {Number(tier?.priceMonthly) !== Number(0) ? (
-                <>
-                  <div className="block">
-                    <span
-                      className={classNames(
-                        tier.featured ? "text-white" : "text-gray-900",
-                        "text-5xl font-bold tracking-tight"
-                      )}
-                    >
-                      {tier.priceMonthly}
-                    </span>
-                    <span
-                      className={classNames(
-                        tier.featured ? "text-gray-400" : "text-gray-500",
-                        "text-base"
-                      )}
-                    >
-                      {tier.priceRecurring ? "/ first month" : "/ month"}
-                    </span>
-                  </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {plans.map((plan: any, idx: number) => {
+          const isFree = Number(plan.price) === 0
+          const descriptionBlocks = plan.description || plan._rawDescription
 
-                  <p className="text-white">
-                    After that, you will pay {tier.priceRecurring} USD per month
-                  </p>
-                </>
-              ) : (
-                <>
-                  <span
-                    className={classNames(
-                      tier.featured ? "text-white" : "text-gray-900",
-                      "text-5xl font-bold tracking-tight"
-                    )}
-                  >
-                    Free
+          return (
+            <div
+              key={idx}
+              className={`rounded-3xl p-8 sm:p-10 border transition-all flex flex-col justify-between ${
+                !isFree
+                  ? "bg-zinc-900 text-white border-zinc-800 shadow-2xl relative"
+                  : "bg-white dark:bg-zinc-900/50 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100"
+              }`}
+            >
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h3 className={`text-xl font-bold ${!isFree ? "text-white" : "text-zinc-900 dark:text-zinc-100"}`}>
+                    {plan.keyword || (isFree ? "Free Tier" : "Premium Tier")}
+                  </h3>
+                  {!isFree && (
+                    <span className="px-3 py-1 rounded-full bg-teal-500/20 text-teal-300 border border-teal-500/30 text-xs font-semibold uppercase tracking-wider">
+                      Most Popular
+                    </span>
+                  )}
+                </div>
+
+                <div className="flex items-baseline gap-2">
+                  <span className={`text-4xl sm:text-5xl font-extrabold tracking-tight ${!isFree ? "text-white" : "text-zinc-900 dark:text-zinc-100"}`}>
+                    {isFree ? "$0" : `$${plan.price}`}
                   </span>
-                </>
-              )}
-            </p>
-            <p
-              className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
-                "mt-6 text-base leading-7"
-              )}
-            >
-              {tier.description}
-            </p>
-            <ul
-              role="list"
-              className={classNames(
-                tier.featured ? "text-gray-300" : "text-gray-600",
-                "mt-8 space-y-3 text-sm leading-6 sm:mt-10"
-              )}
-            >
-              {tier.features.map(feature => (
-                <li key={feature} className="flex gap-x-3">
-                  <CheckIcon
-                    className={classNames(
-                      tier.featured ? "text-indigo-400" : "text-indigo-600",
-                      "h-6 w-5 flex-none"
-                    )}
-                    aria-hidden="true"
-                  />
-                  {feature}
-                </li>
-              ))}
-            </ul>
+                  <span className={`text-sm ${!isFree ? "text-zinc-400" : "text-zinc-500 dark:text-zinc-400"}`}>
+                    {isFree ? "/ free preview" : plan.currency || "/ first month"}
+                  </span>
+                </div>
 
-            <Button
-              textValue="Get started today"
-              iconRight="sparkle"
-              className="mt-8"
-              btnSize="large"
-              btnTheme="outline"
-              onClickHandler={() => {
-                setShowModal(true)
-                setModalState("form")
-              }}
-            />
-          </div>
-        ))}
+                {descriptionBlocks && (
+                  <div className={`text-sm leading-relaxed ${!isFree ? "text-zinc-300" : "text-zinc-600 dark:text-zinc-400"}`}>
+                    {Array.isArray(descriptionBlocks) ? (
+                      <PortableText blocks={descriptionBlocks} />
+                    ) : (
+                      <p>{String(descriptionBlocks)}</p>
+                    )}
+                  </div>
+                )}
+
+                <ul className={`space-y-3 text-sm pt-4 border-t ${!isFree ? "border-zinc-800 text-zinc-300" : "border-zinc-100 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400"}`}>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon className="w-5 h-5 text-teal-500 shrink-0" />
+                    {isFree ? "Access to introductory lessons" : "Full access to all 13 course chapters"}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon className="w-5 h-5 text-teal-500 shrink-0" />
+                    {isFree ? "Gatsby & Jamstack setup guides" : "Sanity CMS dataset & Stripe Checkout"}
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <CheckIcon className="w-5 h-5 text-teal-500 shrink-0" />
+                    {isFree ? "Self-paced reading material" : "Customer subscription management"}
+                  </li>
+                </ul>
+              </div>
+
+              <div className="pt-8">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowModal(true)
+                    setModalState("form")
+                  }}
+                  className={`w-full py-3.5 px-6 rounded-2xl font-bold text-sm transition-all shadow-md ${
+                    !isFree
+                      ? "bg-gradient-to-r from-teal-500 to-emerald-400 text-zinc-950 hover:opacity-95"
+                      : "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200 dark:hover:bg-zinc-700"
+                  }`}
+                >
+                  {isFree ? "Preview Course" : "Enroll Now"}
+                </button>
+              </div>
+            </div>
+          )
+        })}
       </div>
-    </div>
+    </section>
   )
 }

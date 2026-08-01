@@ -2,39 +2,19 @@
 
 import React, { useState, useEffect } from "react"
 import toast, { Toaster } from "react-hot-toast"
-import axios, { AxiosResponse } from "axios"
+import axios from "axios"
 import { useForm } from "react-hook-form"
-import SelectMenu from "@components/SelectMenu"
-
-import Button from "@atom/button/index"
-
-import { CheckIcon, ChevronDownIcon } from "@heroicons/react/20/solid"
-// import { navigate } from "gatsby"
-
-import removeParams from "@lib/removeParams"
-import removeTrailing from "@lib/removeTrailing"
-
 import PortableText from "@components/portabletext/portableText"
-
 import InputField from "@molecule/input-field/index"
-
-// @ts-ignore
-import { useSiteMetadata } from "@hooks/use-site-metadata.tsx"
+import { CheckCircle2, Lock, ArrowRight, Sparkles, CreditCard, ShieldCheck } from "lucide-react"
 
 const Form = ({ productPrice, location, onModalState }: any) => {
-  // const [SPrice, setSPrice] = useState<{
-  //   _key?: number | null
-  //   price?: number | null
-  //   priceID?: String | null
-  //   description?: String | null
-  //   amount?: Number | null
-  // }>({
-  //   _key: null,
-  //   price: null,
-  //   priceID: null,
-  //   description: "",
-  //   amount: null,
-  // })
+  const plans = productPrice?.plans || []
+
+  // Find default Premium plan price ID
+  const premiumPlan = plans.find((p: any) => p.keyword === "Premium" || Number(p.price) > 0)
+  // Read the Stripe Price ID from Sanity — synced automatically by /api/sanity-stripe-sync
+  const defaultPriceId = premiumPlan?.priceID || premiumPlan?.priceID_test || null
 
   const {
     register,
@@ -42,41 +22,26 @@ const Form = ({ productPrice, location, onModalState }: any) => {
     watch,
     setValue,
     formState: { errors },
-  } = useForm()
-
-  useEffect(() => {
-    let defaultPriceValue = ""
-    if (productPrice?.plans?.length > 0) {
-      for (let i = 0; i < Number(productPrice?.plans?.length); i++) {
-        if (productPrice?.plans[i].source == "Stripe") {
-          if (buildMeta.devstatus == "development") {
-            defaultPriceValue = productPrice?.plans[i].priceID_test
-            break
-          } else {
-            defaultPriceValue = productPrice?.plans[i].priceID
-            break
-          }
-        }
-      }
-      setValue("price", defaultPriceValue)
-
-      // setSPrice({
-      //   _key: productPrice?.plans[0]?._key,
-      //   description: productPrice?.plans[0]?._rawDescription,
-      //   priceID: productPrice?.plans[0]?.priceID,
-      // })
-    }
-  }, [])
+  } = useForm({
+    defaultValues: {
+      price: defaultPriceId,
+      name: "",
+      email: "",
+    },
+  })
 
   const [disable, setDisable] = useState(false)
-  let buildMeta = useSiteMetadata()
+  const selectedPriceId = watch("price")
+  const isPremiumSelected = selectedPriceId && selectedPriceId !== "free" && selectedPriceId !== "0"
+
   const redirectCKout = async (data: {
-    price_ID: any
-    email: any
-    name: any
-    priceRef: any
+    price_ID: string
+    email: string
+    name: string
+    priceRef: string
   }) => {
-    let hrefURL = removeTrailing(removeParams(location.href))
+    const origin = typeof window !== "undefined" ? window.location.origin : ""
+    const hrefURL = `${origin}/p/build-standout-website`
 
     try {
       const {
@@ -92,22 +57,28 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         },
         allow_promotion_codes: true,
         cancelUrl: `${hrefURL}?state=fail`,
-        successUrl: `${location.origin}/api/createSubscription?name=${data.name}&email=${data.email}&priceId=${data.price_ID}&priceRef=${data.priceRef}&redirectOrigin=${hrefURL}`,
+        successUrl: `${origin}/api/createSubscription?name=${encodeURIComponent(data.name)}&email=${encodeURIComponent(data.email)}&priceId=${data.price_ID}&priceRef=${data.priceRef}&redirectOrigin=${encodeURIComponent(hrefURL)}`,
       })
 
-      window.location = url
-    } catch (error) {}
+      if (url) {
+        window.location.href = url
+      } else {
+        toast.error("Failed to generate Stripe checkout session.")
+        setDisable(false)
+      }
+    } catch (error: any) {
+      console.error("Stripe Checkout Error:", error?.response?.data || error?.message)
+      toast.error(error?.response?.data?.message || "Stripe checkout session failed.")
+      setDisable(false)
+    }
   }
 
-  async function yesSubmit(data: {
-    name: any
-    price: any
-    email: any
-  }): Promise<void> {
+  async function onSubmit(data: any): Promise<void> {
     setDisable(true)
 
     try {
-      if (!data.price) {
+      if (!isPremiumSelected) {
+        // Free Open House Flow
         try {
           await axios.post(`/api/newsletter`, {
             name: String(data.name),
@@ -115,57 +86,58 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           })
         } catch (error) {}
 
-        try {
-          await axios.post(`/api/sendEmailTemplate`, {
-            templateId: "d-c46966ad6ce5402aa1489198b511ddd1",
-            subject:
-              "Build Website With Gatsby, Sanity, And Stripe course - Taimoor Sattar",
-            email: String(data.email),
-            metadata: {
-              name: String(data.name),
-            },
-          })
-        } catch (error) {}
-
         onModalState("success")
-
-        toast("Successfully Subscribed!", {
-          icon: "👏",
-        })
+        toast.success("Successfully Subscribed to Free Open House!")
       } else {
+        // Check the plan actually has a Stripe Price ID from Sanity sync
+        const selectedPlan = plans.find(
+          (p: any) => (p.priceID || p.priceID_test) === data.price
+        )
+        if (!selectedPlan?.priceID && !selectedPlan?.priceID_test) {
+          toast.error(
+            "This plan has no Stripe Price ID yet. Please trigger a sync in the admin panel."
+          )
+          setDisable(false)
+          return
+        }
+        // Premium Stripe Checkout Flow
         await redirectCKout({
           price_ID: data.price,
           email: data.email,
           name: data.name,
-          priceRef: productPrice._id,
+          priceRef: productPrice?._id || "",
         })
-        setDisable(false)
       }
     } catch (e) {
       setDisable(false)
+      toast.error("Something went wrong.")
     }
   }
 
   return (
-    <>
+    <div className="p-6 sm:p-8 space-y-6">
       <Toaster position="top-center" />
-      <form
-        className="field"
-        onSubmit={handleSubmit((evt: any) => yesSubmit(evt))}
-      >
+
+      <div className="space-y-1 text-center">
+        <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
+          Enroll in the Course
+        </h2>
+        <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+          Enter your details and select your plan to unlock full access.
+        </p>
+      </div>
+
+      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
         <InputField
           register={register}
           aria-invalid={errors.name ? "true" : "false"}
           id="name"
-          labelText="Please enter your Name"
-          message={errors?.name ? "Please correct this field" : ""}
+          labelText="Your Full Name"
+          message={errors?.name ? "Please enter your name" : ""}
           status={errors?.name ? "error" : "normal"}
           type="text"
-          placeholder="Your Name"
-          options={{
-            required: true,
-            maxLength: 50,
-          }}
+          placeholder="Taimoor Sattar"
+          options={{ required: true, maxLength: 50 }}
           required={true}
         />
 
@@ -173,8 +145,8 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           register={register}
           aria-invalid={errors.email ? "true" : "false"}
           id="email"
-          labelText="Type your Email"
-          message={errors?.email ? "Please correct this field" : ""}
+          labelText="Your Email Address"
+          message={errors?.email ? "Please enter a valid email" : ""}
           status={errors?.email ? "error" : "normal"}
           type="email"
           placeholder="yours@email.com"
@@ -182,121 +154,90 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           required={true}
         />
 
-        <div className="mb-8">
-          <fieldset className="m-0 p-0 border-2 rounded-sm border-indigo-100">
-            <legend className="text-gray-600 px-1 text-sm">
-              Select the plan
-            </legend>
-            <div className="-space-y-px bg-white rounded-md">
-              {productPrice?.plans.map(
-                (prc: any, index: React.Key | null | undefined) => {
-                  return (
-                    <div
-                      key={index}
-                      className={`border p-2 flex flex--items-center flex--justify-start ${
-                        watch("price") ==
-                        (buildMeta.devstatus == "development"
-                          ? prc.priceID_test
-                            ? prc.priceID_test
-                            : ""
-                          : prc.priceID
-                          ? prc.priceID
-                          : "")
-                          ? "bg-indigo-100 border-indigo-200"
-                          : "border border-gray-200"
-                      } z-10`}
-                    >
-                      <div className="flex items-center">
-                        <input
-                          id={prc.keyword}
-                          {...register("price")}
-                          value={
-                            buildMeta.devstatus == "development"
-                              ? prc.priceID_test
-                              : prc.priceID
-                          }
-                          type="radio"
-                          className={`border-2 border-cyan-900 text-indigo-600 ${
-                            watch("price") == "" ||
-                            watch("price") ==
-                              (buildMeta.devstatus == "development"
-                                ? prc.priceID_test
-                                  ? prc.priceID_test
-                                  : ""
-                                : prc.priceID
-                                ? prc.priceID
-                                : "")
-                              ? "focus:ring-indigo-500"
-                              : " border-2 border-cyan-900"
-                          }`}
-                        />
-                      </div>
+        {/* Plan Selection Radios */}
+        <div className="space-y-2">
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
+            Select Course Tier
+          </label>
 
-                      <label
-                        htmlFor={prc.keyword}
-                        className="ml-3 cursor-pointer"
-                      >
-                        <span
-                          className={`m-0 p-0 block text-sm font-medium  ${
-                            watch("price") ==
-                            (buildMeta.devstatus == "development"
-                              ? prc.priceID_test
-                                ? prc.priceID_test
-                                : ""
-                              : prc.priceID
-                              ? prc.priceID
-                              : "")
-                              ? "text-indigo-900"
-                              : "text-gray-800"
-                          }`}
-                        >
-                          {prc.keyword}
-                        </span>
+          <div className="space-y-2.5">
+            {plans.map((prc: any, index: number) => {
+              const isFreePlan = Number(prc.price) === 0
+              const planPriceId = isFreePlan
+                ? "free"
+                : prc.priceID || prc.priceID_test || null
+              const isSelected = selectedPriceId === planPriceId
 
-                        <span
-                          className={`block text-sm ${
-                            watch("price") ==
-                            (buildMeta.devstatus == "development"
-                              ? prc.priceID_test
-                                ? prc.priceID_test
-                                : ""
-                              : prc.priceID
-                              ? prc.priceID
-                              : "")
-                              ? "text-indigo-700"
-                              : "text-gray-600"
-                          } `}
-                        >
-                          <PortableText blocks={prc?._rawDescription} />
-                        </span>
-                      </label>
+              return (
+                <label
+                  key={index}
+                  htmlFor={`plan-${index}`}
+                  className={`flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all ${
+                    isSelected
+                      ? "border-teal-500 bg-teal-500/10 dark:bg-teal-950/30 ring-2 ring-teal-500/30"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60"
+                  }`}
+                >
+                  <input
+                    id={`plan-${index}`}
+                    {...register("price")}
+                    value={planPriceId}
+                    type="radio"
+                    className="mt-1 text-teal-600 focus:ring-teal-500"
+                  />
+
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
+                        {prc.keyword || (isFreePlan ? "Basic (Free)" : "Premium")}
+                      </span>
+                      <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
+                        {isFreePlan ? "Free" : `$${prc.price}/mo`}
+                      </span>
                     </div>
-                  )
-                }
-              )}
-            </div>
-          </fieldset>
+
+                    {prc.description || prc._rawDescription ? (
+                      <div className="text-xs text-zinc-600 dark:text-zinc-400 leading-relaxed">
+                        {Array.isArray(prc.description || prc._rawDescription) ? (
+                          <PortableText blocks={prc.description || prc._rawDescription} />
+                        ) : (
+                          <p>{String(prc.description || prc._rawDescription)}</p>
+                        )}
+                      </div>
+                    ) : null}
+                  </div>
+                </label>
+              )
+            })}
+          </div>
         </div>
-        <Button
-          textValue={
-            !watch("price") ? (
-              <i id="free-course-check">Open House Content</i>
-            ) : (
-              <i id="proceed-checkout">Proceed to checkout</i>
-            )
-          }
+
+        {/* Submit Action Button */}
+        <button
           type="submit"
-          disabled={disable ? true : false}
-          iconRight={!watch("price") ? "backpack" : "walletcards"}
-          btnSize="med"
-          btnTheme="indigo"
-          // onClickHandler={() => {
-          //   setModalState("form")
-          //   setShowModal(true)
-          // }}
-        />
+          disabled={disable}
+          className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-500 text-white font-extrabold text-sm shadow-xl hover:opacity-95 disabled:opacity-50 transition-all mt-4"
+        >
+          {disable ? (
+            "Connecting..."
+          ) : isPremiumSelected ? (
+            <>
+              <CreditCard className="w-4 h-4" /> Proceed to Stripe Checkout (${
+                plans.find((p: any) => (p.priceID || p.priceID_test) === selectedPriceId)?.price ?? 0
+              }) <ArrowRight className="w-4 h-4" />
+            </>
+          ) : (
+            <>
+              <Sparkles className="w-4 h-4" /> Enroll in Free Access <ArrowRight className="w-4 h-4" />
+            </>
+          )}
+        </button>
+
+        <div className="flex items-center justify-center gap-2 text-[11px] font-semibold text-zinc-500 dark:text-zinc-400">
+          <ShieldCheck className="w-3.5 h-3.5 text-teal-500" /> 256-Bit SSL Encrypted & Secured by Stripe
+        </div>
       </form>
-    </>
+    </div>
   )
 }
 

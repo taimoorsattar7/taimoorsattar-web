@@ -1,30 +1,27 @@
 import React from "react"
-import { GatsbyImage } from "gatsby-plugin-image"
-import { getGatsbyImageData } from "gatsby-source-sanity"
-// @ts-ignore
-import clientConfig from "../../../client-config"
+import Image from "next/image"
 
 export const Figure = ({ value }: any) => {
-  if (!value || !value.asset || !value.asset._id) {
+  if (!value || !value.asset) {
     return null
   }
-  const gatsbyImageData = getGatsbyImageData(
-    value,
-    { maxWidth: "100%" },
-    clientConfig.sanity
-  )
+  const imgUrl = value.asset.url || value.asset._ref || ""
   return (
-    <figure>
-      <a href={gatsbyImageData?.images?.fallback?.src} target="_blank">
-        <GatsbyImage
-          className="fullwidth"
-          image={gatsbyImageData}
-          alt={value.alt}
-        />
-      </a>
-      <figcaption style={{ color: "gray", fontSize: "1rem" }}>
-        {value.caption}
-      </figcaption>
+    <figure className="my-6">
+      {imgUrl && (
+        <a href={imgUrl} target="_blank" rel="noopener noreferrer">
+          <img
+            className="w-full h-auto rounded-lg"
+            src={imgUrl}
+            alt={value.alt || "Figure"}
+          />
+        </a>
+      )}
+      {value.caption && (
+        <figcaption className="text-center text-xs text-zinc-500 mt-2">
+          {value.caption}
+        </figcaption>
+      )}
     </figure>
   )
 }

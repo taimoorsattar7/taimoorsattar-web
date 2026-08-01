@@ -1,5 +1,7 @@
+'use client'
+
 import React, { useState, useEffect } from "react"
-import { Link } from "gatsby"
+import Link from "next/link"
 
 export default function Concent({ timer }: any) {
   const [display, setDisplay] = useState(false)
@@ -21,83 +23,54 @@ export default function Concent({ timer }: any) {
       document.body.removeEventListener("keydown", closeOnEscapeKeyDown)
       clearTimeout(clrtime)
     }
-  }, [])
+  }, [timer])
 
   if (!display) {
     return <></>
   }
 
   return (
-    <>
-      <div className="fixed left-0 bottom-0 z-40 ">
-        <div className="fixed sm:left-4 bottom-20 rounded-lg bg-white shadow-2xl w-full sm:w-1/2 xl:w-1/4 max-w-[450px] overflow-hidden">
-          <div className="">
-            <button
-                onClick={()=>{setDisplay(false)}}
-              type="button"
-              className="bg-white rounded-md p-2 inline-flex items-center justify-center text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500"
+    <div className="fixed left-0 bottom-0 z-40">
+      <div className="fixed sm:left-4 bottom-20 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl w-full sm:w-1/2 xl:w-1/4 max-w-[450px] overflow-hidden">
+        <div>
+          <button
+            onClick={() => setDisplay(false)}
+            type="button"
+            className="bg-transparent rounded-md p-2 inline-flex items-center justify-center text-zinc-400 hover:text-zinc-500 focus:outline-none"
+          >
+            <span className="sr-only">Close menu</span>
+            <svg
+              className="h-6 w-6"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              aria-hidden="true"
             >
-              <span className="sr-only">Close menu</span>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          </button>
+          <div className="relative overflow-hidden px-8 pt-4 pb-6">
+            <div className="text-xl font-bold text-zinc-900 dark:text-zinc-100 pb-2">
+              Learn Modern Full-Stack Development
+            </div>
+            <div className="pb-4 text-sm text-zinc-600 dark:text-zinc-400">
+              Build modern static and dynamic web applications using React, Next.js, Sanity, and Stripe.
+            </div>
 
-              <svg
-                className="h-6 w-6"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                aria-hidden="true"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              </svg>
-            </button>
-            <div className="relative overflow-hidden px-8 pt-8 pb-6">
-              <div
-                width="80"
-                height="77"
-                className="absolute -top-10 -right-10 text-yellow-500"
-              >
-                <svg
-                  width="120"
-                  height="119"
-                  viewBox="0 0 120 119"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    opacity="0.3"
-                    d="M6.38128 49.1539C3.20326 32.893 13.809 17.1346 30.0699 13.9566L70.3846 6.07751C86.6455 2.89948 102.404 13.5052 105.582 29.7661L113.461 70.0808C116.639 86.3417 106.033 102.1 89.7724 105.278L49.4577 113.157C33.1968 116.335 17.4384 105.729 14.2604 89.4686L6.38128 49.1539Z"
-                    fill="blue"
-                    // #e0e7eb
-                  />
-                </svg>
-              </div>
-              <div className="text-2xl flex flex-col pb-4">
-                <span className="text-xl font-bold">
-                  Learn React Framework Gatsby
-                </span>
-              </div>
-              <div className="pb-4">
-                <p>
-                  Gatsby is the React-based framework to build static and
-                  dynamic websites. In this course, we'll build a subscription
-                  platform using Gatsby, Sanity, and Stripe.
-                </p>
-              </div>
-
-              <div className="pb-4">
-                <Link to="/p/build-standout-website" className="text-sky-800">
-                  <b>Go to the course →</b>
-                </Link>
-              </div>
+            <div>
+              <Link href="/p/build-standout-website" className="text-teal-600 dark:text-teal-400 font-semibold text-sm">
+                Go to the course &rarr;
+              </Link>
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   )
 }
