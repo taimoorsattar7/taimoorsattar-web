@@ -72,90 +72,54 @@ const Button: any = (props: any) => {
   } = props
 
   function getButtonClasses() {
-    const buttonClasses = [
-      "flex flex-row rounded cursor-pointer justify-center items-center",
-      `${
-        btnSize == "sml"
-          ? "py-1 px-2 gap-1 text-base shadow-[0px_2px_4px_rgba(111,_111,_111,_0.25)]"
-          : ""
-      }
-      ${
-        btnSize == "med"
-          ? "py-2 px-3 gap-2 text-xl shadow-[0px_4px_8px_rgba(111,_111,_111,_0.25)]"
-          : ""
-      }
-      ${
-        btnSize == "large"
-          ? "py-3 px-4 gap-3 text-2xl shadow-[0px_6px_12px_rgba(111,_111,_111,_0.25)]"
-          : ""
-      }
-      `,
-      `
-        ${btnTheme == "filled" ? "bg-black text-white items-center" : ""}
-        ${
-          btnTheme == "outline"
-            ? "bg-none text-white border-2 border-slate-900"
-            : ""
-        }
-        ${btnTheme == "indigo" ? "bg-indigo-400 text-white items-center" : ""}
-      `,
-    ]
+    const baseClasses = "inline-flex items-center justify-center font-bold transition-all duration-200 rounded-2xl cursor-pointer"
+    
+    let sizeClasses = "py-2.5 px-4 gap-2 text-xs"
+    if (btnSize === "med") {
+      sizeClasses = "py-3 px-5 gap-2.5 text-sm"
+    } else if (btnSize === "large") {
+      sizeClasses = "py-3.5 px-6 gap-3 text-base shadow-lg"
+    }
 
-    return buttonClasses.join(" ")
+    let themeClasses = "bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 hover:opacity-90"
+    if (btnTheme === "outline") {
+      themeClasses = "border border-zinc-200 dark:border-zinc-700/80 bg-transparent text-zinc-900 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800"
+    } else if (btnTheme === "indigo" || btnTheme === "teal") {
+      themeClasses = "bg-gradient-to-r from-teal-600 to-emerald-500 text-white shadow-teal-500/20 hover:opacity-95 shadow-md"
+    }
+
+    return `${baseClasses} ${sizeClasses} ${themeClasses}`
   }
+
+  const isLightTextTheme = btnTheme === "indigo" || btnTheme === "teal" || (btnTheme === "filled")
 
   return (
     <button
       id={id ? id : ""}
-      type={type}
-      onClick={event => onClickHandler(event)}
+      type={type || "button"}
+      onClick={event => onClickHandler?.(event)}
       disabled={disabled}
-      className={`${className} ${" "} ${
+      className={`${className || ""} ${
         disabled ? "cursor-not-allowed opacity-50" : ""
-      }  ${getButtonClasses()}`}
+      } ${getButtonClasses()}`}
     >
       {iconLeft && (
         <Icons
           iconName={iconLeft}
-          className={`
-            h-auto ${" "}
-            ${btnTheme == "filled" ? "text-white" : ""}
-            ${btnTheme == "outline" ? "text-neutral-900" : ""}
-            ${btnTheme == "indigo" ? "text-neutral-900" : ""}
-            ${btnSize == "sml" ? "w-4" : ""}
-            ${btnSize == "med" ? "w-5" : ""}
-            ${btnSize == "large" ? "w-6" : ""}
-          `}
+          className={`h-4 w-4 shrink-0 ${
+            btnTheme === "outline" ? "text-zinc-900 dark:text-zinc-100" : "text-current"
+          }`}
         />
       )}
 
-      <div
-        className={`
-        ${btnTheme == "filled" ? "text-white" : ""}
-        ${btnTheme == "outline" ? "text-neutral-900" : ""}
-        ${btnTheme == "indigo" ? "text-neutral-900" : ""}
-        ${btnSize == "sml" ? "text-sm" : ""}
-        ${btnSize == "med" ? "text-base" : ""}
-        ${btnSize == "large" ? "text-lg" : ""}
-      `}
-      >
-        <b>{textValue}</b>
-      </div>
-
-      {/* {isRightIcon && ( */}
+      <span>{textValue}</span>
 
       {iconRight && (
         <Icons
           iconName={iconRight}
-          className={`
-            h-auto ${" "}
-            ${btnTheme == "filled" ? "text-white" : ""}
-            ${btnTheme == "outline" ? "text-neutral-900" : ""}
-            ${btnTheme == "indigo" ? "text-neutral-900" : ""}
-            ${btnSize == "sml" ? "w-4" : ""}
-            ${btnSize == "med" ? "w-5" : ""}
-            ${btnSize == "large" ? "w-6" : ""}
-          `}
+          className={`h-4 w-4 shrink-0 ${
+            btnTheme === "outline" ? "text-zinc-900 dark:text-zinc-100" : "text-current"
+          }`}
         />
       )}
     </button>

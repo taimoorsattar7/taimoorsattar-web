@@ -1,7 +1,6 @@
 import React from 'react'
 import Layout from '@/src/components/layout'
 import Link from 'next/link'
-import Image from 'next/image'
 import { BookOpen, Clock, Users, Star, ArrowRight, Layers, Zap, Globe } from 'lucide-react'
 
 export const metadata = {
@@ -59,31 +58,19 @@ export default function CoursePage() {
               key={course.id}
               className="group relative flex flex-col md:flex-row gap-0 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/40 overflow-hidden shadow-sm hover:shadow-lg hover:border-zinc-300 dark:hover:border-zinc-700 transition-all duration-300"
             >
-              {/* Course Thumbnail */}
-              <div className="relative w-full md:w-72 md:shrink-0 h-52 md:h-auto bg-zinc-100 dark:bg-zinc-950 overflow-hidden">
-                <Image
-                  src={course.image}
-                  alt={course.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                  unoptimized
-                />
-                {/* Badge */}
-                <div className="absolute top-3 left-3">
-                  <span className="px-2.5 py-1 rounded-full bg-teal-500 text-white text-[11px] font-bold uppercase tracking-wider shadow">
-                    {course.badge}
-                  </span>
-                </div>
-              </div>
-
               {/* Course Info */}
               <div className="flex flex-col justify-between p-6 sm:p-8 flex-1">
                 <div className="space-y-4">
-                  {/* Title + Subtitle */}
+                  {/* Title + Subtitle + Badge */}
                   <div>
-                    <p className="text-xs font-semibold text-teal-600 dark:text-teal-400 uppercase tracking-wider mb-1.5">
-                      {course.subtitle}
-                    </p>
+                    <div className="flex items-center gap-2.5 mb-2">
+                      <span className="px-2.5 py-0.5 rounded-full bg-teal-500/10 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 border border-teal-500/30 text-[10px] font-extrabold uppercase tracking-wider">
+                        {course.badge}
+                      </span>
+                      <p className="text-xs font-semibold text-zinc-500 dark:text-zinc-400 uppercase tracking-wider">
+                        {course.subtitle}
+                      </p>
+                    </div>
                     <h2 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight leading-tight">
                       {course.title}
                     </h2>

@@ -47,12 +47,25 @@ export default function Header() {
     },
   ]
 
+  const [isScrolled, setIsScrolled] = useState(false)
+
   useEffect(() => {
     setUsr(getCurrentUser())
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 15)
+    }
+    handleScroll()
+    window.addEventListener("scroll", handleScroll)
+    return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur-md bg-white/85 dark:bg-[#0b0f19]/85 border-b border-zinc-200/80 dark:border-zinc-800/80 transition-colors duration-200">
+    <header className={classNames(
+      "sticky top-0 z-50 transition-all duration-300",
+      isScrolled
+        ? "backdrop-blur-md bg-white/90 dark:bg-[#0b0f19]/90 border-b border-zinc-200/80 dark:border-zinc-800/80 shadow-sm"
+        : "bg-white dark:bg-[#0b0f19] border-b border-transparent"
+    )}>
       <Disclosure as="nav" aria-label="Main Navigation">
         {({ open }: any) => (
           <>
@@ -81,13 +94,13 @@ export default function Header() {
                       href="/" 
                       className="flex items-center gap-3 group no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-full px-1 py-0.5"
                     >
-                      <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-sm group-hover:scale-105 motion-reduce:group-hover:scale-100 transition-transform duration-200 shrink-0">
+                      <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-sm shrink-0">
                         <Image
                           src="/profile-pic.jpg"
                           alt="Taimoor Sattar"
                           width={36}
                           height={36}
-                          className="h-full w-full object-cover"
+                          className="h-full w-full object-cover grayscale"
                           unoptimized
                         />
                       </div>
@@ -107,7 +120,7 @@ export default function Header() {
                               item.current
                                 ? "text-teal-600 dark:text-teal-400 font-semibold"
                                 : "text-zinc-700 dark:text-zinc-300 hover:text-teal-600 dark:hover:text-teal-400",
-                              "relative rounded-full px-3.5 py-1.5 text-xs font-medium transition-all duration-200 hover:scale-105 motion-reduce:hover:scale-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
+                              "relative rounded-full px-3.5 py-1.5 text-xs font-medium transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500"
                             )}
                             aria-current={item.current ? "page" : undefined}
                           >

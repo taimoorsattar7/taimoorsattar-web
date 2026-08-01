@@ -46,16 +46,6 @@ export default function Footer() {
 
               <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-slate-400">
                 <a 
-                  href="https://twitter.com/taimoorsattar7" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  aria-label="Twitter profile (opens in new tab)"
-                  className="hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-200 rounded px-1 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 hover:-translate-y-0.5 motion-reduce:hover:translate-y-0"
-                >
-                  Twitter
-                </a>
-                <span aria-hidden="true">&bull;</span>
-                <a 
                   href="https://github.com/taimoorsattar7" 
                   target="_blank" 
                   rel="noopener noreferrer"

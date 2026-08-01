@@ -32,7 +32,7 @@ const Modal = (props: any) => {
 
   return (
     <div
-      className="relative z-10"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -41,39 +41,33 @@ const Modal = (props: any) => {
         onClick={(evt: any) => {
           props.onClose(evt)
         }}
-        className="fixed max-w-full max-h-screen inset-0 bg-gray-500 bg-opacity-75 transition-opacity backdrop-blur-md"
-      >
-        .
-      </div>
+        className="fixed inset-0 bg-zinc-900/70 backdrop-blur-sm transition-opacity"
+        aria-hidden="true"
+      />
 
-      <div className="fixed inset-0 z-10 overflow-y-auto">
-        <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-          <div className="relative transform overflow-hidden rounded-lg bg-white text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg">
-            <div className="bg-gray-200 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6 mb-0">
-              <CopyXIcon
-                onClick={(evt: any) => {
-                  props.onClose(evt)
-                }}
-                className="w-5 h-5 cursor-pointer"
-              />
-            </div>
-            <div className="bg-white px-4 pb-4 pt-5 sm:p-6 sm:pb-4">
-              {props.title && (
-                <h4 className="text-x">
-                  <b>{props.title}</b>
-                </h4>
-              )}
+      <div className="relative z-10 w-full max-w-lg my-auto transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 text-left shadow-2xl transition-all border border-zinc-200 dark:border-zinc-800">
+        <div className="bg-zinc-100 dark:bg-zinc-800/80 px-4 py-3 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700/60">
+          <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
+            {props.title || "Course Enrollment"}
+          </span>
+          <CopyXIcon
+            onClick={(evt: any) => {
+              props.onClose(evt)
+            }}
+            className="w-5 h-5 cursor-pointer text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+          />
+        </div>
+        <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6">
+          {props.body && (
+            <p
+              className="prose prose-base dark:prose-invert mb-4"
+              dangerouslySetInnerHTML={{
+                __html: props.success ? props.successmsg : props.body,
+              }}
+            />
+          )}
 
-              <p
-                className="prose prose-base"
-                dangerouslySetInnerHTML={{
-                  __html: props.success ? props.successmsg : props.body,
-                }}
-              ></p>
-
-              <div className="modal__body">{props.children}</div>
-            </div>
-          </div>
+          <div className="modal__body">{props.children}</div>
         </div>
       </div>
     </div>

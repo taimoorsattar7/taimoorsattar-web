@@ -4,6 +4,7 @@ import Layout from '@/src/components/layout'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { ArrowLeft, Calendar, Tag, BookOpen } from 'lucide-react'
+import ShareSocial from '@/src/atom/share-social/index'
 
 export async function generateStaticParams() {
   const posts = getAllPosts()
@@ -79,6 +80,9 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
           className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed space-y-4 prose-headings:font-bold prose-a:text-teal-600 dark:prose-a:text-teal-400"
           dangerouslySetInnerHTML={{ __html: post.contentHtml || '' }}
         />
+
+        {/* Social Share Bar */}
+        <ShareSocial title={post.title} slug={params.slug} />
 
         <footer className="pt-8 border-t border-zinc-200 dark:border-zinc-800">
           <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 bg-zinc-50 dark:bg-zinc-900/40 space-y-3">

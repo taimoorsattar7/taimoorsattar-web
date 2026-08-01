@@ -165,7 +165,7 @@ function ProductPage({
           </section>
         )}
 
-        <Pricing productPrice={productPrice} setShowModal={setShowModal} setModalState={setModalState} />
+        {/* Pricing component removed per request */}
 
         {!isSSR && (
           <React.Suspense fallback={<div />}>

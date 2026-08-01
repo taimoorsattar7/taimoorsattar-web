@@ -30,6 +30,22 @@ export default function ModulesPage({ params }: { params: { slug?: string[] } })
   }, [courseSlug])
 
   if (loading) {
+    if (lessonSlug) {
+      return (
+        <SidebarLayout1
+          nav={[]}
+          slug={lessonSlug}
+          params={{ doc__slug__current: courseSlug }}
+          SideBar={<div className="p-4 text-xs font-semibold text-zinc-400">Loading curriculum...</div>}
+        >
+          <div className="min-h-[50vh] flex flex-col items-center justify-center gap-4 text-zinc-500 dark:text-zinc-400">
+            <Loader2 className="w-8 h-8 animate-spin text-teal-500" />
+            <span className="text-sm font-semibold tracking-wide">Loading lesson content...</span>
+          </div>
+        </SidebarLayout1>
+      )
+    }
+
     return (
       <Layout>
         <div className="min-h-[65vh] flex items-center justify-center">

@@ -11,10 +11,10 @@ import { CheckCircle2, Lock, ArrowRight, Sparkles, CreditCard, ShieldCheck } fro
 const Form = ({ productPrice, location, onModalState }: any) => {
   const plans = productPrice?.plans || []
 
-  // Find default Premium plan price ID
+  // Find default Premium plan price ID (prioritize Stripe test mode price ID)
   const premiumPlan = plans.find((p: any) => p.keyword === "Premium" || Number(p.price) > 0)
-  // Read the Stripe Price ID from Sanity — synced automatically by /api/sanity-stripe-sync
-  const defaultPriceId = premiumPlan?.priceID || premiumPlan?.priceID_test || null
+  // Read the Stripe Price ID from Sanity — prioritize priceID_test for test payments
+  const defaultPriceId = premiumPlan?.priceID_test || premiumPlan?.priceID || null
 
   const {
     register,
@@ -165,7 +165,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
               const isFreePlan = Number(prc.price) === 0
               const planPriceId = isFreePlan
                 ? "free"
-                : prc.priceID || prc.priceID_test || null
+                : prc.priceID_test || prc.priceID || null
               const isSelected = selectedPriceId === planPriceId
 
               return (
