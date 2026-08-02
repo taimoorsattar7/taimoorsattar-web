@@ -106,7 +106,7 @@ const Button: any = (props: any) => {
       {iconLeft && (
         <Icons
           iconName={iconLeft}
-          className={`h-4 w-4 shrink-0 ${
+          className={`shrink-0 ${btnSize === "large" ? "w-5 h-5" : "w-4 h-4"} ${
             btnTheme === "outline" ? "text-zinc-900 dark:text-zinc-100" : "text-current"
           }`}
         />
@@ -117,7 +117,7 @@ const Button: any = (props: any) => {
       {iconRight && (
         <Icons
           iconName={iconRight}
-          className={`h-4 w-4 shrink-0 ${
+          className={`shrink-0 ${btnSize === "large" ? "w-5 h-5" : "w-4 h-4"} ${
             btnTheme === "outline" ? "text-zinc-900 dark:text-zinc-100" : "text-current"
           }`}
         />

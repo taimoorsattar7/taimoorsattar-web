@@ -14,9 +14,9 @@ import CurriculumList from "@components/curriculum-list/index"
 import { Author } from "@components/Author"
 
 // @ts-ignore
-import { getCurrentUser } from "@utils/auth.ts"
+import { getCurrentUser, cVerifyToken } from "@utils/auth.ts"
 
-const Modal = React.lazy(() => import("@atom/modal/index"))
+import Modal from "@atom/modal/index"
 
 import PortableTextReact from "@components/portabletext/portableText"
 import ProductBanner from "@components/product-banner/index"
@@ -69,7 +69,12 @@ function ProductPage({
   )
 
   useEffect(() => {
-    const queriedTheme = queryString.parse(location.search)
+    const searchStr = location?.search || (typeof window !== "undefined" ? window.location.search : "")
+    const queriedTheme = queryString.parse(searchStr)
+
+    if (queriedTheme.token) {
+      cVerifyToken(queriedTheme.token)
+    }
 
     if (
       ["form", "success", "fail", "pending"].includes(
@@ -79,7 +84,7 @@ function ProductPage({
       setShowModal(true)
       setModalState(String(queriedTheme.state))
     }
-  }, [])
+  }, [location?.search])
 
   return (
     <article>
@@ -112,12 +117,12 @@ function ProductPage({
                   const imgUrl = tech?.logo?.asset?.url
                   return (
                     <div
-                      className="w-1/2 sm:w-1/4 md:w-1/6 px-4"
+                      className="w-1/2 sm:w-1/4 md:w-1/6 px-4 flex items-center justify-center"
                       key={index}
                     >
                       {imgUrl && (
                         <img
-                          className="block mx-auto grayscale h-10 w-auto"
+                          className="block mx-auto grayscale h-10 sm:h-12 w-auto max-w-[120px] object-contain shrink-0 transition-all hover:grayscale-0"
                           src={imgUrl}
                           alt={"technology logo"}
                         />

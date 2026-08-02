@@ -123,8 +123,7 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
                 {toggleAvatar && (
                   <div className="absolute right-0 z-50 mt-3 w-56 rounded-2xl bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 shadow-2xl p-2 space-y-1">
                     <div className="px-3 py-2 border-b border-zinc-100 dark:border-zinc-800/80 mb-1">
-                      <p className="text-xs font-medium text-zinc-500 dark:text-zinc-400">Signed in as</p>
-                      <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100 truncate">{usr?.email || "Student"}</p>
+                      <p className="text-xs font-semibold text-zinc-800 dark:text-zinc-200">{usr?.name || "Account"}</p>
                     </div>
 
                     <Link

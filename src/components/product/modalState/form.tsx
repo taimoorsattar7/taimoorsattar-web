@@ -7,14 +7,26 @@ import { useForm } from "react-hook-form"
 import PortableText from "@components/portabletext/portableText"
 import InputField from "@molecule/input-field/index"
 import { CheckCircle2, Lock, ArrowRight, Sparkles, CreditCard, ShieldCheck } from "lucide-react"
+// @ts-ignore
+import { cVerifyToken } from "@utils/auth.ts"
 
 const Form = ({ productPrice, location, onModalState }: any) => {
   const plans = productPrice?.plans || []
 
-  // Find default Premium plan price ID (prioritize Stripe test mode price ID)
-  const premiumPlan = plans.find((p: any) => p.keyword === "Premium" || Number(p.price) > 0)
-  // Read the Stripe Price ID from Sanity — prioritize priceID_test for test payments
-  const defaultPriceId = premiumPlan?.priceID_test || premiumPlan?.priceID || null
+  // Helper to resolve Live vs Test Stripe Price ID according to active environment secret key
+  const getPlanStripePriceId = (p: any) => {
+    if (!p) return null
+    const isLiveKey =
+      (process.env.GATSBY_STRIPE_secret_ID || process.env.STRIPE_SECRET_KEY || "").startsWith("sk_live") &&
+      !process.env.STRIPE_TEST_SECRET_KEY
+    return isLiveKey
+      ? p.priceID || p.priceID_test || null
+      : p.priceID_test || p.priceID || null
+  }
+
+  // Find default plan with Stripe price ID
+  const defaultPlan = plans.find((p: any) => getPlanStripePriceId(p)) || plans[0]
+  const defaultPriceId = getPlanStripePriceId(defaultPlan) || "free"
 
   const {
     register,
@@ -32,7 +44,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
 
   const [disable, setDisable] = useState(false)
   const selectedPriceId = watch("price")
-  const isPremiumSelected = selectedPriceId && selectedPriceId !== "free" && selectedPriceId !== "0"
+  const isStripePlanSelected = selectedPriceId && selectedPriceId !== "free" && selectedPriceId !== "0"
 
   const redirectCKout = async (data: {
     price_ID: string
@@ -77,42 +89,49 @@ const Form = ({ productPrice, location, onModalState }: any) => {
     setDisable(true)
 
     try {
-      if (!isPremiumSelected) {
-        // Free Open House Flow
-        try {
-          await axios.post(`/api/newsletter`, {
-            name: String(data.name),
-            email: String(data.email),
-          })
-        } catch (error) {}
-
-        onModalState("success")
-        toast.success("Successfully Subscribed to Free Open House!")
-      } else {
-        // Check the plan actually has a Stripe Price ID from Sanity sync (prioritizing priceID_test)
-        const selectedPlan = plans.find(
+      const selectedPlan =
+        plans.find(
           (p: any) =>
-            (p.priceID_test || p.priceID) === data.price ||
-            p.priceID_test === data.price ||
-            p.priceID === data.price
-        )
-        const stripeTestPriceId =
-          selectedPlan?.priceID_test || selectedPlan?.priceID || data.price
+            getPlanStripePriceId(p) === data.price ||
+            p.priceID === data.price ||
+            p.priceID_test === data.price
+        ) || plans.find((p: any) => getPlanStripePriceId(p)) || plans[0]
 
-        if (!stripeTestPriceId || stripeTestPriceId === "free") {
-          toast.error(
-            "This plan has no Stripe Test Price ID yet. Please trigger a sync in Sanity Studio."
-          )
-          setDisable(false)
-          return
-        }
-        // Premium Stripe Checkout Flow via Stripe Test Price ID
+      const stripePriceId =
+        getPlanStripePriceId(selectedPlan) || (data.price !== "free" && data.price !== "0" ? data.price : null)
+
+      if (stripePriceId) {
+        // Redirect to Stripe Payment Link / Checkout
         await redirectCKout({
-          price_ID: stripeTestPriceId,
+          price_ID: stripePriceId,
           email: data.email,
           name: data.name,
           priceRef: productPrice?._id || "",
         })
+      } else {
+        // Free Access Flow: create subscription and auto-login user
+        try {
+          const res = await axios.post(`/api/createSubscription`, {
+            email: data.email,
+            name: data.name,
+            priceId: "free",
+            priceRef: productPrice?._id || "",
+          })
+
+          if (res.data?.token) {
+            await cVerifyToken(res.data.token)
+          }
+        } catch (e) {
+          try {
+            await axios.post(`/api/newsletter`, {
+              name: String(data.name),
+              email: String(data.email),
+            })
+          } catch (err) {}
+        }
+
+        onModalState("success")
+        toast.success("Successfully Subscribed & Logged In!")
       }
     } catch (e) {
       setDisable(false)
@@ -121,10 +140,10 @@ const Form = ({ productPrice, location, onModalState }: any) => {
   }
 
   return (
-    <div className="p-6 sm:p-8 space-y-6">
+    <div className="space-y-6 text-left">
       <Toaster position="top-center" />
 
-      <div className="space-y-1 text-center">
+      <div className="space-y-1 text-left">
         <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
           Enroll in the Course
         </h2>
@@ -168,10 +187,9 @@ const Form = ({ productPrice, location, onModalState }: any) => {
 
           <div className="space-y-2.5">
             {plans.map((prc: any, index: number) => {
-              const isFreePlan = Number(prc.price) === 0
-              const planPriceId = isFreePlan
-                ? "free"
-                : prc.priceID_test || prc.priceID || null
+              const stripePriceId = getPlanStripePriceId(prc)
+              const isFreePlan = !stripePriceId && Number(prc.price) === 0
+              const planPriceId = stripePriceId || (isFreePlan ? "free" : `plan-${index}`)
               const isSelected = selectedPriceId === planPriceId
 
               return (
@@ -198,7 +216,7 @@ const Form = ({ productPrice, location, onModalState }: any) => {
                         {prc.keyword || (isFreePlan ? "Basic (Free)" : "Premium")}
                       </span>
                       <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
-                        {isFreePlan ? "Free" : `$${prc.price}/mo`}
+                        {isFreePlan ? "Free" : prc.price ? `$${prc.price}/mo` : "Premium"}
                       </span>
                     </div>
 
@@ -226,11 +244,9 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         >
           {disable ? (
             "Connecting..."
-          ) : isPremiumSelected ? (
+          ) : isStripePlanSelected ? (
             <>
-              <CreditCard className="w-4 h-4" /> Proceed to Stripe Checkout (${
-                plans.find((p: any) => (p.priceID || p.priceID_test) === selectedPriceId)?.price ?? 0
-              }) <ArrowRight className="w-4 h-4" />
+              <CreditCard className="w-4 h-4" /> Proceed to Stripe Checkout <ArrowRight className="w-4 h-4" />
             </>
           ) : (
             <>

@@ -30,16 +30,26 @@ const ProductBanner: any = (props: any) => {
             {text}
           </div>
 
-          <div className="pt-2 flex justify-start">
+          <div className="pt-2 flex flex-wrap items-center gap-3 justify-start">
             {isLog ? (
-              <Link className="no-underline" href={logSlug}>
+              <>
+                <Link className="no-underline" href={logSlug}>
+                  <Button
+                    textValue="Go to the course"
+                    iconRight="arrowuprightsquare"
+                    btnSize="large"
+                    btnTheme="filled"
+                  />
+                </Link>
                 <Button
-                  textValue="Go to the course"
-                  iconRight="arrowuprightsquare"
+                  id="form-modal-select-2"
+                  textValue="Update Subscription"
+                  iconRight="sparkle"
                   btnSize="large"
-                  btnTheme="filled"
+                  btnTheme="outline"
+                  onClickHandler={(event: any) => onEventLog?.(event)}
                 />
-              </Link>
+              </>
             ) : (
               <Button
                 id="form-modal-select-2"

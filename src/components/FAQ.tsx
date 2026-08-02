@@ -27,11 +27,11 @@ const FAQ = ({ FAQ: faqs }: { FAQ: any[] }) => {
                       <span className="text-lg font-bold">
                         {item.question}
                       </span>
-                      <span className="ml-6 flex h-7 items-center text-zinc-400">
+                      <span className="ml-6 flex h-7 items-center text-zinc-400 shrink-0">
                         {open ? (
-                          <MinusSmallIcon className="h-6 w-6" aria-hidden="true" />
+                          <MinusSmallIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
                         ) : (
-                          <PlusSmallIcon className="h-6 w-6" aria-hidden="true" />
+                          <PlusSmallIcon className="h-6 w-6 shrink-0" aria-hidden="true" />
                         )}
                       </span>
                     </Disclosure.Button>
