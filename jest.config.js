@@ -1,22 +1,19 @@
-module.exports = {
-  preset: "ts-jest",
-  transform: {
-    "^.+\\.jsx?$": `<rootDir>/jest-preprocess.js`,
-  },
+const nextJest = require('next/jest')
+
+const createJestConfig = nextJest({
+  dir: './',
+})
+
+const customJestConfig = {
   moduleNameMapper: {
-    ".+\\.(css|styl|less|sass|scss)$": `identity-obj-proxy`,
-    ".+\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": `<rootDir>/__mocks__/file-mock.js`,
+    '^@/(.*)$': '<rootDir>/$1',
+    '^@components/(.*)$': '<rootDir>/src/components/$1',
+    '^@atom/(.*)$': '<rootDir>/src/atom/$1',
+    '^@molecule/(.*)$': '<rootDir>/src/molecule/$1',
+    '^@lib/(.*)$': '<rootDir>/src/lib/$1',
+    '^@utils/(.*)$': '<rootDir>/src/utils/$1',
   },
-  testPathIgnorePatterns: [`node_modules`, `\\.cache`, `<rootDir>.*/public`],
-  transformIgnorePatterns: [`node_modules/(?!(gatsby)/)`],
-  // transformIgnorePatterns: [
-  //   '/node_modules/(?!(@babel\/runtime|gatsby))'
-  // ]
-  globals: {
-    __PATH_PREFIX__: ``,
-  },
-  testEnvironmentOptions: {
-    url: `http://localhost`,
-  },
-  setupFiles: [`<rootDir>/loadershim.js`],
+  testEnvironment: 'jest-environment-jsdom',
 }
+
+module.exports = createJestConfig(customJestConfig)

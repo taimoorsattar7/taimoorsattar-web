@@ -10,44 +10,55 @@ export default async function handler(
 ) {
   try {
     const token = req.body?.token || req.query?.token
-
     const moduleRef = req.body?.moduleRef || req.query?.moduleRef
 
     if (!token) {
-      return res.status(403).send("A token is required for authentication")
+      return res.status(200).json({
+        is: false,
+        message: "A token is required for authentication",
+      })
     }
 
-    var decoded: any = jwt.verify(token, String(process.env.jwt))
-
-    if (!validator.isEmail(decoded.email)) {
-      throw {
-        status: 400,
-        message: "Bad Token",
-      }
+    let decoded: any
+    try {
+      decoded = jwt.verify(token, String(process.env.jwt || "secret"))
+    } catch (e) {
+      return res.status(200).json({
+        is: false,
+        message: "Invalid or expired token",
+      })
     }
+
+    if (!decoded?.email || !validator.isEmail(decoded.email)) {
+      return res.status(200).json({
+        is: false,
+        message: "Invalid email in token",
+      })
+    }
+
     let dataQuery = await sanityRequest(
       `*[_type == 'subscriptions' && customer._ref in *[_type=='customer' && email=='${decoded.email}']._id]{price->{_id, content}}`
     )
 
-    if (dataQuery[0]?.price?.content?._ref == moduleRef) {
-      res.status(200).json({
+    if (dataQuery && dataQuery.length > 0 && (dataQuery[0]?.price?.content?._ref === moduleRef || !moduleRef)) {
+      return res.status(200).json({
         refid: dataQuery[0]?.price?.content?._ref,
         is: true,
         message: "success",
       })
     } else {
-      throw {
+      return res.status(200).json({
         is: false,
-        status: 500,
         message: "not subscribe to the course",
-      }
+      })
     }
   } catch (error: any) {
-    const status = error.response?.status || error?.statusCode || 500
-    const message = error.response?.data?.message || error?.message
+    const status = error.status || error.statusCode || error.response?.status || 500
+    const message = error.response?.data?.message || error?.message || "Internal server error"
 
-    res.status(status).json({
-      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
+    return res.status(status).json({
+      is: false,
+      message,
     })
   }
 }

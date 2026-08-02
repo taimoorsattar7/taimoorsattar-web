@@ -1,36 +1,39 @@
 import type { NextApiRequest, NextApiResponse } from "next"
 import normalizeEmail from "validator/lib/normalizeEmail"
 import validator from "validator"
-
 import { sanityRequest, sanityUpdate } from "../lib/sanity/sanityActions"
-// import { mutateSanity } from "../lib/sanity/mutateSanity.ts"
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   try {
-    const email: string = String(
-      normalizeEmail(req.body?.email || req.query?.email)
-    )
+    const rawEmail = req.body?.email || req.query?.email
     const prvPassword = req.body?.prvPassword || req.query?.prvPassword
     const newPassword = req.body?.newPassword || req.query?.newPassword
 
-    if (!validator.isEmail(email)) {
-      throw {
+    if (!rawEmail || !validator.isEmail(String(rawEmail))) {
+      return res.status(400).json({
         is: false,
-        status: 400,
-        message: "Email not valid",
-      }
+        message: "A valid email address is required",
+      })
     }
 
-    if (!newPassword) {
-      throw {
+    if (!prvPassword) {
+      return res.status(400).json({
         is: false,
-        status: 400,
-        message: "New Password is empty",
-      }
+        message: "Current password is required",
+      })
     }
+
+    if (!newPassword || String(newPassword).length < 6) {
+      return res.status(400).json({
+        is: false,
+        message: "New password must be at least 6 characters",
+      })
+    }
+
+    const email = normalizeEmail(String(rawEmail))
 
     let dataQuery = await sanityRequest(
       `*[_type=='customer' && email=='${email}']{
@@ -40,38 +43,35 @@ export default async function handler(
       }`
     )
 
-    if (dataQuery[0]?.password == prvPassword) {
-    } else {
-      throw {
+    if (!dataQuery || dataQuery.length === 0 || dataQuery[0]?.password !== prvPassword) {
+      return res.status(401).json({
         is: false,
-        status: 500,
-        message: "Password value does not match",
-      }
+        message: "Current password does not match",
+      })
     }
 
     let cusMutation = await sanityUpdate(dataQuery[0]?._id, {
       password: newPassword,
     })
 
-
-    if (cusMutation?.results[0]?.operation == "update") {
-      res.status(200).json({
+    if (cusMutation?.results?.[0]?.operation === "update") {
+      return res.status(200).json({
         is: true,
         message: "success",
       })
     } else {
-      throw {
+      return res.status(500).json({
         is: false,
-        status: 500,
-        message: "Operation Fail",
-      }
+        message: "Password update failed in Sanity",
+      })
     }
   } catch (error: any) {
-    const status = error.response?.status || error.statusCode || 500
-    const message = error.response?.data?.message || error.message
+    const status = error.status || error.statusCode || error.response?.status || 500
+    const message = error.response?.data?.message || error.message || "Password change error"
 
-    res.status(status).json({
-      message: error.expose ? message : `Faulty ${(req as any).baseUrl || req.url}: ${message}`,
+    return res.status(status).json({
+      is: false,
+      message,
     })
   }
 }
