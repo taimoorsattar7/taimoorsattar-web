@@ -39,7 +39,7 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
             </button>
 
             <Link href="/p/build-standout-website" className="flex items-center gap-3 no-underline group">
-              <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white font-extrabold text-sm flex items-center justify-center shadow-md shrink-0">
+              <div className="w-9 h-9 rounded-xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-extrabold text-sm flex items-center justify-center shadow-sm shrink-0 border border-zinc-200 dark:border-zinc-800">
                 <BookOpen className="w-5 h-5" />
               </div>
               <div className="flex flex-col">
@@ -47,8 +47,8 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
                   <span className="font-extrabold text-base tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
                     Build a Standout Website
                   </span>
-                  <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">
-                    <Sparkles className="w-3 h-3" /> Course
+                  <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 border border-zinc-200 dark:border-zinc-700 text-[10px] font-bold uppercase tracking-wider">
+                    <Sparkles className="w-3 h-3 text-amber-500" /> Course
                   </span>
                 </div>
                 <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 hidden sm:block">
