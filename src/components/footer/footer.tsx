@@ -40,12 +40,12 @@ export default function Footer() {
 
   if (isCoursePage) {
     return (
-      <footer className="mt-20 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40 py-8">
+      <footer className="mt-20 border-t border-slate-200 dark:border-slate-800/80 bg-slate-50/50 dark:bg-slate-950/40 py-6">
         <ContainerOuter>
           <ContainerInner>
             <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
               <p className="font-semibold text-slate-700 dark:text-slate-300">
-                Build a Standout Website — Course Material
+                Build a Standout Website
               </p>
               <div className="flex items-center gap-4 font-medium">
                 <Link href="/p/build-standout-website" className="hover:text-teal-600 dark:hover:text-teal-400 transition-colors">
@@ -58,7 +58,6 @@ export default function Footer() {
                   Blogs ↗
                 </a>
               </div>
-              <p>&copy; {new Date().getFullYear()} Build a Standout Website. All rights reserved.</p>
             </div>
           </ContainerInner>
         </ContainerOuter>

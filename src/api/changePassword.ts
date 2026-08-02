@@ -43,18 +43,26 @@ export default async function handler(
       }`
     )
 
-    if (!dataQuery || dataQuery.length === 0 || dataQuery[0]?.password !== prvPassword) {
+    if (!dataQuery || dataQuery.length === 0) {
+      return res.status(404).json({
+        is: false,
+        message: "Customer account not found",
+      })
+    }
+
+    const currentDoc = dataQuery[0]
+    if (currentDoc.password && currentDoc.password !== prvPassword) {
       return res.status(401).json({
         is: false,
         message: "Current password does not match",
       })
     }
 
-    let cusMutation = await sanityUpdate(dataQuery[0]?._id, {
+    const cusMutation = await sanityUpdate(currentDoc._id, {
       password: newPassword,
     })
 
-    if (cusMutation?.results?.[0]?.operation === "update") {
+    if (cusMutation && (cusMutation._id || cusMutation._type || cusMutation.password || Array.isArray(cusMutation.results))) {
       return res.status(200).json({
         is: true,
         message: "success",
