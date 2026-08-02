@@ -8,9 +8,11 @@ export default async function handler(
 ) {
   // res.setHeader('Access-Control-Allow-Origin', '*')
   try {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.GATSBY_SANITY_PROJECT_ID || "7p4bxs1b"
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.GATSBY_SANITY_DATASET || "production"
     let response: AxiosResponse<any>
     response = await axios.post(
-      `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/query/${process.env.GATSBY_SANITY_DATASET}`,
+      `https://${projectId}.api.sanity.io/v2021-06-07/data/query/${dataset}`,
       {
         query: `*[_type == 'subscriptions' && _id=='${req.body._id}']{_id, active, dates, price->{_id,title, 'files': files[].asset->{_updatedAt, extension, originalFilename, url} }}`,
       }

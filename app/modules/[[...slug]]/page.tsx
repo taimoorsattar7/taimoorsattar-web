@@ -6,6 +6,7 @@ import SidebarLayout1 from '@/src/components/sidebarLayout1/index'
 import ConHierarchy from '@/src/components/conhierarchy/conhierarchy'
 import { fetchSanityModules } from '@/src/lib/sanity/fetchCourse'
 import { getUser, isLoggedIn } from '@/src/utils/auth'
+import PortableTextReact from '@/src/components/portabletext/portableText'
 import Link from 'next/link'
 import { BookOpen, PlayCircle, ArrowRight, Loader2, Sparkles, CheckCircle2, Clock, Lock, ShieldAlert, ArrowUpRight } from 'lucide-react'
 
@@ -17,9 +18,23 @@ export default function ModulesPage({ params }: { params: { slug?: string[] } })
   const [courseData, setCourseData] = useState<any>(null)
   const [loading, setLoading] = useState(true)
   const [userState, setUserState] = useState<any>(null)
+  const [isSubscribedUser, setIsSubscribedUser] = useState(false)
 
   useEffect(() => {
-    setUserState(getUser())
+    const usr = getUser()
+    setUserState(usr)
+
+    if (usr?.token) {
+      fetch(`/api/isSubscribe?token=${usr.token}&moduleRef=build-a-standout-website`)
+        .then(res => res.json())
+        .then(data => {
+          if (data?.is || data?.message === 'success') {
+            setIsSubscribedUser(true)
+          }
+        })
+        .catch(() => {})
+    }
+
     async function loadData() {
       setLoading(true)
       const data = await fetchSanityModules(courseSlug)
@@ -83,8 +98,7 @@ export default function ModulesPage({ params }: { params: { slug?: string[] } })
     }
 
     const isPremium = currentLesson?.plan?.toLowerCase() === 'premium'
-    const isUserLoggedIn = isLoggedIn()
-    const isLocked = isPremium && !isUserLoggedIn
+    const isLocked = isPremium && !isSubscribedUser
 
     return (
       <SidebarLayout1
@@ -179,10 +193,17 @@ export default function ModulesPage({ params }: { params: { slug?: string[] } })
               )}
 
               {/* Lesson Body Content */}
-              <div
-                className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed space-y-4"
-                dangerouslySetInnerHTML={{ __html: currentLesson?.contentHtml || '<p>Lesson content loading...</p>' }}
-              />
+              {currentLesson?._rawBody && Array.isArray(currentLesson._rawBody) && currentLesson._rawBody.length > 0 ? (
+                <PortableTextReact
+                  blocks={currentLesson._rawBody}
+                  className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed space-y-4"
+                />
+              ) : (
+                <div
+                  className="prose dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300 leading-relaxed space-y-4"
+                  dangerouslySetInnerHTML={{ __html: currentLesson?.contentHtml || '<p>Lesson content loading...</p>' }}
+                />
+              )}
             </>
           )}
         </article>

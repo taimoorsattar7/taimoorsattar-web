@@ -44,10 +44,11 @@ const InputField: any = ({
         placeholder={placeholder}
         autoComplete={boolautocomplete}
         required={required}
+        aria-describedby={message ? `${id}-message` : undefined}
       />
 
       {message && (
-        <p className={`text-xs mt-1 ${labelColor}`}>
+        <p id={`${id}-message`} className={`text-xs mt-1 ${labelColor}`}>
           {message}
         </p>
       )}

@@ -2,7 +2,8 @@ import stripeAPI from "stripe"
 
 export const isSubscribed = async (email: any, priceId: any) => {
   try {
-    const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {
+    const secretKey = process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY || process.env.GATSBY_STRIPE_secret_ID
+    const stripe = new stripeAPI(String(secretKey), {
       apiVersion: "2022-11-15",
     })
     const customers = await stripe.customers.list({

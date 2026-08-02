@@ -9,7 +9,8 @@ export const createSession = async ({
   allow_promotion_codes,
   metadata = {},
 }: any) => {
-  const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {
+  const secretKey = process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY || process.env.GATSBY_STRIPE_secret_ID
+  const stripe = new stripeAPI(String(secretKey), {
     apiVersion: "2022-11-15",
   })
 
@@ -34,7 +35,8 @@ export const createSession = async ({
 }
 
 export const retrieveSession = async ({ id }: any) => {
-  const stripe = new stripeAPI(String(process.env.GATSBY_STRIPE_secret_ID), {
+  const secretKey = process.env.STRIPE_TEST_SECRET_KEY || process.env.STRIPE_SECRET_KEY || process.env.GATSBY_STRIPE_secret_ID
+  const stripe = new stripeAPI(String(secretKey), {
     apiVersion: "2022-11-15",
   })
   const session = await stripe.checkout.sessions.retrieve(id)

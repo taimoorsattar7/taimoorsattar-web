@@ -6,6 +6,7 @@ import modules from './modules'
 import content from './content'
 import author from './author'
 import testimonial from './testimonial'
+import seo from './seo'
 
 export const schemaTypes = [
   product,
@@ -16,4 +17,5 @@ export const schemaTypes = [
   content,
   author,
   testimonial,
+  seo,
 ]

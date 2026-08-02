@@ -81,12 +81,7 @@ export default defineType({
       name: 'seo',
       title: 'SEO',
       description: 'Optional SEO metadata for this lesson page.',
-      type: 'object',
-      fields: [
-        defineField({ name: 'title', title: 'SEO Title', type: 'string' }),
-        defineField({ name: 'excerpt', title: 'Meta Description', type: 'text', rows: 3 }),
-        defineField({ name: 'image', title: 'OG Image', type: 'image', options: { hotspot: true } }),
-      ],
+      type: 'seo',
     }),
   ],
 })

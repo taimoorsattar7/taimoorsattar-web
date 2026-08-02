@@ -6,8 +6,6 @@ import queryString from "query-string"
 import Pricing from "@components/Pricing"
 
 import Button from "@atom/button/index"
-// import ProgressBar from "@components/progressBar/ProgressBar"
-
 import Form from "./modalState/form"
 import Success from "./modalState/success"
 import Fail from "./modalState/fail"
@@ -174,28 +172,7 @@ function ProductPage({
               show={showModal}
               success={showModal}
             >
-              {/* setSectionTabs("newUser")
-                    setShowModal(true)
-                    sectionTabs == "newUser" ? "ul ul-blue" : "opacity-3" */}
-
               <div>
-                {/* <ProgressBar
-                      pbData={[
-                        {
-                          name: "Home",
-                          active: modalState == "form" ? true : true,
-                        },
-                        {
-                          name: "Payment",
-                          active: modalState == "success" ? true : false,
-                        },
-                        {
-                          name: "Done",
-                          active: modalState == "success" ? true : false,
-                        },
-                      ]}
-                    /> */}
-
                 {modalState == "form" && (
                   <Form
                     location={location}

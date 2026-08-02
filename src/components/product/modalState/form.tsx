@@ -89,20 +89,26 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         onModalState("success")
         toast.success("Successfully Subscribed to Free Open House!")
       } else {
-        // Check the plan actually has a Stripe Price ID from Sanity sync
+        // Check the plan actually has a Stripe Price ID from Sanity sync (prioritizing priceID_test)
         const selectedPlan = plans.find(
-          (p: any) => (p.priceID || p.priceID_test) === data.price
+          (p: any) =>
+            (p.priceID_test || p.priceID) === data.price ||
+            p.priceID_test === data.price ||
+            p.priceID === data.price
         )
-        if (!selectedPlan?.priceID && !selectedPlan?.priceID_test) {
+        const stripeTestPriceId =
+          selectedPlan?.priceID_test || selectedPlan?.priceID || data.price
+
+        if (!stripeTestPriceId || stripeTestPriceId === "free") {
           toast.error(
-            "This plan has no Stripe Price ID yet. Please trigger a sync in the admin panel."
+            "This plan has no Stripe Test Price ID yet. Please trigger a sync in Sanity Studio."
           )
           setDisable(false)
           return
         }
-        // Premium Stripe Checkout Flow
+        // Premium Stripe Checkout Flow via Stripe Test Price ID
         await redirectCKout({
-          price_ID: data.price,
+          price_ID: stripeTestPriceId,
           email: data.email,
           name: data.name,
           priceRef: productPrice?._id || "",

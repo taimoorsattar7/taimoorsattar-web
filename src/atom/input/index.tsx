@@ -24,6 +24,7 @@ const Input = ({
       id={id}
       {...(register ? register(id, options ? options : {}) : {})}
       {...props}
+      aria-invalid={status === "error"}
       className={`block w-full rounded-xl bg-slate-50 dark:bg-slate-900 border ${borderClass} px-4 py-2.5 text-slate-900 dark:text-slate-100 placeholder-slate-400 dark:placeholder-slate-500 focus:outline-none focus:ring-2 text-sm font-medium transition-all`}
       type={type}
       placeholder={placeholder}

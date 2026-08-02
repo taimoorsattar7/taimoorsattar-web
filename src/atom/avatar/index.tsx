@@ -16,9 +16,10 @@ const Avatar = (props: any) => {
         ${size == "medium" ? "w-[2.5rem] h-[2.5rem]" : ""}
         ${size == "small" ? "w-[1.5rem] h-[1.5rem]" : ""}
         `}
-        alt="Avatar"
+        alt="Taimoor Sattar avatar"
         width={50}
         height={50}
+        priority
         unoptimized
       />
 

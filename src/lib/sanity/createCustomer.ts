@@ -13,8 +13,10 @@ export const createCustomer = async (data: any) => {
         },
       },
     ]
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || process.env.GATSBY_SANITY_PROJECT_ID || "7p4bxs1b"
+    const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET || process.env.GATSBY_SANITY_DATASET || "production"
     await axios.post(
-      `https://${process.env.GATSBY_SANITY_PROJECT_ID}.api.sanity.io/v2021-06-07/data/mutate/${process.env.GATSBY_SANITY_DATASET}`,
+      `https://${projectId}.api.sanity.io/v2021-06-07/data/mutate/${dataset}`,
       {
         mutations: mutation,
       },

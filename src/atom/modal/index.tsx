@@ -32,7 +32,7 @@ const Modal = (props: any) => {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto"
+      className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 md:p-6 overflow-y-auto"
       aria-labelledby="modal-title"
       role="dialog"
       aria-modal="true"
@@ -41,23 +41,29 @@ const Modal = (props: any) => {
         onClick={(evt: any) => {
           props.onClose(evt)
         }}
-        className="fixed inset-0 bg-zinc-900/70 backdrop-blur-sm transition-opacity"
+        className="fixed inset-0 bg-zinc-950/80 backdrop-blur-md transition-opacity"
         aria-hidden="true"
       />
 
-      <div className="relative z-10 w-full max-w-lg my-auto transform overflow-hidden rounded-2xl bg-white dark:bg-zinc-900 text-left shadow-2xl transition-all border border-zinc-200 dark:border-zinc-800">
-        <div className="bg-zinc-100 dark:bg-zinc-800/80 px-4 py-3 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700/60">
-          <span className="text-xs font-bold uppercase tracking-wider text-zinc-500 dark:text-zinc-400">
-            {props.title || "Course Enrollment"}
-          </span>
-          <CopyXIcon
+      <div className="relative z-10 w-full max-w-5xl h-[92vh] sm:h-[88vh] my-auto transform overflow-hidden rounded-3xl bg-white dark:bg-zinc-900 text-left shadow-2xl transition-all border border-zinc-200 dark:border-zinc-800 flex flex-col">
+        <div className="bg-zinc-100 dark:bg-zinc-800/80 px-6 py-4 flex items-center justify-between border-b border-zinc-200 dark:border-zinc-700/60 shrink-0">
+          <div className="flex items-center gap-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-teal-500" />
+            <span id="modal-title" className="text-sm font-extrabold uppercase tracking-wider text-zinc-800 dark:text-zinc-200">
+              {props.title || "Course Enrollment"}
+            </span>
+          </div>
+          <button
             onClick={(evt: any) => {
               props.onClose(evt)
             }}
-            className="w-5 h-5 cursor-pointer text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
-          />
+            className="p-1.5 rounded-full hover:bg-zinc-200 dark:hover:bg-zinc-700 text-zinc-500 hover:text-zinc-900 dark:hover:text-white transition-colors"
+            aria-label="Close modal"
+          >
+            <CopyXIcon className="w-5 h-5" />
+          </button>
         </div>
-        <div className="bg-white dark:bg-zinc-900 p-4 sm:p-6">
+        <div className="flex-1 overflow-y-auto p-6 sm:p-10 bg-white dark:bg-zinc-900">
           {props.body && (
             <p
               className="prose prose-base dark:prose-invert mb-4"
@@ -67,7 +73,7 @@ const Modal = (props: any) => {
             />
           )}
 
-          <div className="modal__body">{props.children}</div>
+          <div className="modal__body h-full">{props.children}</div>
         </div>
       </div>
     </div>

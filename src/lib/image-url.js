@@ -1,4 +1,4 @@
-import clientConfig from "../client-config"
+import clientConfig from "../../client-config"
 import imageUrlBuilder from "@sanity/image-url"
 
 const builder = imageUrlBuilder(clientConfig.sanity)

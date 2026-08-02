@@ -119,28 +119,19 @@ export default function CoursePage() {
           ))}
         </div>
 
-        {/* Bottom CTA strip */}
+        {/* Course Support CTA */}
         <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/40 px-8 py-10 text-center mb-12">
-          <div className="flex justify-center mb-3">
-            <div className="flex -space-x-2">
-              {[1, 2, 3, 4].map(i => (
-                <div key={i} className="w-8 h-8 rounded-full bg-zinc-300 dark:bg-zinc-700 border-2 border-white dark:border-zinc-900 flex items-center justify-center">
-                  <Users className="w-3.5 h-3.5 text-zinc-500 dark:text-zinc-400" />
-                </div>
-              ))}
-            </div>
-          </div>
           <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-2">
-            Have a question about the course?
+            Have a question before enrolling?
           </h2>
           <p className="text-zinc-500 dark:text-zinc-400 text-sm mb-5 max-w-md mx-auto">
-            Reach out directly — I'm happy to answer anything before you enroll.
+            Get in touch if you have any questions about course modules, technical requirements, or access.
           </p>
           <Link
             href="/contact"
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border border-zinc-300 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 font-medium text-sm hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors no-underline"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-teal-600 text-white font-semibold text-sm hover:bg-teal-500 transition-colors no-underline shadow-sm"
           >
-            Get in touch
+            Contact Instructor
           </Link>
         </div>
 

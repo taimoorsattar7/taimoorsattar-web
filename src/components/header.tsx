@@ -33,12 +33,12 @@ export default function Header() {
     {
       name: "Blogs",
       href: "/blogs",
-      current: pathname === "/blogs" || pathname?.startsWith("/blogs/") || pathname?.startsWith("/p/"),
+      current: pathname === "/blogs" || pathname?.startsWith("/blogs/"),
     },
     {
       name: "Course",
       href: "/course",
-      current: pathname === "/course" || pathname?.startsWith("/course/"),
+      current: pathname === "/course" || pathname?.startsWith("/course/") || pathname?.startsWith("/p/") || pathname?.startsWith("/modules/"),
     },
     {
       name: "Contact",
@@ -100,7 +100,8 @@ export default function Header() {
                           alt="Taimoor Sattar"
                           width={36}
                           height={36}
-                          className="h-full w-full object-cover grayscale"
+                          className="h-full w-full object-cover"
+                          priority
                           unoptimized
                         />
                       </div>
@@ -155,7 +156,7 @@ export default function Header() {
                     </button>
 
                     {/* User Profile / Access Link */}
-                    {typeof usr?.avatar === "string" ? (
+                    {typeof usr?.avatar === "string" && usr.avatar.length > 0 ? (
                       <Menu as="div" className="relative ml-1">
                         <div>
                           <Menu.Button className="cursor-pointer relative flex rounded-full text-sm ring-1 ring-zinc-300 dark:ring-zinc-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 transition-transform duration-150 hover:scale-105 motion-reduce:hover:scale-100">
@@ -163,6 +164,9 @@ export default function Header() {
                             <img
                               className="h-8 w-8 rounded-full object-cover"
                               src={usr.avatar}
+                              onError={(e: any) => {
+                                e.currentTarget.src = "/profile-pic.jpg"
+                              }}
                               alt="User profile avatar"
                             />
                           </Menu.Button>
