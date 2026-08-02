@@ -3,7 +3,7 @@
 import React, { useState, useEffect, Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline"
-import { BookOpen, Sparkles, User, LogOut } from "lucide-react"
+import { BookOpen, Sparkles } from "lucide-react"
 import { Container } from "@components/Container"
 import Link from "next/link"
 import Image from "next/image"
@@ -32,7 +32,7 @@ export default function Header() {
     pathname === "/auth" ||
     pathname === "/settings"
 
-  const siteNavigation = [
+  const siteNavigation: Array<{ name: string; href: string; current?: boolean; target?: string; rel?: string }> = [
     {
       name: "About",
       href: "/about",
@@ -72,9 +72,11 @@ export default function Header() {
       current: pathname === "/course" || pathname?.startsWith("/course/"),
     },
     {
-      name: "Blogs",
+      name: "Blogs ↗",
       href: "/blogs",
-      current: pathname === "/blogs" || pathname?.startsWith("/blogs/"),
+      target: "_blank",
+      rel: "noopener noreferrer",
+      current: false,
     },
   ]
 
@@ -174,6 +176,8 @@ export default function Header() {
                           <Link
                             key={item.name}
                             href={item.href}
+                            target={item.target || undefined}
+                            rel={item.rel || undefined}
                             className={classNames(
                               item.current
                                 ? "text-teal-600 dark:text-teal-400 font-semibold"
@@ -309,6 +313,8 @@ export default function Header() {
                     key={item.name}
                     as={Link}
                     href={item.href}
+                    target={item.target || undefined}
+                    rel={item.rel || undefined}
                     className={classNames(
                       item.current
                         ? "bg-teal-500/10 dark:bg-teal-500/20 text-teal-600 dark:text-teal-400 font-semibold border-l-4 border-teal-500"

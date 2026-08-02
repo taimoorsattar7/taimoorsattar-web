@@ -81,12 +81,14 @@ const HeaderLogin = ({ onClickSideMenuHandler }: any) => {
               >
                 Modules
               </Link>
-              <Link
+              <a
                 href="/blogs"
-                className="px-3 py-1 rounded-full text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 no-underline transition-colors"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="px-3 py-1 rounded-full text-xs font-semibold text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 no-underline transition-colors flex items-center gap-1"
               >
-                Blogs
-              </Link>
+                Blogs ↗
+              </a>
             </nav>
 
             {/* Theme Toggle Button */}
