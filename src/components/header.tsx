@@ -3,6 +3,7 @@
 import React, { useState, useEffect, Fragment } from "react"
 import { Disclosure, Menu, Transition } from "@headlessui/react"
 import { Bars3Icon, XMarkIcon, SunIcon, MoonIcon } from "@heroicons/react/24/outline"
+import { BookOpen, Sparkles, User, LogOut } from "lucide-react"
 import { Container } from "@components/Container"
 import Link from "next/link"
 import Image from "next/image"
@@ -24,7 +25,14 @@ export default function Header() {
     logout(() => router.push("/auth"))
   }
 
-  const navigation = [
+  const isCoursePage =
+    pathname?.startsWith("/p/") ||
+    pathname?.startsWith("/modules") ||
+    pathname?.startsWith("/course") ||
+    pathname === "/auth" ||
+    pathname === "/settings"
+
+  const siteNavigation = [
     {
       name: "About",
       href: "/about",
@@ -46,6 +54,31 @@ export default function Header() {
       current: pathname === "/contact" || pathname?.startsWith("/contact/"),
     },
   ]
+
+  const courseNavigation = [
+    {
+      name: "Overview",
+      href: "/p/build-standout-website",
+      current: pathname === "/p/build-standout-website" || pathname?.startsWith("/p/"),
+    },
+    {
+      name: "Modules",
+      href: "/modules",
+      current: pathname?.startsWith("/modules"),
+    },
+    {
+      name: "All Courses",
+      href: "/course",
+      current: pathname === "/course" || pathname?.startsWith("/course/"),
+    },
+    {
+      name: "Blogs",
+      href: "/blogs",
+      current: pathname === "/blogs" || pathname?.startsWith("/blogs/"),
+    },
+  ]
+
+  const activeNav = isCoursePage ? courseNavigation : siteNavigation
 
   const [isScrolled, setIsScrolled] = useState(false)
 
@@ -88,32 +121,56 @@ export default function Header() {
                     </Disclosure.Button>
                   </div>
 
-                  {/* Spotlight Logo: Profile Photo Avatar + Name */}
+                  {/* Dynamic Brand Logo & Info based on route */}
                   <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-                    <Link 
-                      href="/" 
-                      className="flex items-center gap-3 group no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-full px-1 py-0.5"
-                    >
-                      <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-sm shrink-0">
-                        <Image
-                          src="/profile-pic.jpg"
-                          alt="Taimoor Sattar"
-                          width={36}
-                          height={36}
-                          className="h-full w-full object-cover"
-                          priority
-                          unoptimized
-                        />
-                      </div>
-                      <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100 tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
-                        Taimoor Sattar
-                      </span>
-                    </Link>
+                    {isCoursePage ? (
+                      <Link 
+                        href="/p/build-standout-website" 
+                        className="flex items-center gap-3 group no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-full px-1 py-0.5"
+                      >
+                        <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-teal-600 to-emerald-500 text-white font-extrabold text-sm flex items-center justify-center shadow-md shrink-0">
+                          <BookOpen className="w-5 h-5" />
+                        </div>
+                        <div className="flex flex-col text-left">
+                          <div className="flex items-center gap-2">
+                            <span className="font-extrabold text-sm sm:text-base tracking-tight text-zinc-900 dark:text-zinc-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                              Build a Standout Website
+                            </span>
+                            <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 text-[10px] font-bold uppercase tracking-wider">
+                              <Sparkles className="w-3 h-3" /> Course
+                            </span>
+                          </div>
+                          <span className="text-[11px] font-medium text-zinc-500 dark:text-zinc-400 hidden sm:block">
+                            React, Next.js, Sanity & Stripe Masterclass
+                          </span>
+                        </div>
+                      </Link>
+                    ) : (
+                      <Link 
+                        href="/" 
+                        className="flex items-center gap-3 group no-underline focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 rounded-full px-1 py-0.5"
+                      >
+                        <div className="relative h-9 w-9 rounded-full overflow-hidden border border-zinc-200 dark:border-zinc-700/80 shadow-sm shrink-0">
+                          <Image
+                            src="/profile-pic.jpg"
+                            alt="Taimoor Sattar"
+                            width={36}
+                            height={36}
+                            className="h-full w-full object-cover"
+                            priority
+                            unoptimized
+                          />
+                        </div>
+                        <span className="font-bold text-sm text-zinc-900 dark:text-zinc-100 tracking-tight group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors">
+                          Taimoor Sattar
+                        </span>
+                      </Link>
+                    )}
 
                     {/* Nav links matching floating nav style */}
                     <div className="hidden sm:ml-8 sm:flex sm:items-center">
                       <div className="flex items-center space-x-1 px-3 py-1 rounded-full bg-white/90 dark:bg-zinc-800/90 shadow-md shadow-zinc-800/5 border border-zinc-200/80 dark:border-zinc-700/60 backdrop-blur">
-                        {navigation.map(item => (
+                        {activeNav.map(item => (
                           <Link
                             key={item.name}
                             href={item.href}
@@ -187,10 +244,23 @@ export default function Header() {
                                   href="/modules"
                                   className={classNames(
                                     active ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" : "text-zinc-700 dark:text-zinc-300",
-                                    "block px-4 py-2.5 text-xs font-medium transition-colors focus:outline-none focus-visible:bg-zinc-100 dark:focus-visible:bg-zinc-800"
+                                    "block px-4 py-2.5 text-xs font-medium transition-colors"
                                   )}
                                 >
                                   Modules
+                                </Link>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <Link
+                                  href="/settings"
+                                  className={classNames(
+                                    active ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100" : "text-zinc-700 dark:text-zinc-300",
+                                    "block px-4 py-2.5 text-xs font-medium transition-colors"
+                                  )}
+                                >
+                                  Account Settings
                                 </Link>
                               )}
                             </Menu.Item>
@@ -200,7 +270,7 @@ export default function Header() {
                                   onClick={handleLogout}
                                   className={classNames(
                                     active ? "bg-zinc-100 dark:bg-zinc-800 text-red-600 dark:text-red-400" : "text-zinc-700 dark:text-zinc-300",
-                                    "w-full text-left block px-4 py-2.5 text-xs font-medium transition-colors focus:outline-none focus-visible:bg-zinc-100 dark:focus-visible:bg-zinc-800"
+                                    "w-full text-left block px-4 py-2.5 text-xs font-medium transition-colors"
                                   )}
                                 >
                                   Sign out
@@ -223,7 +293,7 @@ export default function Header() {
               </div>
             </Container>
 
-            {/* Mobile Navigation Panel with smooth transition */}
+            {/* Mobile Navigation Panel */}
             <Transition
               as={Fragment}
               enter="transition duration-200 ease-out"
@@ -234,7 +304,7 @@ export default function Header() {
               leaveTo="transform opacity-0 -translate-y-2 scale-98"
             >
               <Disclosure.Panel className="sm:hidden bg-white/95 dark:bg-zinc-950/95 backdrop-blur-lg border-b border-zinc-200 dark:border-zinc-800 px-4 pt-3 pb-5 space-y-1.5 shadow-lg">
-                {navigation.map(item => (
+                {activeNav.map(item => (
                   <Disclosure.Button
                     key={item.name}
                     as={Link}
