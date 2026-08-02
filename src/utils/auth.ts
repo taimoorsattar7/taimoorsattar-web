@@ -1,14 +1,28 @@
 import Axios, { AxiosResponse } from "axios"
-import get_gravatar_image_url from "@lib/get_gravatar_image_url"
 
 const isBrowser = typeof window !== `undefined`
+
+export const getInitialsAvatar = (email?: string, name?: string, providedAvatar?: string) => {
+  if (providedAvatar && typeof providedAvatar === "string" && providedAvatar.length > 0 && providedAvatar !== "/profile-pic.jpg") {
+    return providedAvatar
+  }
+
+  const displayName = name || (email ? email.split("@")[0] : "Student")
+  return `https://ui-avatars.com/api/?name=${encodeURIComponent(displayName)}&background=0d9488&color=ffffff&bold=true&size=128`
+}
 
 export const getUser: any = () => {
   if (!isBrowser) return {}
   try {
-    return window.localStorage.gatsbyUser
+    const user = window.localStorage.gatsbyUser
       ? JSON.parse(window.localStorage.gatsbyUser)
       : {}
+
+    if (user && user.email) {
+      user.avatar = getInitialsAvatar(user.email, user.name, user.avatar)
+    }
+
+    return user
   } catch (e) {
     return {}
   }
@@ -16,6 +30,9 @@ export const getUser: any = () => {
 
 export const setUser: any = (user: any) => {
   if (!isBrowser) return user
+  if (user && user.email) {
+    user.avatar = getInitialsAvatar(user.email, user.name, user.avatar)
+  }
   window.localStorage.gatsbyUser = JSON.stringify(user)
   return user
 }
@@ -33,7 +50,7 @@ export const handleLogin: any = async ({ email, password }: any) => {
       return setUser({
         email: data.email,
         name: data.name || "Student",
-        avatar: "/profile-pic.jpg",
+        avatar: getInitialsAvatar(data.email, data.name, data.avatar),
         token: data.token,
       })
     }
@@ -71,7 +88,7 @@ export const cVerifyToken: any = async (token: any) => {
       return setUser({
         email: data.email,
         name: data.name || "Student",
-        avatar: "/profile-pic.jpg",
+        avatar: getInitialsAvatar(data.email, data.name, data.avatar),
         token: data.token || token,
       })
     }
