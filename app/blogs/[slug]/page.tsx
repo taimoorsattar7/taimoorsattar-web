@@ -1,4 +1,5 @@
 import React from 'react'
+import type { Metadata } from 'next'
 import { getPostBySlug, getAllPosts } from '@/src/lib/blogs'
 import Layout from '@/src/components/layout'
 import { notFound } from 'next/navigation'
@@ -13,13 +14,67 @@ export async function generateStaticParams() {
   }))
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
   const post = await getPostBySlug(params.slug)
-  if (!post) return { title: 'Post Not Found' }
+  if (!post) return { title: 'Post Not Found | Taimoor Sattar' }
+
+  const canonicalUrl = `https://taimoorsattar.dev/blogs/${params.slug}`
+  const description = post.description || post.excerpt || 'Technical article by Taimoor Sattar'
+  const ogImage = 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'
 
   return {
-    title: `${post.title} - Taimoor Sattar`,
-    description: post.description || post.excerpt,
+    title: `${post.title} - Taimoor Sattar Engineering Blog`,
+    description,
+    keywords: [
+      ...(post.tags || []),
+      'Taimoor Sattar',
+      'Software Engineering',
+      'React Tutorials',
+      'Next.js',
+      'Sanity CMS',
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: 'article',
+      url: canonicalUrl,
+      title: `${post.title} | Taimoor Sattar`,
+      description,
+      publishedTime: post.date,
+      authors: ['Taimoor Sattar'],
+      siteName: 'Taimoor Sattar',
+      images: [
+        {
+          url: ogImage,
+          width: 1200,
+          height: 630,
+          alt: post.title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${post.title} | Taimoor Sattar`,
+      description,
+      creator: '@taimoorsattar7',
+      images: [ogImage],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
 }
 
@@ -39,9 +94,34 @@ export default async function BlogPostPage({ params }: { params: { slug: string 
     : ''
 
   const tags = Array.isArray(post.tags) ? post.tags : []
+  const description = post.description || post.excerpt || 'Technical guide by Taimoor Sattar'
+
+  // Schema.org JSON-LD BlogPosting Structured Data
+  const blogJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: description,
+    author: {
+      '@type': 'Person',
+      name: 'Taimoor Sattar',
+      url: 'https://taimoorsattar.dev',
+    },
+    datePublished: post.date,
+    mainEntityOfPage: `https://taimoorsattar.dev/blogs/${params.slug}`,
+    publisher: {
+      '@type': 'Person',
+      name: 'Taimoor Sattar',
+      url: 'https://taimoorsattar.dev',
+    },
+  }
 
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(blogJsonLd) }}
+      />
       <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12 space-y-8">
         <header className="space-y-4 pb-6 border-b border-zinc-200 dark:border-zinc-800">
           <Link

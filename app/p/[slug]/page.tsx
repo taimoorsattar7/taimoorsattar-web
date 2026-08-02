@@ -1,43 +1,96 @@
-'use client'
-
-import React, { useEffect, useState } from 'react'
+import React from 'react'
+import type { Metadata } from 'next'
 import Layout from '@/src/components/layout'
 import ProductPage from '@/src/components/product/ProductPage'
-import { fetchSanityProduct, fetchSanityModules } from '@/src/lib/sanity/fetchCourse'
+import { fetchSanityProduct, fetchSanityModules, parseSanityBlocks } from '@/src/lib/sanity/fetchCourse'
 import { COURSE_DATA } from '@/src/lib/courseData'
-import { Loader2 } from 'lucide-react'
 
-export default function ProductDetailPage({ params }: { params: { slug: string } }) {
-  const [sanityProduct, setSanityProduct] = useState<any>(null)
-  const [sanityModules, setSanityModules] = useState<any>(null)
-  const [loading, setLoading] = useState(true)
+export async function generateStaticParams() {
+  return [
+    { slug: 'build-standout-website' },
+    { slug: 'build-a-standout-website' },
+  ]
+}
 
-  useEffect(() => {
-    async function loadData() {
-      setLoading(true)
-      const [productRes, modulesRes] = await Promise.all([
-        fetchSanityProduct(params.slug),
-        fetchSanityModules('build-a-standout-website'),
-      ])
-      setSanityProduct(productRes)
-      setSanityModules(modulesRes)
-      setLoading(false)
-    }
-    loadData()
-  }, [params.slug])
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string }
+}): Promise<Metadata> {
+  const sanityProduct = await fetchSanityProduct(params.slug)
 
-  if (loading) {
-    return (
-      <Layout>
-        <div className="min-h-[60vh] flex items-center justify-center">
-          <div className="flex items-center gap-3 text-zinc-500 dark:text-zinc-400">
-            <Loader2 className="w-6 h-6 animate-spin text-teal-600 dark:text-teal-400" />
-            <span className="text-sm font-semibold">Fetching course details from Sanity...</span>
-          </div>
-        </div>
-      </Layout>
-    )
+  const title = sanityProduct?.title || COURSE_DATA.title
+  const rawShort = sanityProduct?.short || COURSE_DATA.shortDescription
+  const description = typeof rawShort === 'string'
+    ? rawShort
+    : Array.isArray(rawShort)
+    ? parseSanityBlocks(rawShort).replace(/<[^>]*>?/gm, '').slice(0, 160)
+    : 'Build a Standout Website Course by Taimoor Sattar'
+
+  const bgImageUrl = sanityProduct?.bgimage?.asset?.url || 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'
+  const canonicalUrl = `https://taimoorsattar.dev/p/${params.slug}`
+
+  return {
+    title: `${title} - Full-Stack Web Development Course | Taimoor Sattar`,
+    description,
+    keywords: [
+      title,
+      'Build a Standout Website',
+      'Web Development Course',
+      'React Next.js Course',
+      'Sanity CMS Tutorial',
+      'Stripe Integration Next.js',
+      'Full-Stack Web Development',
+      'Taimoor Sattar',
+    ],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: 'website',
+      url: canonicalUrl,
+      title: `${title} | Taimoor Sattar`,
+      description,
+      siteName: 'Taimoor Sattar',
+      images: [
+        {
+          url: bgImageUrl,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `${title} | Taimoor Sattar`,
+      description,
+      creator: '@taimoorsattar7',
+      images: [bgImageUrl],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
+    },
   }
+}
+
+export default async function ProductDetailPage({
+  params,
+}: {
+  params: { slug: string }
+}) {
+  const [sanityProduct, sanityModules] = await Promise.all([
+    fetchSanityProduct(params.slug),
+    fetchSanityModules('build-a-standout-website'),
+  ])
 
   const title = sanityProduct?.title || COURSE_DATA.title
   const _rawShort = sanityProduct?.short || COURSE_DATA.shortDescription
@@ -51,8 +104,42 @@ export default function ProductDetailPage({ params }: { params: { slug: string }
   const faqs = (sanityProduct?.faqs || []).filter(Boolean)
   const testimonials = (sanityProduct?.testimonials || []).filter(Boolean)
 
+  const descriptionText = typeof _rawShort === 'string'
+    ? _rawShort
+    : 'Full-stack web development course with React, Next.js, and Sanity CMS by Taimoor Sattar.'
+
+  // Schema.org JSON-LD Course Structured Data
+  const courseJsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: title,
+    description: descriptionText,
+    provider: {
+      '@type': 'Person',
+      name: 'Taimoor Sattar',
+      url: 'https://taimoorsattar.dev',
+    },
+    offers: {
+      '@type': 'Offer',
+      category: 'Subscription',
+      price: '0.00',
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `https://taimoorsattar.dev/p/${params.slug}`,
+    },
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'Online',
+      courseWorkload: 'PT15H',
+    },
+  }
+
   return (
     <Layout>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(courseJsonLd) }}
+      />
       <ProductPage
         location={{ search: '' }}
         title={title}
