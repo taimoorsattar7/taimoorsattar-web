@@ -41,5 +41,30 @@ export default defineType({
       description: 'Auto-populated when the customer completes checkout.',
       type: 'string',
     }),
+    defineField({
+      name: 'avatar',
+      title: 'Avatar Image',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'image',
+      title: 'Profile Image',
+      type: 'image',
+      options: { hotspot: true },
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Metadata',
+      type: 'seo',
+    }),
+    defineField({
+      name: 'metadata',
+      title: 'Metadata',
+      type: 'object',
+      fields: [
+        defineField({ name: 'stripeId', title: 'Stripe ID', type: 'string' }),
+      ],
+    }),
   ],
 })

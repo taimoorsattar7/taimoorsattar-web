@@ -36,6 +36,16 @@ export default defineType({
       },
     }),
     defineField({
+      name: 'email',
+      title: 'Contact Email',
+      type: 'string',
+    }),
+    defineField({
+      name: 'seo',
+      title: 'SEO Metadata',
+      type: 'seo',
+    }),
+    defineField({
       name: 'body',
       title: 'Module Description',
       description: 'A short overview of what this module covers.',

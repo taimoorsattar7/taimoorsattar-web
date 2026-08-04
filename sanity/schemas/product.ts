@@ -202,6 +202,12 @@ export default defineType({
       of: [{ type: 'reference', to: [{ type: 'testimonial' }] }],
     }),
     defineField({
+      name: 'email',
+      title: 'Contact Email',
+      type: 'string',
+      description: 'Contact or notification email associated with this product.',
+    }),
+    defineField({
       name: 'seo',
       title: 'SEO',
       description: 'Search engine and social sharing metadata.',

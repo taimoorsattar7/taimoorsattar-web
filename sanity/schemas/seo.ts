@@ -13,10 +13,17 @@ export default defineType({
     }),
     defineField({
       name: 'excerpt',
-      title: 'Meta Description',
+      title: 'Meta Description / Excerpt',
       type: 'text',
       rows: 3,
       description: 'Short summary for search result snippets and social previews.',
+    }),
+    defineField({
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 3,
+      description: 'Alternative meta description field.',
     }),
     defineField({
       name: 'image',
