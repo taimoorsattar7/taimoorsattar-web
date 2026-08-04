@@ -40,6 +40,7 @@ export default function SettingsPage() {
   const [sanityProduct, setSanityProduct] = useState<any>(null)
   const [selectedPlanPriceId, setSelectedPlanPriceId] = useState<string>('')
   const [isRedirectingToStripe, setIsRedirectingToStripe] = useState(false)
+  const [userSubscription, setUserSubscription] = useState<any>(null)
 
   useEffect(() => {
     const user = getCurrentUser()
@@ -48,17 +49,36 @@ export default function SettingsPage() {
       setFullName(user.name)
     }
 
+    if (user?.token) {
+      axios
+        .get(`/api/isSubscribe?token=${user.token}`)
+        .then(res => {
+          if (res.data?.is) {
+            setUserSubscription(res.data)
+          }
+        })
+        .catch(() => {})
+    }
+
     // Load course product for subscription update
     fetchSanityProduct('build-standout-website').then(res => {
       if (res) {
         setSanityProduct(res)
-        const defaultPlan = res.productPrice?.plans?.[0]
-        if (defaultPlan) {
-          setSelectedPlanPriceId(defaultPlan.priceID_test || defaultPlan.priceID || '')
+        const plans = res.productPrice?.plans || []
+        const unpaidPlan = plans.find((p: any) => p.priceID_test || p.priceID) || plans[0]
+        if (unpaidPlan) {
+          setSelectedPlanPriceId(unpaidPlan.priceID_test || unpaidPlan.priceID || '')
         }
       }
     })
   }, [])
+
+  // Helper to resolve Stripe price ID according to active keys
+  const getStripePriceId = (prc: any) => {
+    if (!prc) return ''
+    const isLiveKey = (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_ID || '').startsWith('pk_live')
+    return isLiveKey ? prc.priceID || prc.priceID_test || '' : prc.priceID_test || prc.priceID || ''
+  }
 
   // Direct Stripe checkout update using authenticated user details (100% Discount)
   const handleProceedToStripe = async (priceIdToUse?: string) => {
@@ -68,23 +88,16 @@ export default function SettingsPage() {
 
     const selectedPlan =
       plans.find((p: any) => p.priceID === priceIdToUse || p.priceID_test === priceIdToUse) ||
-      plans.find((p: any) => p.priceID || p.priceID_test) ||
+      plans.find((p: any) => getStripePriceId(p)) ||
       plans[0]
 
-    const isLiveKey = (process.env.NEXT_PUBLIC_STRIPE_PUBLIC_ID || '').startsWith('pk_live')
-    const stripePriceId = isLiveKey
-      ? selectedPlan?.priceID || selectedPlan?.priceID_test
-      : selectedPlan?.priceID_test || selectedPlan?.priceID || 'free'
-
-    const origin = typeof window !== 'undefined' ? window.location.origin : ''
-    const hrefURL = `${origin}/p/build-standout-website`
+    const stripePriceId = getStripePriceId(selectedPlan) || priceIdToUse || 'price_12345'
 
     try {
-      const {
-        data: { url },
-      } = await axios.post('/api/checkout', {
+      const origin = typeof window !== 'undefined' ? window.location.origin : 'https://taimoorsattar.dev'
+      const { data } = await axios.post('/api/checkout', {
         email: usr?.email || 'student@example.com',
-        name: usr?.name || 'Student',
+        name: usr?.name || fullName || 'Student',
         mode: 'subscription',
         priceId: stripePriceId,
         metadata: {
@@ -92,64 +105,57 @@ export default function SettingsPage() {
           priceRef: productPrice?._id || '',
         },
         allow_promotion_codes: true,
-        cancelUrl: `${origin}/settings?state=fail`,
-        successUrl: `${origin}/api/createSubscription?name=${encodeURIComponent(usr?.name || 'Student')}&email=${encodeURIComponent(usr?.email || '')}&priceId=${stripePriceId}&priceRef=${productPrice?._id || ''}&redirectOrigin=${encodeURIComponent(`${origin}/settings`)}`,
+        cancelUrl: `${origin}/settings`,
+        successUrl: `${origin}/api/createSubscription?name=${encodeURIComponent(usr?.name || fullName || 'Student')}&email=${encodeURIComponent(usr?.email || '')}&priceId=${stripePriceId}&priceRef=${productPrice?._id || ''}&redirectOrigin=${encodeURIComponent(`${origin}/settings`)}`,
       })
 
-      if (url) {
-        window.location.href = url
+      if (data?.url) {
+        window.location.href = data.url
       } else {
-        toast.error('Failed to generate Stripe update session.')
+        toast.error('Could not generate Stripe Checkout URL.')
         setIsRedirectingToStripe(false)
       }
     } catch (err: any) {
-      console.error('Stripe update error:', err?.response?.data || err?.message)
-      toast.error(err?.response?.data?.message || 'Subscription update failed.')
+      console.error('Stripe update error:', err)
+      toast.error(err?.response?.data?.message || 'Failed to start Stripe checkout session.')
       setIsRedirectingToStripe(false)
     }
   }
 
-  // Handle Account Details update
-  const handleSaveAccount = (e: React.FormEvent) => {
+  // Save Account Profile Details
+  const handleSaveAccount = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSavingAccount(true)
 
     try {
       const updatedUser = {
         ...usr,
-        name: fullName || 'Student',
+        name: fullName,
       }
       setUser(updatedUser)
       setUsr(updatedUser)
-      toast.success('Account details updated successfully!')
-    } catch (err) {
-      toast.error('Failed to update account details.')
+      toast.success('Account profile updated successfully!')
+    } catch (e) {
+      toast.error('Failed to update profile.')
     } finally {
       setIsSavingAccount(false)
     }
   }
 
-  // Handle Password Change
+  // Change Password
   const handleChangePassword = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    if (!currentPassword) {
-      toast.error('Please enter your current password.')
-      return
-    }
-
-    if (!newPassword || newPassword.length < 6) {
-      toast.error('New password must be at least 6 characters.')
-      return
-    }
-
     if (newPassword !== confirmPassword) {
       toast.error('New passwords do not match.')
       return
     }
 
-    setIsChangingPassword(true)
+    if (newPassword.length < 6) {
+      toast.error('Password must be at least 6 characters long.')
+      return
+    }
 
+    setIsChangingPassword(true)
     try {
       const res = await axios.post('/api/changePassword', {
         email: usr?.email,
@@ -157,7 +163,7 @@ export default function SettingsPage() {
         newPassword: newPassword,
       })
 
-      if (res.data?.is || res.data?.message === 'success') {
+      if (res.data?.is) {
         toast.success('Password updated successfully!')
         setCurrentPassword('')
         setNewPassword('')
@@ -166,95 +172,101 @@ export default function SettingsPage() {
         toast.error(res.data?.message || 'Password update failed.')
       }
     } catch (err: any) {
-      toast.error(err?.response?.data?.message || 'Current password incorrect.')
+      toast.error(err?.response?.data?.message || 'Password change failed.')
     } finally {
       setIsChangingPassword(false)
     }
   }
 
-  const productPrice = sanityProduct?.productPrice
+  const loggedIn = isLoggedIn()
 
   return (
     <Layout>
       <Toaster position="top-center" />
 
-      <div className="max-w-4xl mx-auto px-4 py-10 sm:px-6 lg:px-8">
-        {/* Profile Header Banner */}
-        <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-gradient-to-r from-teal-500/10 via-emerald-500/5 to-transparent p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center sm:items-start gap-6 shadow-sm">
-          <div className="relative w-20 h-20 rounded-full overflow-hidden border-2 border-teal-500 shadow-md shrink-0">
-            <Image
-              src={usr?.avatar && typeof usr.avatar === 'string' && usr.avatar.length > 0 ? usr.avatar : '/profile-pic.jpg'}
-              alt="User profile avatar"
-              fill
-              className="object-cover"
-              unoptimized
-            />
-          </div>
-
-          <div className="flex-1 text-center sm:text-left space-y-2">
-            <div className="flex flex-wrap items-center justify-center sm:justify-start gap-3">
-              <h1 className="text-2xl sm:text-3xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
-                {usr?.name || 'Student Account'}
-              </h1>
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 text-xs font-bold uppercase tracking-wider">
-                <Sparkles className="w-3.5 h-3.5" /> 100% Discounted Member
-              </span>
-            </div>
-            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-              Manage your course subscription, account preferences, and password security.
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-10 space-y-8">
+        
+        {/* Header Title Section */}
+        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800 pb-6">
+          <div>
+            <h1 className="text-3xl font-extrabold tracking-tight text-zinc-900 dark:text-zinc-100">
+              Account Settings
+            </h1>
+            <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400 mt-1">
+              Manage your personal information, subscription plan, and security settings.
             </p>
           </div>
+
+          {usr?.email && (
+            <div className="flex items-center gap-3 px-3.5 py-1.5 rounded-full bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700/60">
+              {usr?.avatar && (
+                <img
+                  src={usr.avatar}
+                  alt={usr.name || 'User'}
+                  className="w-6 h-6 rounded-full object-cover shrink-0"
+                />
+              )}
+              <span className="text-xs font-semibold text-zinc-700 dark:text-zinc-300">
+                {usr.email}
+              </span>
+            </div>
+          )}
         </div>
 
-        {/* Navigation Tabs */}
-        <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 mb-8 overflow-x-auto pb-2">
+        {/* Tab Selector Buttons */}
+        <div className="flex items-center gap-2 p-1.5 rounded-2xl bg-zinc-100 dark:bg-zinc-800/60 border border-zinc-200/80 dark:border-zinc-700/60 w-full sm:w-auto overflow-x-auto">
           <button
+            type="button"
             onClick={() => setActiveTab('profile')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === 'profile'
-                ? 'bg-teal-600 text-white shadow-md'
-                : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
-            <User className="w-4 h-4" /> Account Details
+            <User className="w-4 h-4 text-teal-500" /> Account Details
           </button>
 
           <button
+            type="button"
             onClick={() => setActiveTab('subscription')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === 'subscription'
-                ? 'bg-teal-600 text-white shadow-md'
-                : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
-            <CreditCard className="w-4 h-4" /> Subscription (100% Off)
+            <CreditCard className="w-4 h-4 text-teal-500" /> Subscription Plan
           </button>
 
           <button
+            type="button"
             onClick={() => setActiveTab('security')}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-2xl text-sm font-bold transition-all ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition-all ${
               activeTab === 'security'
-                ? 'bg-teal-600 text-white shadow-md'
-                : 'text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                ? 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                : 'text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200'
             }`}
           >
-            <Key className="w-4 h-4" /> Password & Security
+            <Key className="w-4 h-4 text-teal-500" /> Security
           </button>
         </div>
 
-        {/* TAB 1: Account Details */}
+        {/* TAB 1: Account Profile Details */}
         {activeTab === 'profile' && (
           <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 sm:p-8 space-y-6 shadow-sm">
             <div>
               <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Personal Information</h2>
               <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                Update your account details and display name.
+                Update your full display name associated with your student profile.
               </p>
             </div>
 
             <form onSubmit={handleSaveAccount} className="space-y-5 max-w-xl">
               <div className="space-y-1.5">
-                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300">Full Name</label>
+                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                  Full Name
+                </label>
                 <input
                   type="text"
                   value={fullName}
@@ -266,39 +278,52 @@ export default function SettingsPage() {
               </div>
 
               <div className="space-y-1.5">
-                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300 flex items-center justify-between">
-                  <span>Registered Email</span>
-                  <span className="text-xs text-zinc-400 font-normal flex items-center gap-1">
-                    <Lock className="w-3 h-3" /> Account ID
-                  </span>
+                <label className="block text-sm font-semibold text-zinc-700 dark:text-zinc-300">
+                  Email Address
                 </label>
                 <input
                   type="email"
-                  value={usr?.email || 'student@example.com'}
+                  value={usr?.email || ''}
                   disabled
                   className="w-full px-4 py-3 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-100 dark:bg-zinc-800/50 text-zinc-500 dark:text-zinc-400 text-sm cursor-not-allowed"
                 />
+                <p className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                  Email address is linked to your course enrollment records.
+                </p>
               </div>
 
               <button
                 type="submit"
                 disabled={isSavingAccount}
-                className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-500 text-white font-extrabold text-sm shadow-md hover:opacity-95 disabled:opacity-50 transition-all"
+                className="flex items-center justify-center gap-2 py-3 px-6 rounded-2xl bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 font-extrabold text-sm shadow-md hover:opacity-90 disabled:opacity-50 transition-all"
               >
-                {isSavingAccount ? 'Saving...' : 'Save Account Details'} <ArrowRight className="w-4 h-4" />
+                {isSavingAccount ? 'Saving...' : 'Save Changes'}
               </button>
             </form>
           </div>
         )}
 
-        {/* TAB 2: Subscription & Billing */}
+        {/* TAB 2: Subscription Plan */}
         {activeTab === 'subscription' && (
-          <div className="space-y-6">
-            <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 sm:p-8 space-y-6 shadow-sm">
-              <div className="flex flex-wrap items-center justify-between gap-4 border-b border-zinc-100 dark:border-zinc-800 pb-6">
+          <div className="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 p-6 sm:p-8 space-y-6 shadow-sm">
+            <div className="flex items-center justify-between">
+              <div>
+                <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Course Membership</h2>
+                <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
+                  Manage your active course subscription tier and billing.
+                </p>
+              </div>
+
+              <span className="hidden sm:inline-flex items-center gap-1 px-3 py-1 rounded-full bg-teal-500/10 text-teal-600 dark:text-teal-400 border border-teal-500/20 text-xs font-bold uppercase tracking-wider">
+                <Sparkles className="w-3.5 h-3.5 text-amber-500" /> 100% Off Enabled
+              </span>
+            </div>
+
+            <div className="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 p-6 space-y-4">
+              <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-zinc-200 dark:border-zinc-800/80 pb-4">
                 <div>
                   <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 text-xs font-bold uppercase tracking-wider mb-2">
-                    <CheckCircle2 className="w-3.5 h-3.5" /> Active Subscription
+                    <CheckCircle2 className="w-3.5 h-3.5" /> Current Active Plan
                   </div>
                   <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100">
                     Build a Standout Website — Full Access
@@ -411,40 +436,62 @@ export default function SettingsPage() {
           <div className="space-y-6 text-left p-2 sm:p-4">
             <div className="space-y-1">
               <h3 className="text-xl font-extrabold text-zinc-900 dark:text-zinc-100">
-                Confirm Subscription Tier Update
+                Update Subscription Plan
               </h3>
               <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-                Updating subscription for logged-in user: <strong className="text-zinc-800 dark:text-zinc-200">{usr?.name || 'Student'}</strong> ({usr?.email}).
+                Logged-in user: <strong className="text-zinc-800 dark:text-zinc-200">{usr?.name || 'Student'}</strong> ({usr?.email}). Select a plan that requires Stripe payment to update your subscription.
               </p>
             </div>
 
             <div className="space-y-3">
-              {(productPrice?.plans || []).map((prc: any, index: number) => {
-                const planPriceId = prc.priceID_test || prc.priceID || `plan-${index}`
-                const isSelected = selectedPlanPriceId === planPriceId || (index === 0 && !selectedPlanPriceId)
+              {(sanityProduct?.productPrice?.plans || []).map((prc: any, index: number) => {
+                const stripePriceId = getStripePriceId(prc)
+                const isPaidStripePlan = Boolean(stripePriceId)
+                const isCurrentPlan = !isPaidStripePlan || (userSubscription?.is && !isPaidStripePlan)
+                const planPriceId = stripePriceId || `plan-${index}`
+                const isSelected = selectedPlanPriceId === planPriceId
 
                 return (
                   <div
                     key={index}
-                    onClick={() => setSelectedPlanPriceId(planPriceId)}
-                    className={`flex items-center justify-between p-4 rounded-2xl border cursor-pointer transition-all ${
-                      isSelected
-                        ? 'border-teal-500 bg-teal-500/10 dark:bg-teal-950/30 ring-2 ring-teal-500/30'
-                        : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60'
+                    onClick={() => {
+                      if (isPaidStripePlan) {
+                        setSelectedPlanPriceId(planPriceId)
+                      }
+                    }}
+                    className={`flex items-center justify-between p-4 rounded-2xl border transition-all ${
+                      isCurrentPlan
+                        ? 'border-emerald-500/40 bg-emerald-500/10 dark:bg-emerald-950/20 cursor-default opacity-85'
+                        : isSelected
+                        ? 'border-teal-500 bg-teal-500/10 dark:bg-teal-950/30 ring-2 ring-teal-500/30 cursor-pointer'
+                        : 'border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 cursor-pointer'
                     }`}
                   >
                     <div className="space-y-1">
-                      <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
-                        {prc.keyword || 'Premium Tier'}
-                      </span>
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
+                          {prc.keyword || (isPaidStripePlan ? 'Pro Plan' : 'Free Basic Access')}
+                        </span>
+                        {isCurrentPlan ? (
+                          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold uppercase">
+                            <CheckCircle2 className="w-3 h-3" /> Current Plan
+                          </span>
+                        ) : null}
+                      </div>
                       <p className="text-xs text-zinc-500 dark:text-zinc-400 font-medium">
-                        {prc.price ? `$${prc.price} / month` : 'Premium Access'}
+                        {isPaidStripePlan ? `${prc.price ? `$${prc.price} / month` : 'Requires Stripe Payment'} (100% Off Applied)` : 'Free Tier'}
                       </p>
                     </div>
 
-                    <span className="text-xs font-extrabold px-3 py-1 rounded-full bg-teal-500/20 text-teal-600 dark:text-teal-400">
-                      Select
-                    </span>
+                    {isCurrentPlan ? (
+                      <span className="text-xs font-bold px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400">
+                        Active
+                      </span>
+                    ) : (
+                      <span className={`text-xs font-extrabold px-3 py-1 rounded-full ${isSelected ? 'bg-teal-500 text-white' : 'bg-zinc-200 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300'}`}>
+                        {isSelected ? 'Selected' : 'Select'}
+                      </span>
+                    )}
                   </div>
                 )
               })}
@@ -452,15 +499,15 @@ export default function SettingsPage() {
 
             <button
               type="button"
-              disabled={isRedirectingToStripe}
+              disabled={isRedirectingToStripe || !selectedPlanPriceId}
               onClick={() => handleProceedToStripe(selectedPlanPriceId)}
               className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-500 text-white font-extrabold text-sm shadow-xl hover:opacity-95 disabled:opacity-50 transition-all mt-4"
             >
               {isRedirectingToStripe ? (
-                'Connecting to Stripe...'
+                'Connecting to Stripe Checkout...'
               ) : (
                 <>
-                  <CreditCard className="w-4 h-4" /> Proceed to Stripe Checkout <ArrowRight className="w-4 h-4" />
+                  <CreditCard className="w-4 h-4" /> Update Subscription via Stripe (100% Off) <ArrowRight className="w-4 h-4" />
                 </>
               )}
             </button>

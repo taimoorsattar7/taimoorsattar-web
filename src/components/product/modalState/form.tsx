@@ -8,12 +8,14 @@ import PortableText from "@components/portabletext/portableText"
 import InputField from "@molecule/input-field/index"
 import { CheckCircle2, Lock, ArrowRight, Sparkles, CreditCard, ShieldCheck } from "lucide-react"
 // @ts-ignore
-import { cVerifyToken } from "@utils/auth"
+import { getCurrentUser, cVerifyToken } from "@utils/auth"
 
 const Form = ({ productPrice, location, onModalState }: any) => {
   const plans = productPrice?.plans || []
+  const currentUser = getCurrentUser()
+  const [userSubscription, setUserSubscription] = useState<any>(null)
 
-  // Helper to resolve Live vs Test Stripe Price ID according to active environment secret key
+  // Helper to resolve Live vs Test Stripe Price ID
   const getPlanStripePriceId = (p: any) => {
     if (!p) return null
     const isLiveKey =
@@ -24,9 +26,9 @@ const Form = ({ productPrice, location, onModalState }: any) => {
       : p.priceID_test || p.priceID || null
   }
 
-  // Find default plan with Stripe price ID
-  const defaultPlan = plans.find((p: any) => getPlanStripePriceId(p)) || plans[0]
-  const defaultPriceId = getPlanStripePriceId(defaultPlan) || "free"
+  // Find paid Stripe plan
+  const paidStripePlan = plans.find((p: any) => getPlanStripePriceId(p)) || plans[0]
+  const defaultPriceId = getPlanStripePriceId(paidStripePlan) || "free"
 
   const {
     register,
@@ -37,10 +39,30 @@ const Form = ({ productPrice, location, onModalState }: any) => {
   } = useForm({
     defaultValues: {
       price: defaultPriceId,
-      name: "",
-      email: "",
+      name: currentUser?.name || "",
+      email: currentUser?.email || "",
     },
   })
+
+  useEffect(() => {
+    if (currentUser?.email) {
+      setValue("email", currentUser.email)
+    }
+    if (currentUser?.name) {
+      setValue("name", currentUser.name)
+    }
+
+    if (currentUser?.token) {
+      axios
+        .get(`/api/isSubscribe?token=${currentUser.token}`)
+        .then(res => {
+          if (res.data?.is) {
+            setUserSubscription(res.data)
+          }
+        })
+        .catch(() => {})
+    }
+  }, [currentUser?.email, currentUser?.name, currentUser?.token, setValue])
 
   const [disable, setDisable] = useState(false)
   const selectedPriceId = watch("price")
@@ -101,7 +123,6 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         getPlanStripePriceId(selectedPlan) || (data.price !== "free" && data.price !== "0" ? data.price : null)
 
       if (stripePriceId) {
-        // Redirect to Stripe Payment Link / Checkout
         await redirectCKout({
           price_ID: stripePriceId,
           email: data.email,
@@ -109,7 +130,6 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           priceRef: productPrice?._id || "",
         })
       } else {
-        // Free Access Flow: create subscription and auto-login user
         try {
           const res = await axios.post(`/api/createSubscription`, {
             email: data.email,
@@ -145,10 +165,10 @@ const Form = ({ productPrice, location, onModalState }: any) => {
 
       <div className="space-y-1 text-left">
         <h2 className="text-2xl font-extrabold text-zinc-900 dark:text-zinc-100 tracking-tight">
-          Enroll in the Course
+          Update Course Subscription
         </h2>
         <p className="text-xs sm:text-sm text-zinc-500 dark:text-zinc-400">
-          Enter your details and select your plan to unlock full access.
+          Select a paid Stripe plan tier to update your subscription with 100% discount applied.
         </p>
       </div>
 
@@ -179,44 +199,57 @@ const Form = ({ productPrice, location, onModalState }: any) => {
           required={true}
         />
 
-        {/* Plan Selection Radios */}
+        {/* Plan Selection Options */}
         <div className="space-y-2">
-          <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300">
-            Select Course Tier
+          <label className="text-xs font-bold uppercase tracking-wider text-zinc-700 dark:text-zinc-300 flex items-center justify-between">
+            <span>Select Stripe Plan Tier</span>
+            <span className="text-[10px] text-teal-600 dark:text-teal-400 font-extrabold">100% Off Forever</span>
           </label>
 
           <div className="space-y-2.5">
             {plans.map((prc: any, index: number) => {
               const stripePriceId = getPlanStripePriceId(prc)
-              const isFreePlan = !stripePriceId && Number(prc.price) === 0
-              const planPriceId = stripePriceId || (isFreePlan ? "free" : `plan-${index}`)
+              const isPaidStripePlan = Boolean(stripePriceId)
+              const isCurrentPlan = !isPaidStripePlan || (userSubscription?.is && !isPaidStripePlan)
+              const planPriceId = stripePriceId || (isPaidStripePlan ? `plan-${index}` : "free")
               const isSelected = selectedPriceId === planPriceId
 
               return (
                 <label
                   key={index}
                   htmlFor={`plan-${index}`}
-                  className={`flex items-start gap-3.5 p-4 rounded-2xl border cursor-pointer transition-all ${
-                    isSelected
-                      ? "border-teal-500 bg-teal-500/10 dark:bg-teal-950/30 ring-2 ring-teal-500/30"
-                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60"
+                  className={`flex items-start gap-3.5 p-4 rounded-2xl border transition-all ${
+                    isCurrentPlan
+                      ? "border-emerald-500/40 bg-emerald-500/10 dark:bg-emerald-950/20 opacity-80 cursor-default"
+                      : isSelected
+                      ? "border-teal-500 bg-teal-500/10 dark:bg-teal-950/30 ring-2 ring-teal-500/30 cursor-pointer"
+                      : "border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/40 hover:bg-zinc-100 dark:hover:bg-zinc-800/60 cursor-pointer"
                   }`}
                 >
                   <input
                     id={`plan-${index}`}
                     {...register("price")}
                     value={planPriceId}
+                    disabled={isCurrentPlan}
                     type="radio"
                     className="mt-1 text-teal-600 focus:ring-teal-500"
                   />
 
                   <div className="flex-1 space-y-1">
                     <div className="flex items-center justify-between">
-                      <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
-                        {prc.keyword || (isFreePlan ? "Basic (Free)" : "Premium")}
-                      </span>
-                      <span className="text-xs font-extrabold px-2 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
-                        {isFreePlan ? "Free" : prc.price ? `$${prc.price}/mo` : "Premium"}
+                      <div className="flex items-center gap-2">
+                        <span className="font-extrabold text-sm text-zinc-900 dark:text-zinc-100">
+                          {prc.keyword || (isPaidStripePlan ? "Pro Plan" : "Basic (Free)")}
+                        </span>
+                        {isCurrentPlan ? (
+                          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-[10px] font-extrabold uppercase">
+                            <CheckCircle2 className="w-3 h-3" /> Current Plan
+                          </span>
+                        ) : null}
+                      </div>
+
+                      <span className="text-xs font-extrabold px-2.5 py-0.5 rounded-full bg-zinc-200 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200">
+                        {isPaidStripePlan ? (prc.price ? `$${prc.price}/mo` : "Paid Plan") : "Free"}
                       </span>
                     </div>
 
@@ -239,18 +272,14 @@ const Form = ({ productPrice, location, onModalState }: any) => {
         {/* Submit Action Button */}
         <button
           type="submit"
-          disabled={disable}
+          disabled={disable || !isStripePlanSelected}
           className="w-full flex items-center justify-center gap-2 py-4 px-6 rounded-2xl bg-gradient-to-r from-teal-600 to-emerald-500 text-white font-extrabold text-sm shadow-xl hover:opacity-95 disabled:opacity-50 transition-all mt-4"
         >
           {disable ? (
-            "Connecting..."
-          ) : isStripePlanSelected ? (
-            <>
-              <CreditCard className="w-4 h-4" /> Proceed to Stripe Checkout <ArrowRight className="w-4 h-4" />
-            </>
+            "Connecting to Stripe..."
           ) : (
             <>
-              <Sparkles className="w-4 h-4" /> Enroll in Free Access <ArrowRight className="w-4 h-4" />
+              <CreditCard className="w-4 h-4" /> Update Subscription via Stripe (100% Off) <ArrowRight className="w-4 h-4" />
             </>
           )}
         </button>
