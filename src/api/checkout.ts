@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next"
 import Joi from "joi"
 
 // @ts-ignore
-import { createSession, retrieveSession } from "../lib/stripe/checkout.ts"
+import { createSession, retrieveSession } from "../lib/stripe/checkout"
 
 /**
  * Checkout handler, used to retreive Stripe checkout sessions (GET)

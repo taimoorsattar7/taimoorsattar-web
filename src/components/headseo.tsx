@@ -2,7 +2,7 @@ import React from "react"
 import PropTypes from "prop-types"
 
 // @ts-ignore
-import { useSiteMetadata } from "../hooks/use-site-metadata.tsx"
+import { useSiteMetadata } from "../hooks/use-site-metadata"
 
 const HeadSEO = ({
   location,

@@ -14,7 +14,7 @@ import CurriculumList from "@components/curriculum-list/index"
 import { Author } from "@components/Author"
 
 // @ts-ignore
-import { getCurrentUser, cVerifyToken } from "@utils/auth.ts"
+import { getCurrentUser, cVerifyToken } from "@utils/auth"
 
 import Modal from "@atom/modal/index"
 

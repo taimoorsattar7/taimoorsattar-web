@@ -8,7 +8,7 @@ import PortableText from "@components/portabletext/portableText"
 import InputField from "@molecule/input-field/index"
 import { CheckCircle2, Lock, ArrowRight, Sparkles, CreditCard, ShieldCheck } from "lucide-react"
 // @ts-ignore
-import { cVerifyToken } from "@utils/auth.ts"
+import { cVerifyToken } from "@utils/auth"
 
 const Form = ({ productPrice, location, onModalState }: any) => {
   const plans = productPrice?.plans || []
