@@ -40,6 +40,37 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: -0.02em;
 }
 
+/* ── Link Styling System ────────────────────────────────────────────── */
+a {
+  color: inherit;
+  text-decoration: inherit;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+.prose a {
+  color: #0d9488;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(13, 148, 136, 0.3);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+
+html.dark .prose a {
+  color: #2dd4bf;
+  text-decoration-color: rgba(45, 212, 191, 0.3);
+}
+
+.prose a:hover {
+  color: #0f766e;
+  text-decoration-color: #0f766e;
+}
+
+html.dark .prose a:hover {
+  color: #5eead4;
+  text-decoration-color: #5eead4;
+}
+
 /* ── Section 508 / WCAG High-Contrast Focus Indicators ───────────────── */
 :focus-visible {
   outline: 2px solid #0d9488; /* Teal 600 */

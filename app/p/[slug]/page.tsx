@@ -17,7 +17,10 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }): Promise<Metadata> {
-  const sanityProduct = await fetchSanityProduct(params.slug)
+  let sanityProduct: any = null
+  try {
+    sanityProduct = await fetchSanityProduct(params.slug)
+  } catch (e) {}
 
   const title = sanityProduct?.title || COURSE_DATA.title
   const rawShort = sanityProduct?.short || COURSE_DATA.shortDescription
@@ -87,10 +90,19 @@ export default async function ProductDetailPage({
 }: {
   params: { slug: string }
 }) {
-  const [sanityProduct, sanityModules] = await Promise.all([
-    fetchSanityProduct(params.slug),
-    fetchSanityModules('build-a-standout-website'),
-  ])
+  let sanityProduct: any = null
+  let sanityModules: any = null
+
+  try {
+    const res = await Promise.all([
+      fetchSanityProduct(params.slug),
+      fetchSanityModules('build-a-standout-website'),
+    ])
+    sanityProduct = res[0]
+    sanityModules = res[1]
+  } catch (err) {
+    console.warn('Sanity product fetch error:', err)
+  }
 
   const title = sanityProduct?.title || COURSE_DATA.title
   const _rawShort = sanityProduct?.short || COURSE_DATA.shortDescription

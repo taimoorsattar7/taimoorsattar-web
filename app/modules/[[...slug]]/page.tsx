@@ -4,7 +4,10 @@ import { fetchSanityModules } from '@/src/lib/sanity/fetchCourse'
 import ModulesClient from './ModulesClient'
 
 export async function generateStaticParams() {
-  const modulesData = await fetchSanityModules('build-a-standout-website')
+  let modulesData: any = null
+  try {
+    modulesData = await fetchSanityModules('build-a-standout-website')
+  } catch (e) {}
   const paramsList: { slug?: string[] }[] = [{ slug: [] }, { slug: ['build-a-standout-website'] }]
 
   if (Array.isArray(modulesData?.curriculum)) {
@@ -33,7 +36,10 @@ export async function generateMetadata({
   const courseSlug = slugPath[0] || 'build-a-standout-website'
   const lessonSlug = slugPath[1]
 
-  const courseData = await fetchSanityModules(courseSlug)
+  let courseData: any = null
+  try {
+    courseData = await fetchSanityModules(courseSlug)
+  } catch (e) {}
 
   let lessonTitle = ''
   if (lessonSlug && Array.isArray(courseData?.curriculum)) {
@@ -119,7 +125,10 @@ export default async function ModulesPage({
   const courseSlug = slugPath[0] || 'build-a-standout-website'
   const lessonSlug = slugPath[1]
 
-  const courseData = await fetchSanityModules(courseSlug)
+  let courseData: any = null
+  try {
+    courseData = await fetchSanityModules(courseSlug)
+  } catch (e) {}
 
   let lessonTitle = ''
   if (lessonSlug && Array.isArray(courseData?.curriculum)) {

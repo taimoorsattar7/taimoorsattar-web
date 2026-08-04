@@ -9,6 +9,8 @@
     "build": "next build",
     "start": "next start",
     "test": "jest",
+    "cypress:run": "cypress run",
+    "cypress:open": "cypress open",
     "lint": "next lint",
     "studio": "sanity dev",
     "studio:build": "sanity build"
@@ -87,6 +89,7 @@
     "@types/react-syntax-highlighter": "^15.5.5",
     "@types/validator": "^13.7.10",
     "autoprefixer": "^10.4.13",
+    "cypress": "^15.19.0",
     "jest": "^30.4.2",
     "jest-environment-jsdom": "^30.4.1",
     "postcss": "^8.4.19",
