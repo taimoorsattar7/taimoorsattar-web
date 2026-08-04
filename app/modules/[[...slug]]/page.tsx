@@ -58,7 +58,7 @@ export async function generateMetadata({
 
   const canonicalPath = slugPath.length > 0 ? slugPath.join('/') : ''
   const canonicalUrl = `https://taimoorsattar.dev/modules${canonicalPath ? `/${canonicalPath}` : ''}`
-  const ogImageUrl = 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'
+  const ogImageUrl = 'https://taimoorsattar.dev/profile-pic.jpg'
 
   return {
     title: pageTitle,

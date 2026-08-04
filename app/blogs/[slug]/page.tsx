@@ -24,7 +24,7 @@ export async function generateMetadata({
 
   const canonicalUrl = `https://taimoorsattar.dev/blogs/${params.slug}`
   const description = post.description || post.excerpt || 'Technical article by Taimoor Sattar'
-  const ogImage = 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'
+  const ogImage = 'https://taimoorsattar.dev/profile-pic.jpg'
 
   return {
     title: `${post.title} - Taimoor Sattar Engineering Blog`,

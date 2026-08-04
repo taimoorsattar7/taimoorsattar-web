@@ -16,7 +16,7 @@ const courses = [
     subtitle: 'React · Next.js · Sanity · Stripe',
     excerpt:
       'Learn to design, build, and deploy a production-ready full-stack website — from component architecture and CMS integration to payment collection and live deployment.',
-    image: '/static/banner.jpg',
+    image: '/banner.jpg',
     badge: 'Featured',
     stats: [
       { icon: Layers, label: '13 Chapters' },

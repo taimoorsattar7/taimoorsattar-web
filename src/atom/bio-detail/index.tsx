@@ -5,7 +5,7 @@ const BioDetail = () => {
   return (
     <div className="flex flex-wrap items-center justify-between gap-4">
       <Image
-        src="/static/img/profile-pic.jpg"
+        src="/profile-pic.jpg"
         className="w-24 h-24 flex-shrink-0 object-cover border-2 rounded-full border-zinc-200 dark:border-zinc-800"
         alt="Taimoor Sattar"
         width={96}

@@ -14,8 +14,15 @@ html, body {
   scroll-behavior: smooth;
   margin: 0;
   padding: 0;
+  max-width: 100vw;
+  overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+img, video, iframe, svg, canvas {
+  max-width: 100%;
+  height: auto;
 }
 
 html.dark body {

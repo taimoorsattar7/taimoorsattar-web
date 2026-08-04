@@ -1,7 +1,17 @@
 import React from 'react'
 import './globals.css'
 import Providers from '../src/components/Providers'
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#0b0f19' },
+  ],
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://taimoorsattar.dev'),
@@ -47,7 +57,7 @@ export const metadata: Metadata = {
       'Tutorials and full-stack courses on React, Next.js, Sanity CMS, and Web Development by Taimoor Sattar.',
     images: [
       {
-        url: 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg',
+        url: 'https://taimoorsattar.dev/profile-pic.jpg',
         width: 1200,
         height: 630,
         alt: 'Taimoor Sattar',
@@ -60,7 +70,7 @@ export const metadata: Metadata = {
     description:
       'Tutorials and full-stack courses on React, Next.js, Sanity CMS, and Web Development.',
     creator: '@taimoorsattar7',
-    images: ['https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'],
+    images: ['https://taimoorsattar.dev/profile-pic.jpg'],
   },
   icons: {
     icon: '/favicon.ico',
@@ -76,7 +86,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="antialiased min-h-screen bg-white dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100">
+      <body className="antialiased min-h-screen bg-white dark:bg-[#0b0f19] text-slate-900 dark:text-slate-100 overflow-x-hidden max-w-[100vw]">
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -12,7 +12,7 @@ const SponsorBlock = ({ data }: any) => {
           <Link href={`/p/${node?.slug?.current}`} className="no-underline">
             <Image
               className="w-16 h-16 rounded-lg object-cover border border-zinc-200 dark:border-zinc-800"
-              src={node?.seo?.image?.asset?.url || "/static/banner.jpg"}
+              src={node?.seo?.image?.asset?.url || "/banner.jpg"}
               alt={node?.title || "Sponsor"}
               width={64}
               height={64}

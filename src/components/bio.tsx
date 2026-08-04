@@ -7,7 +7,7 @@ const Bio = () => {
       <Image
         className="w-16 h-16 rounded-full object-cover border border-zinc-200 dark:border-zinc-800"
         alt="Taimoor Sattar"
-        src="/static/img/profile-pic.jpg"
+        src="/profile-pic.jpg"
         width={64}
         height={64}
         unoptimized

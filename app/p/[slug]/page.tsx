@@ -27,7 +27,7 @@ export async function generateMetadata({
     ? parseSanityBlocks(rawShort).replace(/<[^>]*>?/gm, '').slice(0, 160)
     : 'Build a Standout Website Course by Taimoor Sattar'
 
-  const bgImageUrl = sanityProduct?.bgimage?.asset?.url || 'https://homegear.dev/_next/static/media/taimoor.0f87e767.jpg'
+  const bgImageUrl = sanityProduct?.bgimage?.asset?.url || 'https://taimoorsattar.dev/profile-pic.jpg'
   const canonicalUrl = `https://taimoorsattar.dev/p/${params.slug}`
 
   return {
